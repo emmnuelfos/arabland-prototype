@@ -23,8 +23,8 @@ function HeroVideo() {
         poster="https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=2400&q=85"
         className="absolute inset-0 w-full h-full object-cover"
       />
-      {/* Bottom-half gradient overlay: black 40% at the bottom → transparent at the 50% mark */}
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+      {/* Bottom 60% gradient overlay: black 60% at the bottom → transparent at the 60% mark */}
+      <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
 
       <div className="relative h-full min-h-[100vh] flex flex-col">
         <div className="flex-1 flex items-center">
