@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Careers — Arabland Real Estate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @font-face { font-family: 'Macan Pan'; src: url('assets/fonts/MacanPanWeb-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Macan Pan'; src: url('assets/fonts/MacanPanWeb-Medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
+  @font-face { font-family: 'Macan Pan'; src: url('assets/fonts/MacanPanWeb-Semibold.ttf') format('truetype'); font-weight: 600; font-display: swap; }
+  @font-face { font-family: 'Macan Pan'; src: url('assets/fonts/MacanPanWeb-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+</style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,aspect-ratio,line-clamp"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: {
+      ochre:     { DEFAULT: '#AC7B43', 50: '#F7EFE5', 100: '#EBD5BA', 600: '#946632', 700: '#7C5527' },
+      graphite:  { DEFAULT: '#4D4B4A', 800: '#2E2D2C', 900: '#1A1A1A' },
+      stone:     { DEFAULT: '#B2B4B2', 200: '#D8D9D7' },
+      porcelain: { DEFAULT: '#EAE8E3', 100: '#F4F2EE' },
+    },
+    fontFamily: {
+      display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+      sans: ['"Macan Pan"', 'Inter', 'system-ui', 'sans-serif'],
+      mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+    },
+  }}
+};
+</script>
+<style>
+  html, body { background: #EAE8E3; color: #2E2D2C; }
+  body { font-family: 'Macan Pan', 'Inter', system-ui, sans-serif; font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  .font-display { font-family: 'Cormorant Garamond', Georgia, serif; letter-spacing: -0.01em; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .eyebrow { font-family: 'Macan Pan', 'Inter', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; }
+  .num { font-variant-numeric: tabular-nums; }
+  .hairline { border-color: #B2B4B2; }
+  .gold-underline { position: relative; }
+  .gold-underline::after { content: ''; position: absolute; left: 0; bottom: -3px; height: 1px; width: 0%; background: #AC7B43; transition: width 250ms ease-out; }
+  .gold-underline:hover::after { width: 100%; }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 700ms ease-out, transform 700ms ease-out; }
+  .reveal.in { opacity: 1; transform: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { scrollbar-width: none; }
+  *:focus-visible { outline: 2px solid #AC7B43; outline-offset: 2px; }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee-track { animation: marquee 60s linear infinite; }
+  .gold-tick::before { content: ''; display: inline-block; width: 14px; height: 1px; background: #AC7B43; margin-right: 12px; vertical-align: middle; }
+  .tab-active { color: #2E2D2C; }
+  .tab-active::after { content: ''; display: block; height: 2px; width: 100%; background: #AC7B43; margin-top: 8px; }
+  .ph-stripe { background-image: repeating-linear-gradient(45deg, #D8D9D7 0 6px, #EAE8E3 6px 12px); }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="src/data.js"></script>
+<script>window.__PAGE = 'careers';</script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="src/components.jsx"></script>
+<script type="text/babel" src="src/modals.jsx"></script>
+<script type="text/babel" src="src/pages.jsx"></script>
+<script type="text/babel" src="src/pages2.jsx"></script>
+<script type="text/babel" src="src/boot.jsx"></script>
+</body>
+</html>
