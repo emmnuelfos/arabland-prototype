@@ -1,7 +1,7 @@
-// Sample data for Arabland Real Estate prototype
+// Sample data for Concept Plus Real Estate prototype
 // Realistic Dubai listings, communities, agents, off-plan projects.
 
-window.ARABLAND_DATA = (function () {
+window.CONCEPTPLUS_DATA = (function () {
   const U = (id, w = 1600, h = 1067) =>
     `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&h=${h}&q=80`;
 

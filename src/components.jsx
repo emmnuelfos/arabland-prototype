@@ -1,4 +1,4 @@
-// Arabland — shared components: Header, Footer, SearchBar, PropertyCard, etc.
+// Concept Plus — shared components: Header, Footer, SearchBar, PropertyCard, etc.
 // Exports to window for cross-script sharing (Babel scripts don't share scope).
 
 const { useState, useEffect, useRef, useMemo, useCallback } = React;
@@ -28,14 +28,14 @@ function useReveal() {
 // ─── ARE full lockup from the supplied SVG ────────────────────────────────
 // Two color variants: dark (graphite type on porcelain bg) / light (porcelain type on dark bg).
 function Wordmark({ className = '', tone = 'dark', height = 44 }) {
-  const src = tone === 'light' ? 'assets/arabland-logo-light.svg' : 'assets/arabland-logo-dark.svg';
+  const src = tone === 'light' ? 'assets/conceptplus-logo-light.svg' : 'assets/conceptplus-logo-dark.svg';
   return (
-    <img src={src} alt="Arabland Real Estate" className={className} style={{ height, width: 'auto', display: 'block' }} />
+    <img src={src} alt="Concept Plus Real Estate" className={className} style={{ height, width: 'auto', display: 'block' }} />
   );
 }
 // Monogram-only — crops the supplied SVG via CSS to show just the ARE mark on top.
 function Monogram({ size = 56, tone = 'dark', className = '' }) {
-  const src = tone === 'light' ? 'assets/arabland-logo-light.svg' : 'assets/arabland-logo-dark.svg';
+  const src = tone === 'light' ? 'assets/conceptplus-logo-light.svg' : 'assets/conceptplus-logo-dark.svg';
   // Original viewBox 1183x663; the ARE monogram occupies roughly the top 60% (y 0–400).
   return (
     <div className={className} style={{ width: size * (1.78), height: size, overflow: 'hidden' }}>
@@ -61,15 +61,7 @@ function Header({ shortlistCount, onShortlist, onCompare, currency, setCurrency,
   const fg = onPorcelain ? 'text-graphite-900' : 'text-porcelain';
   return (
     <header className={`fixed top-0 inset-x-0 z-40 transition-colors duration-500 ${onPorcelain ? 'bg-porcelain/95 backdrop-blur border-b hairline border-stone' : 'bg-transparent'}`}>
-      {/* Top utility strip */}
-      <div className={`hidden lg:flex items-center justify-end gap-6 px-10 py-2 text-[11px] tracking-[0.18em] uppercase ${onPorcelain ? 'text-graphite' : 'text-porcelain/85'}`}>
-        <Toggle items={['AED','USD','EUR']} value={currency} onChange={setCurrency} dim={!onPorcelain} />
-        <Toggle items={['sqft','sqm']} value={areaUnit} onChange={setAreaUnit} dim={!onPorcelain} />
-        <Toggle items={['EN','AR']} value={lang} onChange={setLang} dim={!onPorcelain} />
-        <span className="opacity-40">|</span>
-        <a href="#" className={`gold-underline cursor-pointer ${fg}`}>Sign in</a>
-        <a href="#" className={`px-3 py-1 border hairline ${onPorcelain ? 'text-graphite-900' : 'text-porcelain border-porcelain/40'} cursor-pointer hover:border-ochre hover:text-ochre`}>Sign up</a>
-      </div>
+      {/* Top utility strip (AED·USD·EUR | sqft·sqm | EN·AR | Sign in/up) removed per client request. */}
       <div className="flex items-center justify-between px-6 md:px-10 py-4">
         <a href="index.html" className="cursor-pointer">
           <Wordmark tone={onPorcelain ? 'dark' : 'light'} height={44} />
@@ -410,7 +402,7 @@ function Footer() {
           </div>
         </div>
         <div className="mt-20 pt-8 hairline border-t border-stone/30 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between text-[11px] tracking-[0.18em] uppercase text-stone">
-          <div>© 2026 Arabland Real Estate Brokerage LLC</div>
+          <div>© 2026 Concept Plus Real Estate Brokerage LLC</div>
           <div className="flex items-center gap-6">
             <a href="#" className="hover:text-ochre cursor-pointer">Terms</a>
             <a href="#" className="hover:text-ochre cursor-pointer">Privacy</a>

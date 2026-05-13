@@ -1,11 +1,11 @@
-// Arabland — secondary pages: Sell, Developers, Agents, Services, Careers.
+// Concept Plus — secondary pages: Sell, Developers, Agents, Services, Careers.
 // Mounts via boot.jsx through window.__PAGES registry.
 
 const { useState: useStateQ, useMemo: useMemoQ, useEffect: useEffectQ } = React;
 const __PC = () => window.PageChrome;
 
 // ─── Extra data ────────────────────────────────────────────────────────────
-window.ARABLAND_EXTRA = {
+window.CONCEPT PLUS_EXTRA = {
   services: [
     { id: 'sales',     title: 'Residential Sales',         eb: 'Buy & sell',     blurb: 'Senior brokers representing Dubai\'s most considered freehold addresses, end-to-end.', stats: ['1,247', 'Active mandates'] },
     { id: 'leasing',   title: 'Leasing & Rentals',          eb: 'Lease',          blurb: 'Furnished and unfurnished leasing, short and long lease structures, RERA-compliant Ejari.', stats: ['380', 'Tenancies live'] },
@@ -66,7 +66,7 @@ function PageHead({ crumbs, eyebrow, title, sub }) {
 // ═══════════════════════════════════════════════════════════════════════════
 function SellPage() {
   const PC = __PC();
-  const D = window.ARABLAND_DATA;
+  const D = window.CONCEPTPLUS_DATA;
   const [community, setCommunity] = useStateQ('Palm Jumeirah');
   const [type, setType] = useStateQ('Villa');
   const [beds, setBeds] = useStateQ(4);
@@ -86,7 +86,7 @@ function SellPage() {
         <main>
           <PageHead crumbs={[{label:'Home', href:'index.html'}, {label:'Sell your property'}]}
             eyebrow="Instant valuation" title="What is your home worth, today?"
-            sub="A live estimate, refined by a senior Arabland broker within 24 hours. Confidential, no obligation, no portal-style mass-emails." />
+            sub="A live estimate, refined by a senior Concept Plus broker within 24 hours. Confidential, no obligation, no portal-style mass-emails." />
 
           {/* Calculator + result */}
           <section className="max-w-[1400px] mx-auto px-6 md:px-10 py-20 grid lg:grid-cols-[480px_1fr] gap-16">
@@ -114,7 +114,7 @@ function SellPage() {
                 </div>
               </div>
               <div className="border-t border-porcelain/15 pt-8 mt-12 text-[12px] text-porcelain/60 leading-relaxed">
-                Estimate based on Arabland's transactions database, DLD-registered sales over the last 24 months and current live inventory. A senior broker will refine this within 24 hours, after a private inspection.
+                Estimate based on Concept Plus's transactions database, DLD-registered sales over the last 24 months and current live inventory. A senior broker will refine this within 24 hours, after a private inspection.
               </div>
             </div>
           </section>
@@ -153,7 +153,7 @@ function Field2({ label, children }) { return <div><div className="text-[11px] t
 // ═══════════════════════════════════════════════════════════════════════════
 function DevelopersPage() {
   const PC = __PC();
-  const E = window.ARABLAND_EXTRA;
+  const E = window.CONCEPT PLUS_EXTRA;
   const [openId, setOpenId] = useStateQ(null);
 
   return (
@@ -207,7 +207,7 @@ function DevelopersPage() {
                       A reference developer for some of Dubai's most considered residential addresses, with a multi-decade track record of on-time delivery. Notable communities and towers include {d.notable}.
                     </p>
                     <p className="text-[15px] leading-[1.8] text-porcelain/65 mt-5">
-                      Arabland holds direct allocation on {d.name}'s active launches and represents the developer as a senior sales partner across {d.pipeline} live projects. Unit-level inventory, payment plans and floor plans available on request — typically within the same business day.
+                      Concept Plus holds direct allocation on {d.name}'s active launches and represents the developer as a senior sales partner across {d.pipeline} live projects. Unit-level inventory, payment plans and floor plans available on request — typically within the same business day.
                     </p>
                     <div className="grid sm:grid-cols-2 gap-3 mt-8">
                       {[1,2,3,4].map(i => <div key={i} className="aspect-[16/10] bg-graphite-800 hairline border border-graphite-800 overflow-hidden"><img src={d.img} alt="" className="w-full h-full object-cover opacity-90" /></div>)}
@@ -237,7 +237,7 @@ function Stat({ n, k, tone }) {
 // ═══════════════════════════════════════════════════════════════════════════
 function AgentsPage() {
   const PC = __PC();
-  const D = window.ARABLAND_DATA;
+  const D = window.CONCEPTPLUS_DATA;
   // pad agents to 12 by repeating
   const all = [...D.agents, ...D.agents.map((a, i) => ({ ...a, name: a.name.split(' ').reverse().join(' ') }))];
   const [openIdx, setOpenIdx] = useStateQ(null);
@@ -250,7 +250,7 @@ function AgentsPage() {
         <main>
           <PageHead crumbs={[{label:'Home', href:'index.html'}, {label:'Agents'}]}
             eyebrow="The team" title="Senior brokers, plainly named."
-            sub="No call centre, no junior pool. Median Arabland broker tenure: 9 years. Every agent below is RERA-licensed and represents a defined community." />
+            sub="No call centre, no junior pool. Median Concept Plus broker tenure: 9 years. Every agent below is RERA-licensed and represents a defined community." />
 
           {/* Filters */}
           <section className="max-w-[1400px] mx-auto px-6 md:px-10 pt-8 pb-2 flex items-center gap-2 flex-wrap">
@@ -299,7 +299,7 @@ function AgentsPage() {
                     </div>
                   </div>
                   <div className="mt-10 grid sm:grid-cols-3 gap-6">
-                    {[['AED 4.2B', 'Lifetime sales'], ['184', 'Closed transactions'], ['9.4 yrs', 'With Arabland']].map(([n, k]) => (
+                    {[['AED 4.2B', 'Lifetime sales'], ['184', 'Closed transactions'], ['9.4 yrs', 'With Concept Plus']].map(([n, k]) => (
                       <div key={k} className="border-t hairline border-stone-200 pt-4">
                         <div className="font-display text-graphite-900 num" style={{ fontSize: '28px', fontWeight: 400 }}>{n}</div>
                         <div className="text-[11px] tracking-[0.18em] uppercase text-graphite/60 mt-1">{k}</div>
@@ -336,7 +336,7 @@ function AgentsPage() {
 // ═══════════════════════════════════════════════════════════════════════════
 function ServicesPage() {
   const PC = __PC();
-  const E = window.ARABLAND_EXTRA;
+  const E = window.CONCEPT PLUS_EXTRA;
   return (
     <PC screenLabel="Services">
       {(ctx) => (
@@ -371,7 +371,7 @@ function ServicesPage() {
                 <h3 className="font-display mt-3" style={{ fontSize: 'clamp(28px, 3.4vw, 42px)', fontWeight: 300 }}>One director, the whole chain.</h3>
               </div>
               <p className="text-[15px] text-porcelain/80 leading-[1.8]">
-                Arabland is a senior-only brokerage. The director who lists your home is the same person who answers when a buyer calls, sits across the table at negotiation, and signs you in at the DLD trustee office. No hand-offs, no juniors, no surprises.
+                Concept Plus is a senior-only brokerage. The director who lists your home is the same person who answers when a buyer calls, sits across the table at negotiation, and signs you in at the DLD trustee office. No hand-offs, no juniors, no surprises.
               </p>
             </div>
           </section>
@@ -386,7 +386,7 @@ function ServicesPage() {
 // ═══════════════════════════════════════════════════════════════════════════
 function CareersPage() {
   const PC = __PC();
-  const E = window.ARABLAND_EXTRA;
+  const E = window.CONCEPT PLUS_EXTRA;
   const teams = ['All', ...Array.from(new Set(E.careers.map(c => c.team)))];
   const [team, setTeam] = useStateQ('All');
   const [openId, setOpenId] = useStateQ(null);
@@ -398,7 +398,7 @@ function CareersPage() {
       {(ctx) => (
         <main>
           <PageHead crumbs={[{label:'Home', href:'index.html'}, {label:'Careers'}]}
-            eyebrow="Join Arabland" title="Senior people, on senior terms."
+            eyebrow="Join Concept Plus" title="Senior people, on senior terms."
             sub="We hire experienced consultants who already command a following — and back them with the inventory, marketing and technology to compound it. Below: 10 open positions across the firm." />
 
           <section className="bg-porcelain-100 py-16 border-b hairline border-stone-200">
@@ -442,7 +442,7 @@ function CareersPage() {
                       <div>
                         <div className="eyebrow text-ochre">The role</div>
                         <p className="text-[15px] text-graphite/85 mt-3 leading-[1.7] max-w-2xl">
-                          {c.title.split(' — ')[0]} at Arabland is a senior, mandate-carrying position. You will lead {c.team.toLowerCase()} engagements end-to-end: discovery, valuation or sourcing, mandate, marketing, negotiation, transfer. You report directly to a Managing Director.
+                          {c.title.split(' — ')[0]} at Concept Plus is a senior, mandate-carrying position. You will lead {c.team.toLowerCase()} engagements end-to-end: discovery, valuation or sourcing, mandate, marketing, negotiation, transfer. You report directly to a Managing Director.
                         </p>
                         <div className="eyebrow text-ochre mt-8">What we expect</div>
                         <ul className="mt-3 grid sm:grid-cols-2 gap-x-8 gap-y-2 text-[14px] text-graphite-800 max-w-2xl">

@@ -1,4 +1,4 @@
-// Arabland — homepage sections.
+// Concept Plus — homepage sections.
 
 const { useState: useStateS, useEffect: useEffectS, useRef: useRefS, useMemo: useMemoS } = React;
 
@@ -174,7 +174,7 @@ function HeroMonogram() {
 
 // ─── Featured Communities ──────────────────────────────────────────────────
 function Communities() {
-  const D = window.ARABLAND_DATA;
+  const D = window.CONCEPTPLUS_DATA;
   return (
     <Section eyebrow="Communities" title="Where Dubai lives." sub="Eight neighborhoods, each with its own register of value, light and life. Pick the one that suits how you'd like to wake up.">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
@@ -200,7 +200,7 @@ function Communities() {
 
 // ─── Featured Listings ─────────────────────────────────────────────────────
 function FeaturedListings({ cardVariant, currency, areaUnit, shortlist, compare, onShortlist, onCompare, onOpen }) {
-  const D = window.ARABLAND_DATA;
+  const D = window.CONCEPTPLUS_DATA;
   const scrollRef = useRefS(null);
   const scrollBy = (dir) => scrollRef.current?.scrollBy({ left: dir * 460, behavior: 'smooth' });
   return (
@@ -236,7 +236,7 @@ function FeaturedListings({ cardVariant, currency, areaUnit, shortlist, compare,
 
 // ─── Off-Plan ─────────────────────────────────────────────────────────────
 function OffPlan({ onOpenPlan }) {
-  const D = window.ARABLAND_DATA;
+  const D = window.CONCEPTPLUS_DATA;
   return (
     <Section eyebrow="Off-plan" title="Tomorrow's addresses." sub="Pre-launch allocations, payment plans engineered for absentee owners, and the data to know which towers will hold their value.">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -297,15 +297,15 @@ function Stats() {
   );
 }
 
-// ─── Why Arabland ──────────────────────────────────────────────────────────
-function WhyArabland() {
+// ─── Why Concept Plus ──────────────────────────────────────────────────────────
+function WhyConceptPlus() {
   const items = [
-    { eb: 'Inventory', t: 'Curated, not crawled.', d: 'Every address on Arabland has been walked by the broker representing it. We don\'t scrape, repost or re-list.' },
-    { eb: 'Team',      t: 'Senior brokerage only.', d: 'No first-year agents. Every Arabland broker has closed at least AED 50M and holds active RERA certification.' },
+    { eb: 'Inventory', t: 'Curated, not crawled.', d: 'Every address on Concept Plus has been walked by the broker representing it. We don\'t scrape, repost or re-list.' },
+    { eb: 'Team',      t: 'Senior brokerage only.', d: 'No first-year agents. Every Concept Plus broker has closed at least AED 50M and holds active RERA certification.' },
     { eb: 'Process',   t: 'Transparent by default.', d: 'Permit numbers, DLD verification, comparables, and the actual time-on-market — surfaced, not buried.' },
   ];
   return (
-    <Section eyebrow="Why Arabland" title="Curated by people who live here." sub="">
+    <Section eyebrow="Why Concept Plus" title="Curated by people who live here." sub="">
       <div className="grid md:grid-cols-3 gap-x-12 gap-y-12 mt-4">
         {items.map((x, i) => (
           <div key={x.eb} className="reveal" style={{ transitionDelay: `${i * 80}ms` }}>
@@ -321,7 +321,7 @@ function WhyArabland() {
 
 // ─── Insights ──────────────────────────────────────────────────────────────
 function Insights() {
-  const D = window.ARABLAND_DATA;
+  const D = window.CONCEPTPLUS_DATA;
   return (
     <Section eyebrow="Latest insights" title="Quietly, in print." sub="Market reports, community guides, and the occasional letter on what's actually changing in Dubai property.">
       <div className="grid md:grid-cols-3 gap-8">
@@ -344,7 +344,7 @@ function Insights() {
 
 // ─── Developer Logos (custom monoline marks, not real logos) ──────────────
 function DeveloperLogos() {
-  const D = window.ARABLAND_DATA;
+  const D = window.CONCEPTPLUS_DATA;
   const all = [...D.developers, ...D.developers];
   return (
     <section className="bg-porcelain py-20 hairline border-y border-stone-200">
@@ -410,4 +410,4 @@ function EditorialStrip({ onValuation }) {
   );
 }
 
-Object.assign(window, { Hero, Communities, FeaturedListings, OffPlan, Stats, WhyArabland, Insights, DeveloperLogos, EditorialStrip, Section });
+Object.assign(window, { Hero, Communities, FeaturedListings, OffPlan, Stats, WhyConceptPlus, Insights, DeveloperLogos, EditorialStrip, Section });

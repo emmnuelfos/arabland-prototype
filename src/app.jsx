@@ -1,4 +1,4 @@
-// Arabland — root app: state, modals routing, Tweaks panel.
+// Concept Plus — root app: state, modals routing, Tweaks panel.
 
 const { useState: useStateA, useEffect: useEffectA, useMemo: useMemoA } = React;
 
@@ -55,7 +55,7 @@ function App() {
   const onShortlistToggle = toggleSet(shortlist, setShortlist);
   const onCompareToggle   = toggleSet(compare, setCompare, 4);
 
-  const D = window.ARABLAND_DATA;
+  const D = window.CONCEPTPLUS_DATA;
   const shortlistItems = useMemoA(() => D.listings.filter(l => shortlist.has(l.id)), [shortlist]);
   const compareItems   = useMemoA(() => D.listings.filter(l => compare.has(l.id)), [compare]);
 
@@ -86,7 +86,7 @@ function App() {
         <ViewOnMapStrip onOpenMap={() => setMapOpen(true)} />
         <OffPlan onOpenPlan={() => setPaymentOpen(true)} />
         <Stats />
-        <WhyArabland />
+        <WhyConceptPlus />
         {tweaks.showStripe && <EditorialStrip onValuation={() => setScheduleOpen(true)} />}
         <Insights />
         <DeveloperLogos />

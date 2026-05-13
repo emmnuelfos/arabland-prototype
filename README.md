@@ -1,8 +1,8 @@
-# Arabland Real Estate — Web Design Preview
+# Concept Plus Real Estate — Web Design Preview
 
-A clickable design prototype for **Arabland Real Estate**, a premium Dubai brokerage.
+A clickable design prototype for **Concept Plus Real Estate**, a premium Dubai brokerage.
 
-**▶ Live preview:** https://emmnuelfos.github.io/arabland-prototype/
+**▶ Live preview:** https://emmnuelfos.github.io/adnika-conceptplus-realestate/
 
 ---
 
@@ -10,15 +10,15 @@ A clickable design prototype for **Arabland Real Estate**, a premium Dubai broke
 
 | Page | Path |
 |---|---|
-| Homepage | [`/`](https://emmnuelfos.github.io/arabland-prototype/) |
-| Buy listings | [`/buy.html`](https://emmnuelfos.github.io/arabland-prototype/buy.html) |
-| Property detail | [`/property.html`](https://emmnuelfos.github.io/arabland-prototype/property.html) |
-| Off-plan projects | [`/off-plan.html`](https://emmnuelfos.github.io/arabland-prototype/off-plan.html) |
-| Agents | [`/agents.html`](https://emmnuelfos.github.io/arabland-prototype/agents.html) |
-| Developers | [`/developers.html`](https://emmnuelfos.github.io/arabland-prototype/developers.html) |
-| Sell / Valuation | [`/sell.html`](https://emmnuelfos.github.io/arabland-prototype/sell.html) |
-| Services | [`/services.html`](https://emmnuelfos.github.io/arabland-prototype/services.html) |
-| Careers | [`/careers.html`](https://emmnuelfos.github.io/arabland-prototype/careers.html) |
+| Homepage | [`/`](https://emmnuelfos.github.io/adnika-conceptplus-realestate/) |
+| Buy listings | [`/buy.html`](https://emmnuelfos.github.io/adnika-conceptplus-realestate/buy.html) |
+| Property detail | [`/property.html`](https://emmnuelfos.github.io/adnika-conceptplus-realestate/property.html) |
+| Off-plan projects | [`/off-plan.html`](https://emmnuelfos.github.io/adnika-conceptplus-realestate/off-plan.html) |
+| Agents | [`/agents.html`](https://emmnuelfos.github.io/adnika-conceptplus-realestate/agents.html) |
+| Developers | [`/developers.html`](https://emmnuelfos.github.io/adnika-conceptplus-realestate/developers.html) |
+| Sell / Valuation | [`/sell.html`](https://emmnuelfos.github.io/adnika-conceptplus-realestate/sell.html) |
+| Services | [`/services.html`](https://emmnuelfos.github.io/adnika-conceptplus-realestate/services.html) |
+| Careers | [`/careers.html`](https://emmnuelfos.github.io/adnika-conceptplus-realestate/careers.html) |
 
 ## Try the interactive features
 

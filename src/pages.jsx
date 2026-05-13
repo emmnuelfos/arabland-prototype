@@ -1,4 +1,4 @@
-// Arabland — sub-pages: Buy listings index, Property detail, Off-Plan project detail.
+// Concept Plus — sub-pages: Buy listings index, Property detail, Off-Plan project detail.
 // Each page reuses Header/Footer/PropertyCard/Modals from the main app and mounts via window.__PAGE.
 
 const { useState: useStateP, useEffect: useEffectP, useMemo: useMemoP, useRef: useRefP } = React;
@@ -27,7 +27,7 @@ function PageChrome({ children, screenLabel }) {
   };
   const onShortlist = toggle(shortlist, setShortlist);
   const onCompare = toggle(compare, setCompare, 4);
-  const D = window.ARABLAND_DATA;
+  const D = window.CONCEPTPLUS_DATA;
   const shortlistItems = useMemoP(() => D.listings.filter(l => shortlist.has(l.id)), [shortlist]);
   const compareItems   = useMemoP(() => D.listings.filter(l => compare.has(l.id)), [compare]);
   const ctxValue = {
@@ -68,7 +68,7 @@ function PageChrome({ children, screenLabel }) {
 //   BUY LISTINGS PAGE
 // ═══════════════════════════════════════════════════════════════════════════
 function BuyPage() {
-  const D = window.ARABLAND_DATA;
+  const D = window.CONCEPTPLUS_DATA;
   const [tab, setTab] = useStateP('Buy');
   const [community, setCommunity] = useStateP('All');
   const [type, setType] = useStateP('All');
@@ -120,7 +120,7 @@ function BuyPage() {
                 Properties for sale in Dubai
               </h1>
               <p className="text-graphite/80 mt-3 max-w-2xl text-[15px]">
-                {filtered.length.toLocaleString()} curated addresses across {new Set(allListings.map(l => l.community)).size} communities — every one walked, photographed and represented by a senior Arabland broker.
+                {filtered.length.toLocaleString()} curated addresses across {new Set(allListings.map(l => l.community)).size} communities — every one walked, photographed and represented by a senior Concept Plus broker.
               </p>
             </div>
           </section>
@@ -219,17 +219,17 @@ function BuyPage() {
           <section className="bg-porcelain-100 py-20 border-t hairline border-stone-200">
             <div className="max-w-[1400px] mx-auto px-6 md:px-10 grid md:grid-cols-3 gap-12">
               <div className="md:col-span-1">
-                <div className="eyebrow text-ochre">Why Arabland</div>
+                <div className="eyebrow text-ochre">Why Concept Plus</div>
                 <h3 className="font-display mt-3 text-graphite-900" style={{ fontSize: 'clamp(28px, 3vw, 38px)', fontWeight: 400 }}>
                   We don't list everything. We represent the right thing.
                 </h3>
               </div>
               <div className="md:col-span-2 grid sm:grid-cols-2 gap-x-12 gap-y-8 text-[14px] text-graphite-800">
                 {[
-                  ['Verified inventory', 'Every address is walked, photographed and re-verified by a senior Arabland broker before it appears here.'],
-                  ['DLD-registered brokers', 'All Arabland brokers hold valid Dubai Land Department registration. License numbers shown on every listing.'],
+                  ['Verified inventory', 'Every address is walked, photographed and re-verified by a senior Concept Plus broker before it appears here.'],
+                  ['DLD-registered brokers', 'All Concept Plus brokers hold valid Dubai Land Department registration. License numbers shown on every listing.'],
                   ['No portal noise', 'No duplicates, no expired posts, no inflated photos. If it isn\'t live, it isn\'t here.'],
-                  ['Senior representation', 'You speak to a director, not a junior. Median Arabland broker tenure: 9 years.'],
+                  ['Senior representation', 'You speak to a director, not a junior. Median Concept Plus broker tenure: 9 years.'],
                 ].map(([t, d]) => (
                   <div key={t}>
                     <div className="text-graphite-900 font-medium">{t}</div>
@@ -271,7 +271,7 @@ function PriceFilter({ value, onChange, currency }) {
 //   PROPERTY DETAIL PAGE
 // ═══════════════════════════════════════════════════════════════════════════
 function PropertyPage() {
-  const D = window.ARABLAND_DATA;
+  const D = window.CONCEPTPLUS_DATA;
   const params = new URLSearchParams(window.location.search);
   const wantedId = params.get('id');
   // Search base + virtualized variants from BuyPage
@@ -357,7 +357,7 @@ function PropertyPage() {
                   A garden-fronted residence on one of the most sought-after fronds of Palm Jumeirah, this {listing.beds}-bedroom {listing.type.toLowerCase()} reads as quiet architecture: limestone, oak, deep-set windows, and a sequence of rooms that step gently towards the water. The principal suite occupies the upper floor in full; the ground floor opens through full-width sliding panels onto a private pool and a planted garden facing the lagoon.
                 </p>
                 <p className="text-[16px] leading-[1.75] text-graphite-800 max-w-2xl mt-5">
-                  Represented exclusively by Arabland. Title deed in seller's name, mortgage-free, ready to transfer. Viewings by appointment, accompanied by the listing director.
+                  Represented exclusively by Concept Plus. Title deed in seller's name, mortgage-free, ready to transfer. Viewings by appointment, accompanied by the listing director.
                 </p>
               </Block>
 
@@ -462,7 +462,7 @@ function PropertyPage() {
               </div>
               <div className="bg-porcelain-100 hairline border border-stone-200 p-6 text-[12px] text-graphite/80 leading-relaxed">
                 <div className="eyebrow text-graphite-900">Senior representation</div>
-                <p className="mt-3">You speak to a director, not a junior. Every Arabland viewing is led by the listing broker, accompanied if requested by an investment advisor.</p>
+                <p className="mt-3">You speak to a director, not a junior. Every Concept Plus viewing is led by the listing broker, accompanied if requested by an investment advisor.</p>
               </div>
               <button onClick={() => ctx.onShortlist(listing.id)} className="w-full hairline border border-stone-200 bg-white px-4 py-3 text-[11px] tracking-[0.22em] uppercase text-graphite hover:text-ochre hover:border-ochre transition cursor-pointer flex items-center justify-center gap-2">
                 <HeartIcon /> Save to shortlist
@@ -513,7 +513,7 @@ function Block({ eyebrow, children }) {
 //   OFF-PLAN PROJECT DETAIL PAGE
 // ═══════════════════════════════════════════════════════════════════════════
 function OffPlanPage() {
-  const D = window.ARABLAND_DATA;
+  const D = window.CONCEPTPLUS_DATA;
   const params = new URLSearchParams(window.location.search);
   const wantedId = params.get('id');
   const project = D.offPlan.find(p => p.id === wantedId) || D.offPlan[0];
@@ -561,7 +561,7 @@ function OffPlanPage() {
                   {project.name}
                 </h1>
                 <div className="mt-6 max-w-2xl text-[16px] text-porcelain/80">
-                  {project.units} residences across two towers, designed by Foster + Partners. A new chapter of waterfront living, brought to market exclusively through Arabland.
+                  {project.units} residences across two towers, designed by Foster + Partners. A new chapter of waterfront living, brought to market exclusively through Concept Plus.
                 </div>
                 <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl">
                   {[
@@ -735,7 +735,7 @@ function OffPlanPage() {
             </div>
             <div>
               <p className="text-[16px] leading-[1.8] text-graphite-800">
-                A reference developer for Dubai's most considered residential addresses, with a 30-year track record of on-time delivery and a portfolio that includes seven of the city's ten highest-priced waterfront communities. Arabland represents {project.developer} as an exclusive sales partner for {project.name}.
+                A reference developer for Dubai's most considered residential addresses, with a 30-year track record of on-time delivery and a portfolio that includes seven of the city's ten highest-priced waterfront communities. Concept Plus represents {project.developer} as an exclusive sales partner for {project.name}.
               </p>
               <button className="mt-8 hairline border border-stone-200 px-5 py-3 text-[11px] tracking-[0.22em] uppercase text-graphite hover:text-ochre hover:border-ochre transition cursor-pointer">View developer profile →</button>
             </div>

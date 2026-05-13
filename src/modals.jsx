@@ -1,4 +1,4 @@
-// Arabland — modals & overlays: PhotoLightbox, MortgageCalc, CompareTray,
+// Concept Plus — modals & overlays: PhotoLightbox, MortgageCalc, CompareTray,
 // ShortlistDrawer, Schedule-a-Viewing, Payment Plan, Stylized Map, PropertyDetail.
 
 const { useState: useStateM, useEffect: useEffectM, useMemo: useMemoM, useRef: useRefM } = React;
@@ -215,7 +215,7 @@ function ShortlistDrawer({ open, onClose, items, onRemove, currency }) {
 
 // ─── Schedule a Viewing ───────────────────────────────────────────────────
 function ScheduleViewing({ open, onClose, listing, agents }) {
-  const agent = agents?.[listing?.agent || 0] || (window.ARABLAND_DATA.agents[0]);
+  const agent = agents?.[listing?.agent || 0] || (window.CONCEPTPLUS_DATA.agents[0]);
   const [day, setDay] = useStateM(0);
   const [slot, setSlot] = useStateM(null);
   const days = useMemoM(() => {
@@ -284,7 +284,7 @@ function ScheduleViewing({ open, onClose, listing, agents }) {
 
 // ─── Payment Plan Visualizer ──────────────────────────────────────────────
 function PaymentPlanModal({ open, onClose }) {
-  const project = window.ARABLAND_DATA.offPlan[0];
+  const project = window.CONCEPTPLUS_DATA.offPlan[0];
   const milestones = [
     { pct: 10, when: 'On booking',     date: 'Jun 2026' },
     { pct: 15, when: 'Within 90 days', date: 'Sep 2026' },
@@ -367,7 +367,7 @@ function PaymentPlanModal({ open, onClose }) {
 
 // ─── Stylized SVG Map (Buy listings preview) ──────────────────────────────
 function MapPreview({ open, onClose, currency }) {
-  const D = window.ARABLAND_DATA;
+  const D = window.CONCEPTPLUS_DATA;
   const [hoverId, setHoverId] = useStateM(D.listings[0].id);
   return (
     <Overlay open={open} onClose={onClose} max="max-w-[1400px]">
@@ -463,7 +463,7 @@ function StylizedMap({ listings, hoverId, onHover, currency }) {
 // ─── Property Detail (light, compact — opened from card click) ────────────
 function PropertyDetail({ open, onClose, listing, currency, onPhotos, onMortgage, onSchedule }) {
   if (!listing) return null;
-  const agent = window.ARABLAND_DATA.agents[listing.agent];
+  const agent = window.CONCEPTPLUS_DATA.agents[listing.agent];
   return (
     <Overlay open={open} onClose={onClose} max="max-w-[1200px]">
       <div className="bg-porcelain">
