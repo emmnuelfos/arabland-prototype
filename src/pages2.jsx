@@ -5,7 +5,7 @@ const { useState: useStateQ, useMemo: useMemoQ, useEffect: useEffectQ } = React;
 const __PC = () => window.PageChrome;
 
 // ─── Extra data ────────────────────────────────────────────────────────────
-window.CONCEPT PLUS_EXTRA = {
+window.CONCEPTPLUS_EXTRA = {
   services: [
     { id: 'sales',     title: 'Residential Sales',         eb: 'Buy & sell',     blurb: 'Senior brokers representing Dubai\'s most considered freehold addresses, end-to-end.', stats: ['1,247', 'Active mandates'] },
     { id: 'leasing',   title: 'Leasing & Rentals',          eb: 'Lease',          blurb: 'Furnished and unfurnished leasing, short and long lease structures, RERA-compliant Ejari.', stats: ['380', 'Tenancies live'] },
@@ -153,7 +153,7 @@ function Field2({ label, children }) { return <div><div className="text-[11px] t
 // ═══════════════════════════════════════════════════════════════════════════
 function DevelopersPage() {
   const PC = __PC();
-  const E = window.CONCEPT PLUS_EXTRA;
+  const E = window.CONCEPTPLUS_EXTRA;
   const [openId, setOpenId] = useStateQ(null);
 
   return (
@@ -235,48 +235,124 @@ function Stat({ n, k, tone }) {
 // ═══════════════════════════════════════════════════════════════════════════
 //   AGENTS PAGE  (grid + drawer-style profile)
 // ═══════════════════════════════════════════════════════════════════════════
+// FAM-style Agents page — bordered intro card, three filter dropdowns, 3-column
+// grid of circular-portrait cards with View profile + WhatsApp buttons.
 function AgentsPage() {
   const PC = __PC();
   const D = window.CONCEPTPLUS_DATA;
-  // pad agents to 12 by repeating
-  const all = [...D.agents, ...D.agents.map((a, i) => ({ ...a, name: a.name.split(' ').reverse().join(' ') }))];
+  // Pad to 12 by mirroring names (data is small).
+  const all = [...D.agents, ...D.agents.map((a, i) => ({ ...a, name: a.name.split(' ').reverse().join(' '), _mirrored: true }))];
+
   const [openIdx, setOpenIdx] = useStateQ(null);
+  const [q, setQ] = useStateQ('');
+  const [lang, setLang] = useStateQ('All');
   const [team, setTeam] = useStateQ('All');
+
+  const allLangs = ['All', ...new Set(all.flatMap(a => a.langs || []))];
   const teams = ['All', 'Sales', 'Off-Plan', 'Leasing', 'Investment'];
+
+  const yearsByIdx = [12, 10, 14, 11, 9, 13, 8, 11, 7, 12, 9, 10];
+
+  const filtered = all.filter(a => {
+    if (q && !a.name.toLowerCase().includes(q.toLowerCase())) return false;
+    if (lang !== 'All' && !(a.langs || []).includes(lang)) return false;
+    if (team !== 'All' && !a.role.toLowerCase().includes(team.toLowerCase())) return false;
+    return true;
+  });
 
   return (
     <PC screenLabel="Agents">
       {(ctx) => (
-        <main>
-          <PageHead crumbs={[{label:'Home', href:'index.html'}, {label:'Agents'}]}
-            eyebrow="The team" title="Senior brokers, plainly named."
-            sub="No call centre, no junior pool. Median Concept Plus broker tenure: 9 years. Every agent below is RERA-licensed and represents a defined community." />
+        <main className="bg-porcelain-100">
+          {/* Title card */}
+          <section className="max-w-[1400px] mx-auto px-6 md:px-10 pt-24 md:pt-28">
+            <div className="bg-porcelain hairline border border-stone-200 p-8 md:p-12 text-center">
+              <div className="eyebrow text-ochre mb-4">The team</div>
+              <h1 className="font-display text-graphite-900 leading-tight" style={{ fontSize: 'clamp(32px, 4.4vw, 52px)', fontWeight: 400 }}>
+                Top Real Estate Agents at Concept Plus
+              </h1>
+              <p className="mt-5 max-w-3xl mx-auto text-[15px] text-graphite leading-relaxed">
+                Looking for the best real estate brokers in Dubai? You're in the right place. Concept Plus is a
+                <span className="text-ochre"> senior-only brokerage</span> — every agent below is RERA-licensed,
+                represents a defined community, and has at least eight years on the Dubai market. Buying, selling, or
+                investing, you'll work directly with a broker who walks the building, not a call centre.
+              </p>
+            </div>
+          </section>
 
           {/* Filters */}
-          <section className="max-w-[1400px] mx-auto px-6 md:px-10 pt-8 pb-2 flex items-center gap-2 flex-wrap">
-            {teams.map(t => (
-              <button key={t} onClick={() => setTeam(t)} className={`px-4 py-2.5 text-[11px] tracking-[0.18em] uppercase cursor-pointer transition ${team === t ? 'bg-graphite-900 text-porcelain' : 'hairline border border-stone-200 text-graphite hover:border-ochre hover:text-ochre'}`}>{t}</button>
-            ))}
-            <div className="ml-auto text-[12px] text-graphite/60">{all.length} brokers · {all.reduce((s,a) => s + (a.langs?.length || 0), 0)} languages combined</div>
+          <section className="max-w-[1400px] mx-auto px-6 md:px-10 mt-6">
+            <div className="grid md:grid-cols-3 gap-3">
+              <div className="bg-porcelain hairline border border-stone-200 px-5 py-4">
+                <div className="eyebrow text-graphite mb-1" style={{ fontSize: 10 }}>Search by name</div>
+                <input
+                  value={q}
+                  onChange={(e) => setQ(e.target.value)}
+                  placeholder="All"
+                  className="w-full bg-transparent text-[15px] text-graphite-900 outline-none placeholder-stone"
+                />
+              </div>
+              <div className="bg-porcelain hairline border border-stone-200 px-5 py-4">
+                <div className="eyebrow text-graphite mb-1" style={{ fontSize: 10 }}>Language</div>
+                <select value={lang} onChange={(e) => setLang(e.target.value)} className="w-full bg-transparent text-[15px] text-graphite-900 outline-none cursor-pointer">
+                  {allLangs.map(l => <option key={l} value={l}>{l === 'All' ? 'All' : l}</option>)}
+                </select>
+              </div>
+              <div className="bg-porcelain hairline border border-stone-200 px-5 py-4">
+                <div className="eyebrow text-graphite mb-1" style={{ fontSize: 10 }}>Team</div>
+                <select value={team} onChange={(e) => setTeam(e.target.value)} className="w-full bg-transparent text-[15px] text-graphite-900 outline-none cursor-pointer">
+                  {teams.map(t => <option key={t}>{t}</option>)}
+                </select>
+              </div>
+            </div>
           </section>
 
-          <section className="max-w-[1400px] mx-auto px-6 md:px-10 py-12 grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {all.map((a, i) => (
-              <button key={i} onClick={() => setOpenIdx(i)} className="text-left group cursor-pointer">
-                <div className="aspect-[3/4] overflow-hidden bg-stone-200 hairline border border-stone-200 group-hover:border-ochre transition relative">
-                  <img src={a.img} alt={a.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
-                  <div className="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-graphite-900/90 to-transparent text-porcelain">
-                    <div className="text-[15px] font-medium">{a.name}</div>
-                    <div className="text-[11px] tracking-[0.16em] uppercase text-porcelain/80">RERA #{a.rera}</div>
+          {/* Agent cards grid */}
+          <section className="max-w-[1400px] mx-auto px-6 md:px-10 py-10 md:py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtered.length === 0 && (
+              <div className="col-span-3 bg-porcelain hairline border border-stone-200 p-12 text-center text-graphite">
+                No brokers match those filters. <button onClick={() => { setQ(''); setLang('All'); setTeam('All'); }} className="text-ochre gold-underline cursor-pointer">Reset</button>
+              </div>
+            )}
+            {filtered.map((a, i) => {
+              const years = yearsByIdx[i % yearsByIdx.length];
+              const isManager = /Director|Head|Senior/.test(a.role);
+              const tagLabel = /CEO|Chief/i.test(a.role) ? 'CEO' : isManager ? 'Manager' : null;
+              return (
+                <div key={i} className="relative bg-porcelain hairline border border-stone-200 hover:border-ochre transition-colors p-7 md:p-8 text-center group cursor-pointer" onClick={() => setOpenIdx(all.indexOf(a))}>
+                  {tagLabel && (
+                    <div className="absolute top-3 left-3 bg-ochre text-porcelain text-[10px] tracking-[0.22em] uppercase px-2.5 py-1">{tagLabel}</div>
+                  )}
+                  <div className="w-32 h-32 mx-auto rounded-full overflow-hidden hairline border border-stone-200">
+                    <img src={a.img} alt={a.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  </div>
+                  <div className="mt-5 font-display text-graphite-900 leading-tight" style={{ fontSize: 24, fontWeight: 400 }}>{a.name}</div>
+                  <div className="text-[13px] text-graphite mt-1">{a.role.split(',')[0]}</div>
+                  <div className="mt-5 text-[13px] text-graphite-900">
+                    <span className="text-graphite">Speaks: </span>
+                    {(a.langs || []).map((l, j) => (
+                      <span key={l}>
+                        <span className="text-ochre">{LANG_FULL[l] || l}</span>{j < a.langs.length - 1 ? ', ' : ''}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="mt-1.5 text-[13px] text-graphite-900">
+                    <span className="font-medium num">{years} years</span> <span className="text-graphite">of experience</span>
+                  </div>
+                  <div className="mt-6 grid grid-cols-2 gap-2">
+                    <button onClick={(e) => { e.stopPropagation(); setOpenIdx(all.indexOf(a)); }} className="hairline border border-stone-200 px-3 py-2.5 text-[11px] tracking-[0.18em] uppercase hover:border-ochre hover:text-ochre transition cursor-pointer flex items-center justify-center gap-2">
+                      <UserCircleIcon /> View profile
+                    </button>
+                    <button onClick={(e) => e.stopPropagation()} className="bg-[#25D366] text-white px-3 py-2.5 text-[11px] tracking-[0.16em] uppercase hover:opacity-90 transition cursor-pointer flex items-center justify-center gap-2">
+                      <WhatsappIcon className="w-3.5 h-3.5" /> Whatsapp
+                    </button>
                   </div>
                 </div>
-                <div className="text-[13px] text-graphite/80 mt-3 line-clamp-2">{a.role}</div>
-                <div className="text-[11px] tracking-[0.16em] uppercase text-graphite/60 mt-1.5">{a.langs.join(' · ')}</div>
-              </button>
-            ))}
+              );
+            })}
           </section>
 
-          {/* Profile drawer */}
+          {/* Profile drawer (unchanged behavior, refreshed copy) */}
           {openIdx !== null && (() => {
             const a = all[openIdx];
             return (
@@ -292,7 +368,7 @@ function AgentsPage() {
                       <div className="text-[11px] tracking-[0.16em] uppercase text-graphite/60 mt-3">RERA #{a.rera} · {a.langs.join(' · ')}</div>
                       <div className="grid grid-cols-2 gap-2 mt-6">
                         <a href={`tel:${a.phone.replace(/\s/g,'')}`} className="hairline border border-stone-200 px-4 py-3 text-[11px] tracking-[0.22em] uppercase hover:border-ochre hover:text-ochre transition cursor-pointer flex items-center justify-center gap-2"><PhoneIcon className="w-4 h-4" /> Call</a>
-                        <button className="hairline border border-stone-200 px-4 py-3 text-[11px] tracking-[0.22em] uppercase hover:border-ochre hover:text-ochre transition cursor-pointer flex items-center justify-center gap-2"><WhatsappIcon /> WhatsApp</button>
+                        <button className="bg-[#25D366] text-white px-4 py-3 text-[11px] tracking-[0.22em] uppercase hover:opacity-90 transition cursor-pointer flex items-center justify-center gap-2"><WhatsappIcon /> WhatsApp</button>
                         <button className="hairline border border-stone-200 px-4 py-3 text-[11px] tracking-[0.22em] uppercase hover:border-ochre hover:text-ochre transition cursor-pointer flex items-center justify-center gap-2"><EmailIcon /> Email</button>
                         <button className="bg-graphite-900 text-porcelain px-4 py-3 text-[11px] tracking-[0.22em] uppercase hover:bg-ochre transition cursor-pointer">Book a meeting</button>
                       </div>
@@ -331,12 +407,22 @@ function AgentsPage() {
   );
 }
 
+// Quick lookup for language full names — used by the agents grid display.
+const LANG_FULL = {
+  EN: 'English', AR: 'Arabic', FR: 'French', ES: 'Spanish', TR: 'Turkish',
+  RU: 'Russian', DE: 'German', IT: 'Italian', ZH: 'Chinese', HI: 'Hindi',
+};
+
+function UserCircleIcon({ className = 'w-3.5 h-3.5' }) {
+  return <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><circle cx="12" cy="10" r="3" /><path d="M5.5 19a8 8 0 0 1 13 0" /></svg>;
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 //   SERVICES PAGE
 // ═══════════════════════════════════════════════════════════════════════════
 function ServicesPage() {
   const PC = __PC();
-  const E = window.CONCEPT PLUS_EXTRA;
+  const E = window.CONCEPTPLUS_EXTRA;
   return (
     <PC screenLabel="Services">
       {(ctx) => (
@@ -386,7 +472,7 @@ function ServicesPage() {
 // ═══════════════════════════════════════════════════════════════════════════
 function CareersPage() {
   const PC = __PC();
-  const E = window.CONCEPT PLUS_EXTRA;
+  const E = window.CONCEPTPLUS_EXTRA;
   const teams = ['All', ...Array.from(new Set(E.careers.map(c => c.team)))];
   const [team, setTeam] = useStateQ('All');
   const [openId, setOpenId] = useStateQ(null);
@@ -478,6 +564,167 @@ function CareersPage() {
   );
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+//   COMMUNITY DETAIL PAGE  (FAM-style — bordered hero card, stats, listings, specialists)
+// ═══════════════════════════════════════════════════════════════════════════
+function CommunityPage() {
+  const PC = __PC();
+  const D = window.CONCEPTPLUS_DATA;
+  const slug = (new URLSearchParams(window.location.search)).get('slug') || 'palm-jumeirah';
+  const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const community = D.communities.find(c => slugify(c.name) === slug) || D.communities[0];
+
+  // Listings filtered by this community
+  const localListings = D.listings.filter(l => l.community === community.name);
+  // Specialists — agents whose role mentions this community (fall back to first 4)
+  const specialists = D.agents.filter(a => a.role.includes(community.name)).concat(D.agents).slice(0, 4);
+
+  // Derived stats
+  const avgPpsf = localListings.length > 0
+    ? Math.round(localListings.reduce((s, l) => s + l.price / l.sqft, 0) / localListings.length)
+    : 2400;
+  const fromPrice = localListings.length > 0
+    ? Math.min(...localListings.map(l => l.price))
+    : 1980000;
+  const subCommunities = new Set(localListings.map(l => l.subCommunity));
+
+  const descriptions = {
+    'Palm Jumeirah':     'Palm Jumeirah is a premier destination in Dubai, offering a perfect blend of luxury, convenience, and modern living. Known for its iconic frond architecture, family-friendly atmosphere, and beachfront positioning, this community features a refined selection of villas, signature penthouses, and Bulgari-grade apartments.',
+    'Downtown Dubai':    'Downtown Dubai is the most considered address in the emirate — the Burj Khalifa, the Opera district, and the Dubai Mall sit within walking distance. Properties range from boutique 1-bedroom apartments to full-floor penthouses with Burj views.',
+    'Dubai Marina':      'Dubai Marina is a 3km man-made canal community lined with super-tall residential towers and the JBR beachfront promenade. Tenant-friendly, well-served, and the most liquid resale market in the city.',
+    'Emirates Hills':    'Emirates Hills is Dubai\'s gated low-density villa community — eight sectors of custom-built mansions on landscaped plots around the Montgomerie golf course. The Beverly Hills of the Middle East.',
+    'Business Bay':      'Business Bay sits behind Downtown, mixing residential towers, business addresses, and the new Dubai Creek waterway. Strong rental yields and a younger resident base.',
+    'Jumeirah Bay':      'Jumeirah Bay is a private seahorse-shaped island anchored by the Bulgari Resort & Residences. Closed-loop, high-security, and a fixed inventory of ~200 villas and apartments.',
+    'MBR City':          'Mohammed Bin Rashid City is the city\'s largest masterplan — Meydan, District One, Sobha Hartland, Crystal Lagoon. New launches dominate; resale follows.',
+    'Jumeirah Village':  'Jumeirah Village Circle is Dubai\'s entry-point freehold community — townhouses, mid-rise apartments, and the city\'s most active off-plan pipeline.',
+  };
+
+  return (
+    <PC screenLabel={`Community · ${community.name}`}>
+      {(ctx) => (
+        <main className="bg-porcelain-100">
+
+          {/* Hero strip (full-bleed photo) */}
+          <section className="relative w-full" data-screen-label="Community Hero">
+            <div className="relative h-[50vh] min-h-[420px] w-full overflow-hidden bg-graphite-900">
+              <img src={community.image} alt={community.name} className="absolute inset-0 w-full h-full object-cover opacity-90" />
+              <div className="absolute inset-0 bg-gradient-to-t from-graphite-900/85 via-graphite-900/30 to-graphite-900/40" />
+              <div className="absolute inset-x-0 bottom-0 px-6 md:px-10 pt-24 pb-10">
+                <div className="max-w-[1400px] mx-auto">
+                  <div className="text-[12px] text-porcelain/70 tracking-wide flex items-center gap-2">
+                    <a href="index.html" className="hover:text-ochre cursor-pointer">Home</a>
+                    <span className="opacity-50">›</span>
+                    <a href="#" className="hover:text-ochre cursor-pointer">Dubai Real Estate Areas</a>
+                    <span className="opacity-50">›</span>
+                    <span className="text-porcelain">{community.name}</span>
+                  </div>
+                  <h1 className="mt-3 font-display text-porcelain leading-tight" style={{ fontSize: 'clamp(40px, 5.5vw, 72px)', fontWeight: 400 }}>
+                    {community.name}
+                  </h1>
+                  <div className="mt-2 text-[14px] text-porcelain/80">Dubai · {community.count} listings currently represented</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Description card */}
+          <section className="max-w-[1400px] mx-auto px-6 md:px-10 mt-8">
+            <div className="bg-porcelain hairline border border-stone-200 p-7 md:p-9">
+              <h2 className="font-display text-graphite-900 leading-tight" style={{ fontSize: 'clamp(24px, 2.6vw, 32px)', fontWeight: 400 }}>
+                Buy and rent properties in {community.name}
+              </h2>
+              <p className="mt-4 text-[15px] text-graphite leading-relaxed max-w-4xl">
+                {descriptions[community.name] || `${community.name} is one of Concept Plus's curated communities — a deliberately small inventory of villas, penthouses and apartments, each represented by a senior broker who walks the building.`}
+              </p>
+              <div className="mt-5 flex items-center gap-6 flex-wrap text-[14px]">
+                <a href={`buy.html#${slug}`} className="text-ochre gold-underline cursor-pointer">View properties for sale in {community.name} →</a>
+                <a href={`buy.html#${slug}-rent`} className="text-ochre gold-underline cursor-pointer">View properties for rent in {community.name} →</a>
+              </div>
+            </div>
+          </section>
+
+          {/* Stats strip */}
+          <section className="max-w-[1400px] mx-auto px-6 md:px-10 mt-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-stone-200 hairline border border-stone-200">
+              <Stat k="Active listings"     v={`${community.count}`} />
+              <Stat k="Starting from"       v={`AED ${(fromPrice/1_000_000).toFixed(2)}M`} />
+              <Stat k="Avg · AED / sqft"    v={`${avgPpsf.toLocaleString()}`} />
+              <Stat k="Sub-communities"     v={`${subCommunities.size || 6}`} />
+            </div>
+          </section>
+
+          {/* Properties in this community */}
+          <section className="max-w-[1400px] mx-auto px-6 md:px-10 mt-12 md:mt-14">
+            <h2 className="font-display text-graphite-900 leading-tight" style={{ fontSize: 'clamp(26px, 3vw, 36px)', fontWeight: 400 }}>
+              Properties for sale in {community.name}
+            </h2>
+            <div className="mt-2 text-[14px] text-graphite">{localListings.length} matching listing{localListings.length === 1 ? '' : 's'} — every one walked by a Concept Plus broker.</div>
+
+            {localListings.length > 0 ? (
+              <div className="mt-6 flex flex-col gap-6">
+                {localListings.map((l, i) => (
+                  <PropertyCard key={l.id}
+                    listing={l}
+                    agents={D.agents}
+                    currency={ctx.currency}
+                    areaUnit={ctx.areaUnit}
+                    variant="fam"
+                    shortlistOn={ctx.shortlist.has(l.id)}
+                    comparedOn={ctx.compare.has(l.id)}
+                    onShortlist={() => ctx.onShortlist(l.id)}
+                    onCompare={() => ctx.onCompare(l.id)}
+                    onOpen={() => { window.location.href = `property.html?id=${l.id}`; }}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="mt-6 bg-porcelain hairline border border-stone-200 p-10 text-center text-graphite">
+                No active listings in {community.name} right now. <a href="buy.html" className="text-ochre gold-underline cursor-pointer">View all listings →</a>
+              </div>
+            )}
+          </section>
+
+          {/* Community Specialists */}
+          <section className="max-w-[1400px] mx-auto px-6 md:px-10 mt-16 md:mt-20 mb-16">
+            <h2 className="font-display text-graphite-900 leading-tight" style={{ fontSize: 'clamp(26px, 3vw, 36px)', fontWeight: 400 }}>
+              {community.name} Specialists
+            </h2>
+            <div className="mt-2 text-[14px] text-graphite">Brokers who represent this community day in, day out.</div>
+            <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+              {specialists.map((a, i) => (
+                <div key={i} className="relative overflow-hidden hairline border border-stone-200 group cursor-pointer">
+                  <img src={a.img} alt={a.name} className="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-x-0 bottom-0 p-4 pt-12 bg-gradient-to-t from-graphite-900/90 to-transparent text-porcelain">
+                    <div className="font-display text-[18px] leading-tight">{a.name}</div>
+                    <div className="text-[11px] text-porcelain/80 mt-1">Property Advisor</div>
+                  </div>
+                  <button className="absolute bottom-4 right-4 w-10 h-10 grid place-items-center rounded-full bg-[#25D366] text-white cursor-pointer hover:scale-110 transition">
+                    <WhatsappIcon className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div className="mt-8 text-center">
+              <a href="agents.html" className="inline-flex items-center gap-3 px-6 py-3 hairline border border-graphite-900 text-graphite-900 text-[11px] tracking-[0.22em] uppercase hover:bg-graphite-900 hover:text-porcelain transition cursor-pointer">
+                Meet the full team <ArrowIcon className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </section>
+        </main>
+      )}
+    </PC>
+  );
+}
+
+function Stat({ k, v }) {
+  return (
+    <div className="bg-porcelain px-6 py-6">
+      <div className="eyebrow text-graphite" style={{ fontSize: 10 }}>{k}</div>
+      <div className="font-display num text-graphite-900 mt-2 leading-none" style={{ fontSize: 28, fontWeight: 400 }}>{v}</div>
+    </div>
+  );
+}
+
 // ─── Register ──────────────────────────────────────────────────────────────
 window.__PAGES = window.__PAGES || {};
 Object.assign(window.__PAGES, {
@@ -486,4 +733,5 @@ Object.assign(window.__PAGES, {
   agents: AgentsPage,
   services: ServicesPage,
   careers: CareersPage,
+  community: CommunityPage,
 });

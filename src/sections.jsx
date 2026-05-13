@@ -452,11 +452,12 @@ function HeroMonogram() {
 // ─── Featured Communities ──────────────────────────────────────────────────
 function Communities() {
   const D = window.CONCEPTPLUS_DATA;
+  const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   return (
     <Section eyebrow="Communities" title="Where Dubai lives." sub="Eight neighborhoods, each with its own register of value, light and life. Pick the one that suits how you'd like to wake up.">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
         {D.communities.map((c, i) => (
-          <a key={c.name} href="buy.html" className="reveal group cursor-pointer" style={{ transitionDelay: `${i * 30}ms` }}>
+          <a key={c.name} href={`community.html?slug=${slugify(c.name)}`} className="reveal group cursor-pointer" style={{ transitionDelay: `${i * 30}ms` }}>
             <div className="relative aspect-[16/11] overflow-hidden bg-stone-200">
               <img src={c.image} alt={c.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.06]" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-graphite-900/85 via-graphite-900/15 to-transparent" />
