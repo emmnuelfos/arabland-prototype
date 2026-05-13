@@ -72,6 +72,7 @@ function App() {
 
       <main>
         <Hero variant={tweaks.hero} />
+        <TrustStrip />
         <Communities />
         <FeaturedListings
           cardVariant={tweaks.cardVariant}

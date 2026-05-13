@@ -62,64 +62,92 @@ function HeroSlider() {
 
   const [idx, setIdx] = useStateS(0);
   const [paused, setPaused] = useStateS(false);
+  const drag = useRefS({ startX: null, startY: null, moved: false });
+
+  const next = () => setIdx((i) => (i + 1) % slides.length);
+  const prev = () => setIdx((i) => (i - 1 + slides.length) % slides.length);
 
   useEffectS(() => {
     if (paused) return;
-    const t = setInterval(() => setIdx((i) => (i + 1) % slides.length), 5800);
+    const t = setInterval(next, 5800);
     return () => clearInterval(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paused, slides.length]);
+
+  // Drag-to-advance — works on empty space; ignores clicks on interactive controls.
+  const onPointerDown = (e) => {
+    if (e.target.closest('a, button, input, textarea, select')) return;
+    const p = e.touches ? e.touches[0] : e;
+    drag.current = { startX: p.clientX, startY: p.clientY, moved: false };
+  };
+  const onPointerUp = (e) => {
+    if (drag.current.startX == null) return;
+    const p = e.changedTouches ? e.changedTouches[0] : e;
+    const dx = p.clientX - drag.current.startX;
+    const dy = p.clientY - drag.current.startY;
+    drag.current.startX = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+      if (dx < 0) next(); else prev();
+    }
+  };
 
   return (
     <section
-      className="relative min-h-[100vh] w-full overflow-hidden bg-graphite-900"
+      className="relative min-h-[100vh] w-full overflow-hidden bg-graphite-900 select-none"
       data-screen-label="Hero · Slider"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onMouseDown={onPointerDown}
+      onMouseUp={onPointerUp}
+      onTouchStart={onPointerDown}
+      onTouchEnd={onPointerUp}
     >
       {/* Slides — each absolute, cross-fading */}
       {slides.map((s, i) => (
         <div key={i} className="absolute inset-0 transition-opacity duration-[1400ms]" style={{ opacity: i === idx ? 1 : 0 }}>
-          <img src={s.img} alt={s.name} className="absolute inset-0 w-full h-full object-cover" loading={i === 0 ? 'eager' : 'lazy'} />
+          <img src={s.img} alt={s.name} className="absolute inset-0 w-full h-full object-cover" loading={i === 0 ? 'eager' : 'lazy'} draggable={false} />
         </div>
       ))}
 
-      {/* Bottom 80% gradient — matches the Video variant for consistent legibility */}
+      {/* Subtle dark overlay so the white UI reads on bright slides */}
       <div className="absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-black/65 to-transparent pointer-events-none" />
-      {/* Top subtle gradient so the headline reads against bright skies */}
-      <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-black/35 to-transparent pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-[35%] bg-gradient-to-b from-black/30 to-transparent pointer-events-none" />
 
-      {/* Content */}
+      {/* Left arrow */}
+      <button
+        onClick={(e) => { e.stopPropagation(); prev(); }}
+        aria-label="Previous slide"
+        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 grid place-items-center bg-graphite-900/40 backdrop-blur hairline border border-porcelain/30 text-porcelain hover:border-ochre hover:bg-ochre hover:text-porcelain transition cursor-pointer"
+      >
+        <ArrowIcon dir="left" className="w-4 h-4" />
+      </button>
+      {/* Right arrow */}
+      <button
+        onClick={(e) => { e.stopPropagation(); next(); }}
+        aria-label="Next slide"
+        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 grid place-items-center bg-graphite-900/40 backdrop-blur hairline border border-porcelain/30 text-porcelain hover:border-ochre hover:bg-ochre hover:text-porcelain transition cursor-pointer"
+      >
+        <ArrowIcon dir="right" className="w-4 h-4" />
+      </button>
+
+      {/* Content — search bar centered vertically + horizontally, property card pinned to the bottom */}
       <div className="relative h-full min-h-[100vh] flex flex-col">
-        {/* Centered upper text */}
-        <div className="flex-1 flex items-center">
-          <div className="max-w-[1400px] mx-auto px-6 md:px-10 w-full pt-32 pb-6">
-            <div className="reveal">
-              <div className="eyebrow text-ochre mb-6">Est. 2014 · Dubai</div>
-              <h1 className="font-display text-porcelain leading-[0.95] tracking-[-0.01em]" style={{ fontSize: 'clamp(52px, 8.5vw, 132px)', fontWeight: 400 }}>
-                Dubai's<br/><em className="not-italic text-ochre font-display" style={{ fontStyle: 'italic', fontWeight: 300 }}>address book.</em>
-              </h1>
-              <p className="mt-7 max-w-xl text-porcelain/85 text-[17px] leading-relaxed">
-                A senior brokerage for the city's most considered addresses — hand-picked off the public market, walked by the people who'll sell them.
-              </p>
-            </div>
+        {/* Top spacer */}
+        <div className="flex-1" />
+
+        {/* Centered search bar */}
+        <div className="px-6 md:px-10 flex justify-center">
+          <div className="reveal w-full max-w-2xl">
+            <SearchBar />
           </div>
         </div>
 
-        {/* Search bar */}
-        <div className="px-6 md:px-10 pb-7">
-          <div className="max-w-[1400px] mx-auto">
-            <div className="reveal">
-              <SearchBar />
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom: rotating property card + dot indicators */}
-        <div className="pb-12 md:pb-16">
-          <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        {/* Bottom spacer holds the property card + dots flush to the bottom */}
+        <div className="flex-1 flex flex-col justify-end pb-12 md:pb-16">
+          <div className="max-w-[1400px] mx-auto px-6 md:px-10 w-full">
             <div className="flex items-end justify-between gap-6 flex-wrap">
               {/* Rotating property card — bottom-left */}
-              <div className="relative min-h-[110px] min-w-[280px]">
+              <div className="relative min-h-[120px] min-w-[280px]">
                 {slides.map((s, i) => (
                   <div key={i}
                     className="transition-opacity duration-700"
@@ -130,12 +158,12 @@ function HeroSlider() {
                       inset: i === idx ? undefined : 0
                     }}>
                     <div className="text-porcelain/70 text-[10px] tracking-[0.28em] uppercase">{s.eyebrow}</div>
-                    <div className="text-porcelain font-display leading-tight mt-2" style={{ fontSize: 'clamp(22px, 2.6vw, 32px)', fontWeight: 400 }}>{s.name}</div>
+                    <div className="text-porcelain font-display leading-tight mt-2" style={{ fontSize: 'clamp(28px, 3.2vw, 40px)', fontWeight: 400 }}>{s.name}</div>
                     <div className="text-porcelain/85 text-[14px] mt-1 max-w-md">{s.tagline}</div>
                     <div className="mt-4 flex items-center gap-5 flex-wrap">
                       <div>
                         <div className="text-porcelain/65 text-[10px] tracking-[0.22em] uppercase">{s.eyebrow.startsWith('Off-plan') ? 'Starting from' : 'Asking'}</div>
-                        <div className="text-porcelain font-display num text-[24px] leading-none mt-1">{s.price}</div>
+                        <div className="text-porcelain font-display num text-[26px] leading-none mt-1">{s.price}</div>
                       </div>
                       <a href={s.cta} className="inline-flex items-center gap-3 px-6 py-3 hairline border border-porcelain/40 text-porcelain text-[11px] tracking-[0.22em] uppercase hover:border-ochre hover:bg-ochre hover:text-porcelain transition cursor-pointer">
                         Discover more <ArrowIcon className="w-3.5 h-3.5" />
@@ -151,7 +179,7 @@ function HeroSlider() {
                 {slides.map((_, i) => (
                   <button
                     key={i}
-                    onClick={() => setIdx(i)}
+                    onClick={(e) => { e.stopPropagation(); setIdx(i); }}
                     aria-label={`Slide ${i + 1}`}
                     className={`h-[2px] transition-all cursor-pointer ${i === idx ? 'w-12 bg-ochre' : 'w-6 bg-porcelain/30 hover:bg-porcelain/70'}`}
                   />
@@ -159,6 +187,88 @@ function HeroSlider() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Social proof strip — sits right after the hero. Four trust badges on a dark
+// background that continues the slider's mood into the page.
+function TrustStrip() {
+  const items = [
+    {
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M12 3 4 6v5c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-3z" /><path d="m9 12 2 2 4-4" />
+        </svg>
+      ),
+      big: 'DLD',
+      label: 'Registered Broker',
+      sub: 'Dubai Land Department',
+    },
+    {
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <rect x="4" y="3" width="16" height="14" rx="1" /><path d="M8 8h8M8 12h5" /><path d="m9 20 3-3 3 3v-5" />
+        </svg>
+      ),
+      big: 'RERA',
+      label: 'Certified · ORN 31094',
+      sub: 'Real Estate Regulatory Agency',
+    },
+    {
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M7 4h10v4a5 5 0 0 1-10 0V4z" /><path d="M7 4H4v2a3 3 0 0 0 3 3M17 4h3v2a3 3 0 0 1-3 3" /><path d="M12 13v4M9 21h6" />
+        </svg>
+      ),
+      big: 'Top 50',
+      label: 'Brokers Dubai · 2025',
+      sub: 'Bayut Top Producers Award',
+    },
+    {
+      icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M3 17 9 11l4 4 8-9" /><path d="M14 6h7v7" />
+        </svg>
+      ),
+      big: 'AED 2.4B',
+      label: 'Properties sold',
+      sub: 'Year-to-date · 2026',
+    },
+  ];
+  return (
+    <section className="bg-graphite-900 text-porcelain">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-14 md:py-16">
+        <div className="text-center mb-10 md:mb-12">
+          <div className="eyebrow text-ochre mb-3">The trust</div>
+          <h2 className="font-display text-porcelain mx-auto max-w-2xl" style={{ fontSize: 'clamp(28px, 3.4vw, 40px)', fontWeight: 300, lineHeight: 1.15 }}>
+            Held to the city's most senior standards.
+          </h2>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-porcelain/10 hairline border border-porcelain/10">
+          {items.map((it, i) => (
+            <div key={i} className="bg-graphite-900 px-6 py-8 md:py-10 flex flex-col items-center text-center reveal" style={{ transitionDelay: `${i * 80}ms` }}>
+              <div className="w-12 h-12 grid place-items-center rounded-full hairline border border-ochre/40 text-ochre mb-5">
+                {it.icon}
+              </div>
+              <div className="font-display num text-ochre" style={{ fontSize: 30, fontWeight: 400 }}>{it.big}</div>
+              <div className="text-[13px] text-porcelain mt-2 leading-tight">{it.label}</div>
+              <div className="text-[10px] text-porcelain/55 tracking-[0.18em] uppercase mt-2">{it.sub}</div>
+            </div>
+          ))}
+        </div>
+        {/* Featured-in strip */}
+        <div className="mt-10 md:mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-[11px] tracking-[0.28em] uppercase text-porcelain/45">
+          <span className="text-porcelain/65">As featured in</span>
+          <span>Forbes Middle East</span>
+          <span className="opacity-30">·</span>
+          <span>Arabian Business</span>
+          <span className="opacity-30">·</span>
+          <span>The National</span>
+          <span className="opacity-30">·</span>
+          <span>Property Finder</span>
         </div>
       </div>
     </section>
@@ -594,4 +704,4 @@ function EditorialStrip({ onValuation }) {
   );
 }
 
-Object.assign(window, { Hero, Communities, FeaturedListings, OffPlan, Stats, WhyConceptPlus, Insights, DeveloperLogos, EditorialStrip, Section });
+Object.assign(window, { Hero, TrustStrip, Communities, FeaturedListings, OffPlan, Stats, WhyConceptPlus, Insights, DeveloperLogos, EditorialStrip, Section });
