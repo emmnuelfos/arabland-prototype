@@ -3,20 +3,20 @@
 const { useState: useStateS, useEffect: useEffectS, useRef: useRefS, useMemo: useMemoS } = React;
 
 // ─── Hero (5 variants via tweak) ───────────────────────────────────────────
-function Hero({ variant = 'slider' }) {
+function Hero({ variant = 'slider', onOpenListing, onOpenProject }) {
   if (variant === 'editorial-split') return <HeroEditorial />;
   if (variant === 'monogram-stack')  return <HeroMonogram />;
   if (variant === 'cinematic')       return <HeroCinematic />;
   if (variant === 'video')           return <HeroVideo />;
-  return <HeroSlider />;
+  return <HeroSlider onOpenListing={onOpenListing} onOpenProject={onOpenProject} />;
 }
 
 // FAM-style featured-property slider — high-res luxury imagery, cross-fade,
 // auto-rotate, dot indicators. Each slide shows a Concept Plus property + CTA.
-function HeroSlider() {
+function HeroSlider({ onOpenListing, onOpenProject }) {
   // Hand-picked Unsplash images at 2880px / quality 95 — luxury Dubai real estate.
-  // The slide content also gets surfaced as a small property card at the bottom-left.
-  // All photo IDs verified visually for Dubai luxury real estate appropriateness.
+  // Each slide is mapped to a real listing/project id so the CTA opens the
+  // matching detail popup (instead of navigating away to /property.html etc.)
   const slides = [
     {
       img: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=2880&q=95',
@@ -24,7 +24,7 @@ function HeroSlider() {
       tagline: 'Signature Villas — beachfront living, redefined.',
       eyebrow: 'For sale · Villa',
       price: 'AED 42.5M',
-      cta: 'property.html'
+      listingId: 'L-2401',
     },
     {
       img: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=2880&q=95',
@@ -32,7 +32,7 @@ function HeroSlider() {
       tagline: 'The Burj framed in floor-to-ceiling glass.',
       eyebrow: 'For sale · Penthouse',
       price: 'AED 18.9M',
-      cta: 'property.html'
+      listingId: 'L-2402',
     },
     {
       img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2880&q=95',
@@ -40,7 +40,7 @@ function HeroSlider() {
       tagline: 'A private estate at Sector E, eight bedrooms.',
       eyebrow: 'For sale · Mansion',
       price: 'AED 78M',
-      cta: 'property.html'
+      listingId: 'L-2404',
     },
     {
       img: 'https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=2880&q=95',
@@ -48,7 +48,7 @@ function HeroSlider() {
       tagline: 'By Sobha · Handover Q4 2027 · 60/40 payment plan.',
       eyebrow: 'Off-plan · Launched',
       price: 'From AED 1.80M',
-      cta: 'off-plan.html'
+      projectId: 'P-9001',
     },
     {
       img: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=2880&q=95',
@@ -56,9 +56,18 @@ function HeroSlider() {
       tagline: 'Bluewaters Residences — sea-line orientation.',
       eyebrow: 'For sale · Apartment',
       price: 'AED 6.85M',
-      cta: 'property.html'
+      listingId: 'L-2403',
     },
   ];
+
+  const openSlide = (s) => {
+    if (s.projectId) {
+      onOpenProject && onOpenProject(s.projectId);
+    } else if (s.listingId) {
+      const listing = (window.CONCEPTPLUS_DATA?.listings || []).find((l) => l.id === s.listingId);
+      if (listing && onOpenListing) onOpenListing(listing);
+    }
+  };
 
   const [idx, setIdx] = useStateS(0);
   const [paused, setPaused] = useStateS(false);
@@ -165,9 +174,12 @@ function HeroSlider() {
                         <div className="text-porcelain/65 text-[10px] tracking-[0.22em] uppercase">{s.eyebrow.startsWith('Off-plan') ? 'Starting from' : 'Asking'}</div>
                         <div className="text-porcelain font-display num text-[26px] leading-none mt-1">{s.price}</div>
                       </div>
-                      <a href={s.cta} className="inline-flex items-center gap-3 px-6 py-3 hairline border border-porcelain/40 text-porcelain text-[11px] tracking-[0.22em] uppercase hover:border-ochre hover:bg-ochre hover:text-porcelain transition cursor-pointer">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); openSlide(s); }}
+                        className="inline-flex items-center gap-3 px-6 py-3 hairline border border-porcelain/40 text-porcelain text-[11px] tracking-[0.22em] uppercase hover:border-ochre hover:bg-ochre hover:text-porcelain transition cursor-pointer"
+                      >
                         Discover more <ArrowIcon className="w-3.5 h-3.5" />
-                      </a>
+                      </button>
                     </div>
                   </div>
                 ))}

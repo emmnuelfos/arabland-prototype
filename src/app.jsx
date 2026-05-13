@@ -71,7 +71,11 @@ function App() {
       />
 
       <main>
-        <Hero variant={tweaks.hero} />
+        <Hero
+          variant={tweaks.hero}
+          onOpenListing={(l) => setOpenListing(l)}
+          onOpenProject={() => setPaymentOpen(true)}
+        />
         <TrustStrip />
         <Communities />
         <FeaturedListings
