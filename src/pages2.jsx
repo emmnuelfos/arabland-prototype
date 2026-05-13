@@ -105,11 +105,11 @@ function SellPage() {
             <div className="hairline border border-stone-200 bg-graphite-900 text-porcelain p-10 lg:p-14 flex flex-col justify-between min-h-[520px]">
               <div>
                 <div className="eyebrow text-ochre">Indicative range</div>
-                <div className="font-display mt-6 num" style={{ fontSize: 'clamp(48px, 7vw, 84px)', fontWeight: 300, lineHeight: 1.0 }}>{fmtPrice(mid, ctx.currency)}</div>
+                <div className="font-display mt-6 num" style={{ fontSize: 'clamp(48px, 7vw, 84px)', fontWeight: 400, lineHeight: 1.0 }}>{fmtPrice(mid, ctx.currency)}</div>
                 <div className="text-porcelain/70 mt-3 text-[14px] num">{fmtPrice(low, ctx.currency)} — {fmtPrice(high, ctx.currency)} · ±7% confidence band</div>
                 <div className="mt-12 grid grid-cols-3 gap-6 text-[13px] border-t border-porcelain/15 pt-8">
                   {[['Per sqft', fmtPrice(Math.round(mid/sqft), ctx.currency)], ['Comparable sales', '14 in last 12mo'], ['Avg. days on market', '38 days']].map(([k,v]) => (
-                    <div key={k}><div className="text-[11px] tracking-[0.22em] uppercase text-ochre">{k}</div><div className="font-display mt-2 num" style={{ fontSize: '22px', fontWeight: 300 }}>{v}</div></div>
+                    <div key={k}><div className="text-[11px] tracking-[0.22em] uppercase text-ochre">{k}</div><div className="font-display mt-2 num" style={{ fontSize: '22px', fontWeight: 400 }}>{v}</div></div>
                   ))}
                 </div>
               </div>
@@ -133,7 +133,7 @@ function SellPage() {
                   ['05', 'Transfer & handover', 'In-house conveyancing manages DLD transfer, NOC, mortgage release, key handover.'],
                 ].map(([n, t, d]) => (
                   <div key={n} className="border-t hairline border-stone-200 pt-6">
-                    <div className="font-display text-ochre num" style={{ fontSize: '40px', fontWeight: 300 }}>{n}</div>
+                    <div className="font-display text-ochre num" style={{ fontSize: '40px', fontWeight: 400 }}>{n}</div>
                     <div className="text-[15px] text-graphite-900 font-medium mt-3">{t}</div>
                     <div className="text-[13px] text-graphite/80 mt-2 leading-relaxed">{d}</div>
                   </div>
@@ -191,7 +191,7 @@ function DevelopersPage() {
                 <div className="max-w-[1400px] mx-auto px-6 md:px-10 grid lg:grid-cols-[1fr_1.4fr] gap-16">
                   <div>
                     <div className="eyebrow text-ochre">Developer profile</div>
-                    <div className="font-display mt-3" style={{ fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 300, letterSpacing: '-0.01em', lineHeight: 1.0 }}>{d.name}</div>
+                    <div className="font-display mt-3" style={{ fontSize: 'clamp(40px, 6vw, 72px)', fontWeight: 400, letterSpacing: '-0.01em', lineHeight: 1.0 }}>{d.name}</div>
                     <div className="mt-8 grid grid-cols-3 gap-6">
                       <Stat tone="dark" n={d.delivered} k="Delivered" />
                       <Stat tone="dark" n={d.pipeline} k="Pipeline" />
@@ -226,7 +226,7 @@ function Stat({ n, k, tone }) {
   const isDark = tone === 'dark';
   return (
     <div>
-      <div className={`font-display num ${isDark ? '' : 'text-graphite-900'}`} style={{ fontSize: '28px', fontWeight: 300 }}>{n}</div>
+      <div className={`font-display num ${isDark ? '' : 'text-graphite-900'}`} style={{ fontSize: '28px', fontWeight: 400 }}>{n}</div>
       <div className={`text-[10px] tracking-[0.18em] uppercase mt-1 ${isDark ? 'text-porcelain/60' : 'text-graphite/60'}`}>{k}</div>
     </div>
   );
@@ -434,7 +434,7 @@ function ServicesPage() {
           <section className="max-w-[1400px] mx-auto px-6 md:px-10 py-20 grid md:grid-cols-2 gap-x-12 gap-y-16">
             {E.services.map((s, i) => (
               <div key={s.id} className="grid grid-cols-[60px_1fr] gap-6 items-start">
-                <div className="font-display text-ochre num pt-1" style={{ fontSize: '32px', fontWeight: 300 }}>0{i+1}</div>
+                <div className="font-display text-ochre num pt-1" style={{ fontSize: '32px', fontWeight: 400 }}>0{i+1}</div>
                 <div>
                   <div className="eyebrow text-graphite/60">{s.eb}</div>
                   <div className="font-display mt-2 text-graphite-900" style={{ fontSize: 'clamp(26px, 2.6vw, 32px)', fontWeight: 400 }}>{s.title}</div>
@@ -454,7 +454,7 @@ function ServicesPage() {
             <div className="max-w-[1400px] mx-auto px-6 md:px-10 grid md:grid-cols-[1fr_1fr] gap-12 items-center">
               <div>
                 <div className="eyebrow text-ochre">Our promise</div>
-                <h3 className="font-display mt-3" style={{ fontSize: 'clamp(28px, 3.4vw, 42px)', fontWeight: 300 }}>One director, the whole chain.</h3>
+                <h3 className="font-display mt-3" style={{ fontSize: 'clamp(28px, 3.4vw, 42px)', fontWeight: 400 }}>One director, the whole chain.</h3>
               </div>
               <p className="text-[15px] text-porcelain/80 leading-[1.8]">
                 Concept Plus is a senior-only brokerage. The director who lists your home is the same person who answers when a buyer calls, sits across the table at negotiation, and signs you in at the DLD trustee office. No hand-offs, no juniors, no surprises.
@@ -496,7 +496,7 @@ function CareersPage() {
                 ['Director-level', '38%'],
               ].map(([k, v]) => (
                 <div key={k} className="border-t hairline border-stone-200 pt-5">
-                  <div className="font-display text-graphite-900 num" style={{ fontSize: 'clamp(32px, 3.6vw, 44px)', fontWeight: 300 }}>{v}</div>
+                  <div className="font-display text-graphite-900 num" style={{ fontSize: 'clamp(32px, 3.6vw, 44px)', fontWeight: 400 }}>{v}</div>
                   <div className="text-[11px] tracking-[0.22em] uppercase text-graphite/60 mt-2">{k}</div>
                 </div>
               ))}

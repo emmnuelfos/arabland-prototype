@@ -264,7 +264,7 @@ function TrustStrip() {
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-14 md:py-16">
         <div className="text-center mb-10 md:mb-12">
           <div className="eyebrow text-ochre mb-3">The trust</div>
-          <h2 className="font-display text-porcelain mx-auto max-w-2xl" style={{ fontSize: 'clamp(28px, 3.4vw, 40px)', fontWeight: 300, lineHeight: 1.15 }}>
+          <h2 className="font-display text-porcelain mx-auto max-w-2xl" style={{ fontSize: 'clamp(28px, 3.4vw, 40px)', fontWeight: 400, lineHeight: 1.15 }}>
             Held to the city's most senior standards.
           </h2>
         </div>
@@ -318,7 +318,7 @@ function HeroVideo() {
             <div className="reveal">
               <div className="eyebrow text-ochre mb-6">Est. 2014 · Dubai</div>
               <h1 className="font-display text-porcelain leading-[0.95] tracking-[-0.01em]" style={{ fontSize: 'clamp(56px, 9vw, 144px)', fontWeight: 400 }}>
-                Dubai's<br/><em className="not-italic text-ochre font-display" style={{ fontStyle: 'italic', fontWeight: 300 }}>address book.</em>
+                Dubai's<br/><span className="text-ochre font-display" style={{ fontWeight: 500 }}>address book.</span>
               </h1>
               <p className="mt-8 max-w-xl text-porcelain/85 text-[17px] leading-relaxed">
                 A senior brokerage for the city's most considered addresses — hand-picked off the public market, walked by the people who'll sell them.
@@ -363,7 +363,7 @@ function HeroCinematic() {
             <div className="reveal">
               <div className="eyebrow text-ochre mb-6">Est. 2014 · Dubai</div>
               <h1 className="font-display text-porcelain leading-[0.95] tracking-[-0.01em]" style={{ fontSize: 'clamp(56px, 9vw, 144px)', fontWeight: 400 }}>
-                Dubai's<br/><em className="not-italic text-ochre font-display" style={{ fontStyle: 'italic', fontWeight: 300 }}>address book.</em>
+                Dubai's<br/><span className="text-ochre font-display" style={{ fontWeight: 500 }}>address book.</span>
               </h1>
               <p className="mt-8 max-w-xl text-porcelain/85 text-[17px] leading-relaxed">
                 A senior brokerage for the city's most considered addresses — hand-picked off the public market, walked by the people who'll sell them.
@@ -398,7 +398,7 @@ function HeroEditorial() {
         <div className="relative flex flex-col justify-end px-6 md:px-16 pt-40 pb-16">
           <div className="reveal">
             <div className="eyebrow text-ochre mb-8">Vol. 12 · Spring 2026</div>
-            <h1 className="font-display text-graphite-900 leading-[0.95] tracking-[-0.01em]" style={{ fontSize: 'clamp(56px, 8vw, 124px)', fontWeight: 300 }}>
+            <h1 className="font-display text-graphite-900 leading-[0.95] tracking-[-0.01em]" style={{ fontSize: 'clamp(56px, 8vw, 124px)', fontWeight: 400 }}>
               Dubai's<br/><span className="italic">address book.</span>
             </h1>
             <p className="mt-8 max-w-md text-graphite text-[16px] leading-relaxed">
@@ -442,7 +442,7 @@ function HeroMonogram() {
           </div>
           <div>
             <div className="eyebrow text-ochre mb-6">A R E · Dubai</div>
-            <h1 className="font-display text-porcelain leading-[0.95]" style={{ fontSize: 'clamp(48px, 7.5vw, 112px)', fontWeight: 300 }}>
+            <h1 className="font-display text-porcelain leading-[0.95]" style={{ fontSize: 'clamp(48px, 7.5vw, 112px)', fontWeight: 400 }}>
               Dubai's <span className="italic">address book,</span><br/> kept by people who live here.
             </h1>
             <p className="mt-8 max-w-2xl text-porcelain/85 text-[17px] leading-relaxed">
@@ -602,7 +602,7 @@ function Stats() {
         <div className="grid lg:grid-cols-4 gap-12 md:gap-10">
           {items.map(([n, l, d], i) => (
             <div key={l} className="reveal" style={{ transitionDelay: `${i * 80}ms` }}>
-              <div className="font-display text-ochre num leading-none" style={{ fontSize: 'clamp(48px, 5.5vw, 80px)', fontWeight: 300 }}>{n}</div>
+              <div className="font-display text-ochre num leading-none" style={{ fontSize: 'clamp(48px, 5.5vw, 80px)', fontWeight: 400 }}>{n}</div>
               <div className="eyebrow mt-5 text-porcelain" style={{ fontSize: 11 }}>{l}</div>
               <p className="mt-4 text-stone-200 text-[14px] leading-relaxed max-w-[26ch]">{d}</p>
             </div>
@@ -726,4 +726,259 @@ function EditorialStrip({ onValuation }) {
   );
 }
 
-Object.assign(window, { Hero, TrustStrip, Communities, FeaturedListings, OffPlan, Stats, WhyConceptPlus, Insights, DeveloperLogos, EditorialStrip, Section });
+// ─── Mortgage Calculator section (homepage) ──────────────────────────────
+// Editorial-minimalist inline calc. Sliders for price, down-payment, term, rate.
+// Live monthly + interest + total. CTA → standalone mortgage.html for full breakdown.
+function MortgageSection() {
+  const [price, setPrice] = useStateS(3500000);
+  const [downPct, setDownPct] = useStateS(25);
+  const [years, setYears] = useStateS(25);
+  const [rate, setRate] = useStateS(4.25);
+
+  const fmt = (n) => 'AED ' + Math.round(n).toLocaleString();
+  const down = price * (downPct / 100);
+  const principal = price - down;
+  const r = rate / 100 / 12;
+  const n = years * 12;
+  const monthly = r === 0 ? principal / n : (principal * r) / (1 - Math.pow(1 + r, -n));
+  const totalInterest = (monthly * n) - principal;
+
+  return (
+    <section className="bg-porcelain-100 py-24 md:py-32 border-t hairline border-stone-200" data-screen-label="Home · Mortgage">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 grid lg:grid-cols-[1fr_1.1fr] gap-16 items-start">
+        {/* Left: copy + result */}
+        <div className="reveal">
+          <div className="eyebrow text-ochre mb-5">Mortgage</div>
+          <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(36px, 5vw, 64px)', fontWeight: 400, letterSpacing: '-0.025em' }}>
+            What it costs, <span className="text-ochre">monthly.</span>
+          </h2>
+          <p className="mt-6 text-graphite text-[16px] leading-relaxed max-w-xl">
+            A quick read on a Dubai mortgage. Independent brokerage across UAE and offshore lenders — pre-approval typically inside 72 hours.
+          </p>
+          <div className="mt-10 hairline border-t border-stone-200 pt-8">
+            <div className="eyebrow text-graphite mb-3" style={{ fontSize: 10 }}>Indicative monthly payment</div>
+            <div className="font-display num text-graphite-900 leading-none" style={{ fontSize: 'clamp(56px, 7vw, 88px)', fontWeight: 400, letterSpacing: '-0.03em' }}>{fmt(monthly)}</div>
+            <div className="mt-8 grid grid-cols-3 gap-6 text-[13px]">
+              <div>
+                <div className="eyebrow text-graphite/60" style={{ fontSize: 10 }}>Down payment</div>
+                <div className="font-display num text-graphite-900 mt-1" style={{ fontSize: 22 }}>{fmt(down)}</div>
+              </div>
+              <div>
+                <div className="eyebrow text-graphite/60" style={{ fontSize: 10 }}>Loan principal</div>
+                <div className="font-display num text-graphite-900 mt-1" style={{ fontSize: 22 }}>{fmt(principal)}</div>
+              </div>
+              <div>
+                <div className="eyebrow text-graphite/60" style={{ fontSize: 10 }}>Total interest</div>
+                <div className="font-display num text-graphite-900 mt-1" style={{ fontSize: 22 }}>{fmt(totalInterest)}</div>
+              </div>
+            </div>
+            <div className="mt-10 flex items-center gap-4 flex-wrap">
+              <a href="mortgage.html" className="bg-graphite-900 text-porcelain px-7 py-4 text-[11px] tracking-[0.22em] uppercase hover:bg-ochre transition cursor-pointer inline-flex items-center gap-3">Get pre-approved <ArrowIcon className="w-3.5 h-3.5" /></a>
+              <a href="mortgage.html" className="eyebrow text-graphite-900 gold-underline cursor-pointer">Full breakdown</a>
+            </div>
+          </div>
+        </div>
+
+        {/* Right: sliders */}
+        <div className="reveal bg-porcelain hairline border border-stone-200 p-8 md:p-10">
+          <MortgageSlider label="Property price"  value={price}   min={500000} max={50000000} step={50000}  format={fmt}                    onChange={setPrice} />
+          <MortgageSlider label="Down payment"    value={downPct} min={20}     max={50}       step={1}      format={(v) => `${v}% · ${fmt(price * v / 100)}`} onChange={setDownPct} />
+          <MortgageSlider label="Loan term"       value={years}   min={5}      max={25}       step={1}      format={(v) => `${v} years`}    onChange={setYears} />
+          <MortgageSlider label="Interest rate"   value={rate}    min={2.5}    max={8}        step={0.05}   format={(v) => `${v.toFixed(2)}% p.a.`} onChange={setRate} />
+          <div className="mt-8 pt-6 border-t hairline border-stone-200 grid grid-cols-2 gap-4 text-[12px] text-graphite/75">
+            <div>Resident UAE expats: max LTV 80% on first home up to AED 5M.</div>
+            <div>Non-resident & second homes: max LTV 60%. Concept Plus handles both.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MortgageSlider({ label, value, min, max, step, format, onChange }) {
+  return (
+    <div className="mb-7 last:mb-0">
+      <div className="flex items-baseline justify-between mb-2">
+        <div className="eyebrow text-graphite" style={{ fontSize: 10 }}>{label}</div>
+        <div className="font-display num text-graphite-900" style={{ fontSize: 18, fontWeight: 500 }}>{format(value)}</div>
+      </div>
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        className="w-full h-[3px] bg-stone-200 appearance-none cursor-pointer"
+        style={{
+          background: `linear-gradient(to right, #AC7B43 0%, #AC7B43 ${((value - min) / (max - min)) * 100}%, #D8D9D7 ${((value - min) / (max - min)) * 100}%, #D8D9D7 100%)`,
+        }}
+      />
+    </div>
+  );
+}
+
+// ─── Testimonials carousel ────────────────────────────────────────────────
+function Testimonials() {
+  const quotes = [
+    { quote: "Layla walked the Frond M villa with my wife and me three times before we offered. She knew the building's wind orientation, the next-door neighbours, the resale on the parallel frond. We bought through her in 11 days.", author: "Hassan A.", role: "Bought · Palm Jumeirah · AED 42.5M", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" },
+    { quote: "We had Concept Plus run an off-market sale of our Bulgari villa. Three offers in a fortnight, all above asking, and a clean conveyance. Discretion mattered more than speed and they understood that from minute one.", author: "Reem K.", role: "Sold · Jumeirah Bay · AED 35.4M", img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80" },
+    { quote: "I was buying my first Dubai apartment from London. They picked me up at the airport, drove me through five buildings the same afternoon, and had me pre-approved with three banks by the next morning. That is the level.", author: "Daniel M.", role: "Bought · Marina · AED 6.85M", img: "https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=600&q=80" },
+    { quote: "We held our Emirates Hills mansion privately for nine months — only Concept Plus had it on their books. They found the right family without it ever touching a portal. Exactly the brief.", author: "Amira F.", role: "Sold · Emirates Hills · AED 78M", img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80" },
+  ];
+  const [i, setI] = useStateS(0);
+  useEffectS(() => {
+    const t = setInterval(() => setI((x) => (x + 1) % quotes.length), 7500);
+    return () => clearInterval(t);
+  }, [quotes.length]);
+  const q = quotes[i];
+  return (
+    <section className="bg-graphite-900 text-porcelain py-24 md:py-32" data-screen-label="Home · Testimonials">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20 items-center">
+          <div className="reveal">
+            <div className="eyebrow text-ochre mb-5">In their words</div>
+            <h2 className="font-display text-porcelain leading-[1.02]" style={{ fontSize: 'clamp(36px, 5vw, 64px)', fontWeight: 400, letterSpacing: '-0.025em' }}>
+              4.9 stars across <span className="text-ochre">14,000+ reviews.</span>
+            </h2>
+            <p className="mt-6 text-porcelain/75 text-[15px] leading-relaxed max-w-md">Real owners and buyers, transacted in the last twenty-four months. Names abbreviated at the client's request.</p>
+            <div className="mt-10 flex items-center gap-3">
+              {quotes.map((_, j) => (
+                <button key={j} onClick={() => setI(j)} className={`h-[2px] transition-all cursor-pointer ${i === j ? 'w-12 bg-ochre' : 'w-6 bg-porcelain/30 hover:bg-porcelain/70'}`} aria-label={`Quote ${j + 1}`} />
+              ))}
+              <span className="text-porcelain/55 text-[11px] num tracking-wider ml-3">{String(i + 1).padStart(2, '0')} / {String(quotes.length).padStart(2, '0')}</span>
+            </div>
+          </div>
+          <div className="reveal relative min-h-[360px]">
+            {quotes.map((qq, j) => (
+              <div key={j} className="absolute inset-0 transition-opacity duration-700" style={{ opacity: i === j ? 1 : 0, pointerEvents: i === j ? 'auto' : 'none' }}>
+                <div className="hairline border-l border-ochre pl-8 md:pl-12 py-2">
+                  <div className="text-ochre text-[28px] leading-none mb-4">★ ★ ★ ★ ★</div>
+                  <p className="text-porcelain text-[19px] md:text-[22px] leading-[1.55] font-display" style={{ fontWeight: 400, letterSpacing: '-0.012em' }}>
+                    "{qq.quote}"
+                  </p>
+                  <div className="mt-8 flex items-center gap-4">
+                    <img src={qq.img} alt={qq.author} className="w-12 h-12 rounded-full object-cover" loading="lazy" />
+                    <div>
+                      <div className="text-porcelain text-[14px] font-medium">{qq.author}</div>
+                      <div className="text-porcelain/60 text-[11px] tracking-[0.18em] uppercase mt-1">{qq.role}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Awards & Press ──────────────────────────────────────────────────────
+function Awards() {
+  const awards = [
+    { y: '2025', t: 'Best Brokerage · Luxury',  org: 'Arabian Property Awards' },
+    { y: '2025', t: 'Top 50 Brokers Dubai',     org: 'Bayut · Property Finder' },
+    { y: '2024', t: 'Editor\'s Pick · Boutique', org: 'Forbes Middle East' },
+    { y: '2024', t: 'Highest NPS · Brokerage',  org: 'Dubai Land Department' },
+    { y: '2023', t: 'Off-Plan Innovator',       org: 'Cityscape Awards' },
+    { y: '2023', t: 'Concierge of the Year',    org: 'Time Out Dubai' },
+  ];
+  return (
+    <section className="bg-porcelain py-20 md:py-28" data-screen-label="Home · Awards">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="grid lg:grid-cols-[1fr_2fr] gap-12 items-end mb-12">
+          <div className="reveal">
+            <div className="eyebrow text-ochre mb-5">Recognition</div>
+            <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(32px, 4.5vw, 56px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+              Awards & press.
+            </h2>
+          </div>
+          <p className="reveal text-graphite text-[15px] leading-relaxed max-w-xl lg:justify-self-end">
+            Twelve years, a deliberately small team, and a book we represent privately. The recognition we are most proud of is the quiet kind — repeat clients, repeat referrals.
+          </p>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px bg-stone-200 hairline border border-stone-200">
+          {awards.map((a, i) => (
+            <div key={i} className="bg-porcelain p-7 reveal" style={{ transitionDelay: `${i * 60}ms` }}>
+              <div className="eyebrow text-ochre num" style={{ fontSize: 10 }}>{a.y}</div>
+              <div className="font-display text-graphite-900 mt-3 leading-tight" style={{ fontSize: 22, fontWeight: 400 }}>{a.t}</div>
+              <div className="text-[11px] tracking-[0.18em] uppercase text-graphite/60 mt-3">{a.org}</div>
+            </div>
+          ))}
+        </div>
+        {/* "As featured in" strip */}
+        <div className="mt-14 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-[11px] tracking-[0.28em] uppercase text-graphite/45">
+          <span className="text-graphite/70">As featured in</span>
+          <span>Forbes Middle East</span><span className="opacity-30">·</span>
+          <span>Arabian Business</span><span className="opacity-30">·</span>
+          <span>The National</span><span className="opacity-30">·</span>
+          <span>Architectural Digest</span><span className="opacity-30">·</span>
+          <span>Wallpaper*</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Instagram strip ─────────────────────────────────────────────────────
+function InstagramStrip() {
+  // 8 editorial tiles — luxury Dubai property + interiors.
+  const tiles = [
+    { img: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=600&q=80', cap: 'Frond M' },
+    { img: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=600&q=80', cap: 'Burj penthouse' },
+    { img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80', cap: 'Emirates Hills' },
+    { img: 'https://images.unsplash.com/photo-1518684079-3c830dcef090?auto=format&fit=crop&w=600&q=80', cap: 'Off-plan launch' },
+    { img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80', cap: 'Interior' },
+    { img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80', cap: 'Jumeirah Bay' },
+    { img: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80', cap: 'Bluewaters' },
+    { img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80', cap: 'Cassia' },
+  ];
+  return (
+    <section className="bg-porcelain-100 py-16 md:py-20" data-screen-label="Home · Instagram">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="flex items-end justify-between gap-6 mb-8 flex-wrap">
+          <div className="reveal">
+            <div className="eyebrow text-ochre mb-3">@conceptplus_ae</div>
+            <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(28px, 3.8vw, 44px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+              The address book, in pictures.
+            </h2>
+          </div>
+          <a href="#" className="reveal eyebrow text-graphite-900 gold-underline cursor-pointer">Follow on Instagram →</a>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2 md:gap-3">
+          {tiles.map((t, i) => (
+            <a key={i} href="#" className="relative aspect-square overflow-hidden group reveal" style={{ transitionDelay: `${i * 40}ms` }}>
+              <img src={t.img} alt={t.cap} className="w-full h-full object-cover transition-transform duration-[800ms] group-hover:scale-[1.08]" loading="lazy" />
+              <div className="absolute inset-0 bg-graphite-900/0 group-hover:bg-graphite-900/35 transition" />
+              <div className="absolute inset-x-0 bottom-0 p-3 text-porcelain text-[10px] tracking-[0.22em] uppercase opacity-0 group-hover:opacity-100 transition">{t.cap}</div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Google reviews trust bar (above Communities) ─────────────────────────
+function ReviewsBar() {
+  return (
+    <section className="bg-porcelain py-10 border-t border-b hairline border-stone-200" data-screen-label="Home · Reviews bar">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 grid md:grid-cols-[auto_1fr_auto] items-center gap-8">
+        <div className="flex items-center gap-4 reveal">
+          <div className="w-14 h-14 grid place-items-center rounded-full bg-ochre text-porcelain font-display num" style={{ fontSize: 22, fontWeight: 500 }}>4.9</div>
+          <div>
+            <div className="text-ochre text-[18px] leading-none">★ ★ ★ ★ ★</div>
+            <div className="text-[12px] text-graphite mt-1.5 num">14,000+ Google reviews</div>
+          </div>
+        </div>
+        <p className="text-graphite-900 text-[15px] reveal lg:text-center">
+          It matters which agency you trust — the city's most considered owners and buyers have trusted Concept Plus, repeatedly.
+        </p>
+        <a href="#" className="reveal eyebrow text-graphite-900 gold-underline cursor-pointer md:justify-self-end">Read the reviews →</a>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { Hero, TrustStrip, Communities, FeaturedListings, OffPlan, Stats, WhyConceptPlus, Insights, DeveloperLogos, EditorialStrip, Section, MortgageSection, MortgageSlider, Testimonials, Awards, InstagramStrip, ReviewsBar });

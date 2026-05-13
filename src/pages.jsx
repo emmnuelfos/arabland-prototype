@@ -557,7 +557,7 @@ function OffPlanPage() {
                   <a href="buy.html" className="gold-underline">Off-Plan</a><span>/</span>
                   <span className="text-ochre">{project.developer}</span>
                 </div>
-                <h1 className="font-display mt-5" style={{ fontSize: 'clamp(48px, 7vw, 96px)', fontWeight: 300, lineHeight: 1.0 }}>
+                <h1 className="font-display mt-5" style={{ fontSize: 'clamp(48px, 7vw, 96px)', fontWeight: 400, lineHeight: 1.0 }}>
                   {project.name}
                 </h1>
                 <div className="mt-6 max-w-2xl text-[16px] text-porcelain/80">
@@ -572,7 +572,7 @@ function OffPlanPage() {
                   ].map(([k, v]) => (
                     <div key={k}>
                       <div className="text-[11px] tracking-[0.22em] uppercase text-ochre">{k}</div>
-                      <div className="font-display mt-2 num" style={{ fontSize: 'clamp(22px, 2.4vw, 30px)', fontWeight: 300 }}>{v}</div>
+                      <div className="font-display mt-2 num" style={{ fontSize: 'clamp(22px, 2.4vw, 30px)', fontWeight: 400 }}>{v}</div>
                     </div>
                   ))}
                 </div>
@@ -619,7 +619,7 @@ function OffPlanPage() {
               <div className="grid md:grid-cols-[1fr_auto] items-end gap-8 mb-12">
                 <div>
                   <div className="eyebrow text-ochre">Payment plan</div>
-                  <h2 className="font-display mt-3" style={{ fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 300 }}>10 / 60 / 30, over four years.</h2>
+                  <h2 className="font-display mt-3" style={{ fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 400 }}>10 / 60 / 30, over four years.</h2>
                 </div>
                 <button onClick={ctx.openPayment} className="hairline border border-porcelain/40 px-5 py-3 text-[11px] tracking-[0.22em] uppercase hover:border-ochre hover:text-ochre transition cursor-pointer">Open full schedule</button>
               </div>
@@ -632,7 +632,7 @@ function OffPlanPage() {
                     <div key={i} className="text-center relative">
                       <div className="text-[11px] tracking-[0.22em] uppercase text-porcelain/60 mb-6 min-h-[28px]">{m.when}</div>
                       <div className="w-3 h-3 bg-ochre mx-auto" />
-                      <div className="font-display mt-6 num" style={{ fontSize: '36px', fontWeight: 300 }}>{m.pct}<span className="text-[18px] text-porcelain/60">%</span></div>
+                      <div className="font-display mt-6 num" style={{ fontSize: '36px', fontWeight: 400 }}>{m.pct}<span className="text-[18px] text-porcelain/60">%</span></div>
                       <div className="text-[12px] text-porcelain/70 mt-2">{m.label}</div>
                     </div>
                   ))}
@@ -645,7 +645,7 @@ function OffPlanPage() {
                   ['Service charge', `AED 18 / sqft / yr`, 'Payable from handover; first year billed in arrears.']].map(([k, v, n]) => (
                     <div key={k} className="border-t hairline border-porcelain/20 pt-5">
                       <div className="eyebrow text-ochre">{k}</div>
-                      <div className="font-display mt-2 num" style={{ fontSize: '22px', fontWeight: 300 }}>{v}</div>
+                      <div className="font-display mt-2 num" style={{ fontSize: '22px', fontWeight: 400 }}>{v}</div>
                       <div className="text-porcelain/60 mt-2">{n}</div>
                     </div>
                 ))}
@@ -746,7 +746,7 @@ function OffPlanPage() {
             <div className="max-w-[1400px] mx-auto px-6 md:px-10 grid md:grid-cols-[1fr_auto] gap-8 items-center">
               <div>
                 <div className="eyebrow text-ochre">Reserve</div>
-                <h3 className="font-display mt-3" style={{ fontSize: 'clamp(28px, 3.4vw, 40px)', fontWeight: 300 }}>Speak with the {project.name} team.</h3>
+                <h3 className="font-display mt-3" style={{ fontSize: 'clamp(28px, 3.4vw, 40px)', fontWeight: 400 }}>Speak with the {project.name} team.</h3>
                 <p className="text-porcelain/70 mt-2 max-w-xl">Private viewings of the show apartment available by appointment. AED 100,000 reservation fee, refundable within 14 days.</p>
               </div>
               <div className="flex gap-3">

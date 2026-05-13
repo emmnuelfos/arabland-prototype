@@ -5,7 +5,6 @@ const { useState: useStateA, useEffect: useEffectA, useMemo: useMemoA } = React;
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "hero": "slider",
   "cardVariant": "fam",
-  "displayFont": "Cormorant Garamond",
   "showStripe": true
 }/*EDITMODE-END*/;
 
@@ -33,17 +32,7 @@ function App() {
 
   useReveal();
 
-  // Apply tweak font
-  useEffectA(() => {
-    const root = document.documentElement;
-    const map = {
-      'Cormorant Garamond': '"Cormorant Garamond", Georgia, serif',
-      'Bodoni Moda':        '"Bodoni Moda", Georgia, serif',
-      'Inter Display':      '"Inter Display", Inter, sans-serif',
-      'Playfair Display':   '"Playfair Display", Georgia, serif',
-    };
-    document.querySelectorAll('.font-display').forEach(el => { el.style.fontFamily = map[tweaks.displayFont] || map['Cormorant Garamond']; });
-  }, [tweaks.displayFont]);
+  // Macan Pan is the only typeface — no runtime font override needed.
 
   // Helpers
   const toggleSet = (set, setter, max) => (id) => {
@@ -71,13 +60,21 @@ function App() {
       />
 
       <main>
+        {/* 1. Hero ─ tabbed search + featured property carousel */}
         <Hero
           variant={tweaks.hero}
           onOpenListing={(l) => setOpenListing(l)}
           onOpenProject={() => setPaymentOpen(true)}
         />
+        {/* 2. Trust strip ─ DLD / RERA / Top 50 / sold YTD + featured-in row */}
         <TrustStrip />
-        <Communities />
+        {/* 3. Google reviews bar ─ 4.9 / 14,000+ */}
+        <ReviewsBar />
+        {/* 4. Developer partners */}
+        <DeveloperLogos />
+        {/* 5. Latest launched (off-plan first, matches FAM "Latest Launched Projects") */}
+        <OffPlan onOpenPlan={() => setPaymentOpen(true)} />
+        {/* 6. Featured properties for sale */}
         <FeaturedListings
           cardVariant={tweaks.cardVariant}
           currency={currency}
@@ -88,13 +85,26 @@ function App() {
           onCompare={onCompareToggle}
           onOpen={(l) => { setOpenListing(l); }}
         />
+        {/* 7. Communities grid */}
+        <Communities />
+        {/* 8. Map strip */}
         <ViewOnMapStrip onOpenMap={() => setMapOpen(true)} />
-        <OffPlan onOpenPlan={() => setPaymentOpen(true)} />
+        {/* 9. Mortgage calculator section (new) */}
+        <MortgageSection />
+        {/* 10. Stats ─ AED transacted, repeat clients */}
         <Stats />
+        {/* 11. Why Concept Plus */}
         <WhyConceptPlus />
-        {tweaks.showStripe && <EditorialStrip onValuation={() => setScheduleOpen(true)} />}
+        {/* 12. Awards & press (new) */}
+        <Awards />
+        {/* 13. Testimonials carousel (new) */}
+        <Testimonials />
+        {/* 14. Insights / Blog */}
         <Insights />
-        <DeveloperLogos />
+        {/* 15. Instagram strip (new) */}
+        <InstagramStrip />
+        {/* 16. Sell valuation editorial strip */}
+        {tweaks.showStripe && <EditorialStrip onValuation={() => setScheduleOpen(true)} />}
       </main>
       <Footer />
 
@@ -133,15 +143,6 @@ function App() {
         <TweakSection title="Listing card">
           <TweakRadio label="Card style" value={tweaks.cardVariant} onChange={(v) => setTweak('cardVariant', v)}
             options={[{ value: 'fam', label: 'FAM' }, { value: 'editorial', label: 'Editorial' }, { value: 'minimal', label: 'Minimal' }, { value: 'agent-forward', label: 'Agent' }]} />
-        </TweakSection>
-        <TweakSection title="Typography">
-          <TweakSelect label="Display font" value={tweaks.displayFont} onChange={(v) => setTweak('displayFont', v)}
-            options={[
-              { value: 'Cormorant Garamond', label: 'Cormorant Garamond (default)' },
-              { value: 'Bodoni Moda', label: 'Bodoni Moda' },
-              { value: 'Inter Display', label: 'Inter Display' },
-              { value: 'Playfair Display', label: 'Playfair Display' },
-            ]} />
         </TweakSection>
         <TweakSection title="Sections">
           <TweakToggle label="Valuation strip" value={tweaks.showStripe} onChange={(v) => setTweak('showStripe', v)} />

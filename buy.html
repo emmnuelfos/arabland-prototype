@@ -9,7 +9,6 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   @font-face { font-family: 'Macan Pan'; src: url('assets/fonts/MacanPanWeb-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
   @font-face { font-family: 'Macan Pan'; src: url('assets/fonts/MacanPanWeb-Medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
@@ -27,9 +26,9 @@ tailwind.config = {
       porcelain: { DEFAULT: '#EAE8E3', 100: '#F4F2EE' },
     },
     fontFamily: {
-      display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+      display: ['"Macan Pan"', 'Inter', 'system-ui', 'sans-serif'],
       sans: ['"Macan Pan"', 'Inter', 'system-ui', 'sans-serif'],
-      mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+      mono: ['"Macan Pan"', 'system-ui', 'sans-serif'],
     },
   }}
 };
@@ -37,8 +36,8 @@ tailwind.config = {
 <style>
   html, body { background: #EAE8E3; color: #2E2D2C; }
   body { font-family: 'Macan Pan', 'Inter', system-ui, sans-serif; font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
-  .font-display { font-family: 'Cormorant Garamond', Georgia, serif; letter-spacing: -0.01em; }
-  .font-mono { font-family: 'JetBrains Mono', monospace; }
+  .font-display { font-family: 'Macan Pan', 'Inter', system-ui, sans-serif; font-weight: 400; letter-spacing: -0.025em; } .font-display em, .font-display i { font-style: normal; color: #AC7B43; }
+  .font-mono { font-family: 'Macan Pan', 'Inter', sans-serif; font-feature-settings: 'tnum' 1; letter-spacing: 0.02em; }
   .eyebrow { font-family: 'Macan Pan', 'Inter', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; }
   .num { font-variant-numeric: tabular-nums; }
   .hairline { border-color: #B2B4B2; }

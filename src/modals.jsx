@@ -111,7 +111,7 @@ function MortgageCalc({ open, onClose, listing, currency }) {
           </div>
           <div className="bg-porcelain-100 p-7 hairline border border-stone-200">
             <div className="eyebrow text-graphite">Monthly payment</div>
-            <div className="font-display text-graphite-900 num mt-2" style={{ fontSize: 56, fontWeight: 300, lineHeight: 1 }}>{fmtPrice(monthly, currency)}</div>
+            <div className="font-display text-graphite-900 num mt-2" style={{ fontSize: 56, fontWeight: 400, lineHeight: 1 }}>{fmtPrice(monthly, currency)}</div>
             <div className="hairline border-t my-6" />
             <Row k="Loan amount"     v={fmtPrice(loan, currency)} />
             <Row k="Down payment"    v={fmtPrice(price - loan, currency)} />
@@ -314,7 +314,7 @@ function PaymentPlanModal({ open, onClose }) {
                 <span>{project.name}</span>
               </div>
               <h2 className="mt-4 font-display leading-tight" style={{ fontSize: 42, fontWeight: 400 }}>
-                {project.name} <span className="text-stone-200 font-display" style={{ fontWeight: 300 }}>by {project.developer}</span>
+                {project.name} <span className="text-stone-200 font-display" style={{ fontWeight: 400 }}>by {project.developer}</span>
               </h2>
               <div className="mt-2 text-[14px] text-stone-200">at MBR City, Dubai</div>
             </div>

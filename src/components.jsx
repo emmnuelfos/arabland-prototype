@@ -456,23 +456,84 @@ function ActionDot({ children, title }) {
 }
 
 // ─── Footer ────────────────────────────────────────────────────────────────
+// ─── Footer ─── FAM-density SEO mega-footer + classic footer + bottom strip.
+// Communities × types × bedrooms × developers, all linked. Styled minimal
+// hairlines on graphite-900 so it reads premium, not spammy.
 function Footer() {
+  const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const D = window.CONCEPTPLUS_DATA || { communities: [], developers: [] };
+  const communities = (D.communities && D.communities.length ? D.communities : [
+    { name: 'Palm Jumeirah' }, { name: 'Downtown Dubai' }, { name: 'Dubai Marina' },
+    { name: 'Emirates Hills' }, { name: 'Business Bay' }, { name: 'Jumeirah Bay' },
+    { name: 'MBR City' }, { name: 'Jumeirah Village' },
+  ]).map(c => c.name);
+  const developers = ['Emaar', 'Sobha Realty', 'DAMAC', 'Aldar', 'Meraas', 'Nakheel', 'Omniyat', 'Select Group', 'Binghatti', 'Azizi', 'Dubai Properties', 'Ellington'];
+  const types = ['Villa', 'Apartment', 'Penthouse', 'Townhouse', 'Duplex', 'Compound'];
+  const bedroomsBuy = ['Studio', '1 bedroom', '2 bedrooms', '3 bedrooms', '4 bedrooms', '5 bedrooms', '6 bedrooms', '7+ bedrooms'];
+  const bedroomsRent = bedroomsBuy;
+  const offplanStatus = ['Launched', 'Under construction', 'Handover 2025', 'Handover 2026', 'Handover 2027', 'Handover 2028'];
+
+  const seoBlocks = [
+    { h: 'Properties for sale by community',  items: communities.map(c => [c, `buy.html?community=${slug(c)}`]) },
+    { h: 'Properties for rent by community',  items: communities.map(c => [c, `buy.html#rent?community=${slug(c)}`]) },
+    { h: 'Off-plan projects by community',    items: communities.map(c => [c, `off-plan.html?community=${slug(c)}`]) },
+    { h: 'Properties for sale by type',       items: types.map(t => [`${t}s for sale in Dubai`, `buy.html?type=${slug(t)}`]) },
+    { h: 'Properties for rent by type',       items: types.map(t => [`${t}s for rent in Dubai`, `buy.html#rent?type=${slug(t)}`]) },
+    { h: 'Properties for sale by bedrooms',   items: bedroomsBuy.map(b => [b, `buy.html?beds=${slug(b)}`]) },
+    { h: 'Properties for rent by bedrooms',   items: bedroomsRent.map(b => [b, `buy.html#rent?beds=${slug(b)}`]) },
+    { h: 'Off-plan by status',                items: offplanStatus.map(s => [s, `off-plan.html?status=${slug(s)}`]) },
+    { h: 'Top developers in Dubai',           items: developers.map(d => [d, `developers.html?slug=${slug(d)}`]) },
+  ];
+
   return (
-    <footer className="bg-graphite-900 text-porcelain pt-24 pb-10 mt-16">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+    <footer className="bg-graphite-900 text-porcelain mt-16">
+      {/* ─── SEO mega-grid ─── */}
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 pt-20 pb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10">
+          {seoBlocks.map((blk) => (
+            <div key={blk.h}>
+              <div className="eyebrow text-ochre pb-3 border-b hairline border-porcelain/15">{blk.h}</div>
+              <ul className="mt-4 space-y-2">
+                {blk.items.map(([label, href]) => (
+                  <li key={label}>
+                    <a href={href} className="text-[13px] text-porcelain/75 hover:text-ochre transition-colors cursor-pointer leading-snug block">
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ─── Hairline divider ─── */}
+      <div className="border-t hairline border-porcelain/12" />
+
+      {/* ─── Brand block + classic columns ─── */}
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16 md:py-20">
         <div className="grid lg:grid-cols-[1.4fr_1fr_1fr_1fr_1.2fr] gap-12">
           <div>
             <Wordmark tone="light" height={64} />
-            <p className="mt-6 text-[14px] text-stone-200 leading-relaxed max-w-sm">Curated by people who live here. A senior brokerage for the city's most considered addresses.</p>
+            <p className="mt-6 text-[14px] text-stone-200 leading-relaxed max-w-sm">Curated by people who live here. A senior brokerage for Dubai's most considered addresses.</p>
             <div className="mt-6 text-[12px] tracking-[0.18em] uppercase text-stone num">
               <div>RERA · 28471</div>
               <div>ORN · 31094</div>
             </div>
+            <div className="mt-6 text-[12px] text-stone-200 leading-relaxed">
+              <div>Office 1208, Boulevard Plaza Tower 1</div>
+              <div>Sheikh Mohammed Bin Rashid Boulevard</div>
+              <div>Downtown Dubai, UAE</div>
+            </div>
+            <div className="mt-5 text-[13px] text-porcelain">
+              <div className="num"><span className="text-stone-200">T&nbsp;</span>+971 4 882 4400</div>
+              <div className="mt-1"><span className="text-stone-200">E&nbsp;</span>concierge@conceptplus.ae</div>
+            </div>
           </div>
           {[
-            { h: 'Property', items: [['Buy','buy.html'],['Rent','buy.html'],['Sell','sell.html'],['Off-Plan','off-plan.html'],['Communities','buy.html']] },
-            { h: 'Company',  items: [['About','#'],['Agents','agents.html'],['Developers','developers.html'],['Careers','careers.html'],['Press','#']] },
-            { h: 'Services', items: [['Property Mgmt','services.html'],['Mortgage','services.html'],['Conveyancing','services.html'],['Interiors','services.html'],['Investment','services.html']] },
+            { h: 'Property', items: [['Buy','buy.html'],['Rent','buy.html#rent'],['Sell','sell.html'],['Off-Plan','off-plan.html'],['Mortgage','mortgage.html'],['Communities','community.html?slug=palm-jumeirah']] },
+            { h: 'Company',  items: [['About','#'],['Agents','agents.html'],['Developers','developers.html'],['Careers','careers.html'],['Press','#'],['Blog','#']] },
+            { h: 'Services', items: [['Property Mgmt','services.html'],['Mortgage','mortgage.html'],['Conveyancing','services.html'],['Interiors','services.html'],['Investment','services.html'],['Valuation','sell.html']] },
           ].map((col) => (
             <div key={col.h}>
               <div className="eyebrow text-ochre">{col.h}</div>
@@ -489,11 +550,22 @@ function Footer() {
               <button className="text-ochre hover:text-porcelain px-3 cursor-pointer"><ArrowIcon /></button>
             </form>
             <div className="mt-8 flex gap-4 text-stone-200">
-              {['IG','LI','X','YT'].map((s) => <span key={s} className="w-9 h-9 grid place-items-center hairline border border-stone/40 text-[11px] tracking-[0.18em] cursor-pointer hover:border-ochre hover:text-ochre">{s}</span>)}
+              {['IG','LI','X','YT','FB','TT'].map((s) => <span key={s} className="w-9 h-9 grid place-items-center hairline border border-stone/40 text-[11px] tracking-[0.18em] cursor-pointer hover:border-ochre hover:text-ochre">{s}</span>)}
+            </div>
+            <div className="mt-8 flex items-center gap-3 hairline border border-stone/30 px-4 py-3">
+              <div className="w-9 h-9 grid place-items-center rounded-full bg-ochre text-porcelain text-[14px] font-medium num">4.9</div>
+              <div className="flex-1">
+                <div className="text-[12px] text-porcelain leading-tight">14,000+ Google reviews</div>
+                <div className="text-[10px] tracking-[0.18em] uppercase text-stone-200 mt-1">Verified by Google</div>
+              </div>
             </div>
           </div>
         </div>
-        <div className="mt-20 pt-8 hairline border-t border-stone/30 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between text-[11px] tracking-[0.18em] uppercase text-stone">
+      </div>
+
+      {/* ─── Bottom strip ─── */}
+      <div className="border-t hairline border-porcelain/12">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-6 flex flex-col md:flex-row gap-4 items-start md:items-center justify-between text-[11px] tracking-[0.18em] uppercase text-stone">
           <div>© 2026 Concept Plus Real Estate Brokerage LLC</div>
           <div className="flex items-center gap-6">
             <a href="#" className="hover:text-ochre cursor-pointer">Terms</a>

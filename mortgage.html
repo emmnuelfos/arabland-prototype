@@ -3,10 +3,11 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Careers — Concept Plus Real Estate</title>
+<title>Mortgage calculator — Concept Plus Real Estate</title>
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="256x256" href="assets/favicon-256.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<!-- Type: Macan Pan only (Concept Plus brand font; 400/500/600/700) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
@@ -48,43 +49,21 @@ tailwind.config = {
   .reveal.in { opacity: 1; transform: none; }
   .no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { scrollbar-width: none; }
   *:focus-visible { outline: 2px solid #AC7B43; outline-offset: 2px; }
-  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-  .marquee-track { animation: marquee 60s linear infinite; }
-  .gold-tick::before { content: ''; display: inline-block; width: 14px; height: 1px; background: #AC7B43; margin-right: 12px; vertical-align: middle; }
-  .tab-active { color: #2E2D2C; }
-  .tab-active::after { content: ''; display: block; height: 2px; width: 100%; background: #AC7B43; margin-top: 8px; }
-  .ph-stripe { background-image: repeating-linear-gradient(45deg, #D8D9D7 0 6px, #EAE8E3 6px 12px); }
-
-  /* Leaflet — ochre pin with pulse */
-  .leaflet-container { background: #EAE8E3 !important; font-family: 'Macan Pan', system-ui, sans-serif !important; }
-  .leaflet-control-attribution { font-size: 9px !important; background: rgba(246,244,239,0.85) !important; color: #4D4B4A !important; }
-  .leaflet-bar a { background: #F4F2EE !important; color: #1A1A1A !important; border-bottom-color: #B2B4B2 !important; }
-  .leaflet-bar a:hover { background: #AC7B43 !important; color: #F6F4EF !important; }
-  .cp-pin { width: 36px; height: 36px; cursor: pointer; position: relative; display: grid; place-items: center; }
-  .cp-pin-dot { width: 16px; height: 16px; border-radius: 50%; background: #AC7B43; border: 2px solid #F6F4EF; box-shadow: 0 2px 8px rgba(26,24,18,0.4); position: relative; z-index: 2; transition: transform 220ms cubic-bezier(.2,.7,.3,1), background-color 200ms; }
-  .cp-pin-ring { position: absolute; inset: 0; border-radius: 50%; background: rgba(172,123,67,0.35); animation: cp-pulse 2.4s cubic-bezier(0,0,.2,1) infinite; }
-  .cp-pin:hover .cp-pin-dot, .cp-pin.cp-active .cp-pin-dot { background: #1A1A1A; transform: scale(1.25); }
-  .cp-pin.cp-active .cp-pin-ring { background: rgba(26,24,18,0.35); }
-  @keyframes cp-pulse { 0% { transform: scale(.55); opacity: .85; } 100% { transform: scale(1.6); opacity: 0; } }
-  .cp-tooltip { background: #1A1A1A !important; color: #F6F4EF !important; padding: 6px 10px !important; font-size: 12px !important; font-variant-numeric: tabular-nums !important; border: none !important; box-shadow: 0 6px 18px rgba(0,0,0,.25) !important; }
-  .cp-tooltip::before { border-top-color: #1A1A1A !important; }
 </style>
-<!-- Leaflet (real interactive map; no API key, OSM/Carto tiles) -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
-
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <script src="src/data.js"></script>
-<script>window.__PAGE = 'careers';</script>
+<script>window.__PAGE = 'mortgage';</script>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel" src="src/components.jsx"></script>
 <script type="text/babel" src="src/modals.jsx"></script>
+<script type="text/babel" src="src/sections.jsx"></script>
 <script type="text/babel" src="src/pages.jsx"></script>
 <script type="text/babel" src="src/pages2.jsx"></script>
+<script type="text/babel" src="src/pages3.jsx"></script>
 <script type="text/babel" src="src/boot.jsx"></script>
 </body>
 </html>

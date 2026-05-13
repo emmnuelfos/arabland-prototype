@@ -11,14 +11,13 @@
 <style>
   /* ════════════════════════════════════════════════════════════════════════
      ADNIKA × CONCEPT PLUS — Presentation deck
-     Type system: Macan Pan (Concept Plus body), Cormorant Garamond (display accent)
+     Type system: Macan Pan only (Concept Plus brand font, 400/500/600/700)
      Palette:     Porcelain #F6F4EF · Graphite #29261B · Ochre #AC7B43
      ════════════════════════════════════════════════════════════════════════ */
 
   @font-face { font-family: 'Macan Pan'; src: url('assets/fonts/MacanPanWeb-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
   @font-face { font-family: 'Macan Pan'; src: url('assets/fonts/MacanPanWeb-Medium.ttf')  format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
   @font-face { font-family: 'Macan Pan'; src: url('assets/fonts/MacanPanWeb-Bold.ttf')    format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
 
   :root {
     --porcelain: #F6F4EF;
@@ -74,7 +73,7 @@
 
   /* ── Type primitives ───────────────────────────────────────────────────── */
   .display {
-    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-family: 'Macan Pan', 'Times New Roman', serif;
     font-weight: 300;
     letter-spacing: -0.02em;
     line-height: 0.98;
@@ -263,7 +262,7 @@
   "Our north star: a quiet, considered digital experience. We benchmarked against luxury fashion houses and architectural studios, not other real estate portals. The result is restrained, confident, and deliberately under-stated.",
   "Three principles guide every decision: curation over volume, discretion over noise, and craft over template. Each one cascades down to grid, type, color, and motion.",
   "Color is the spine of the system. Porcelain, graphite, ochre — calm canvas, considered ink, single accent. No gradients, no neons, no portal yellow.",
-  "Macan Pan is a contemporary sans with editorial proportions — generous counters, low contrast, geometric without being cold. It carries the brand from headline to caption. Cormorant Garamond appears sparingly as a serif accent for the most senior copy.",
+  "Macan Pan is the only typeface on the site — a contemporary sans with editorial proportions: generous counters, low contrast, geometric without being cold. Four weights (Regular 400, Medium 500, Semibold 600, Bold 700) carry the brand from headline to caption. Emphasis is held by colour and weight, not by switching faces.",
   "The wordmark sits in three contexts: light, dark, and a stand-alone monogram. We treat it like a couture label — never crowded, always given air.",
   "Our visual references come from outside the category. Jacquemus for the discipline of the grid; Aman for the silence; Vitsoe for the system. The web rarely looks like this — that is the point.",
   "Eight pages, mapped end-to-end. Homepage and Buy do the heavy lifting. Sell turns a transaction into a private conversation. Off-Plan, Developers, Agents, Services, and Careers each have their own identity inside the system.",
@@ -417,7 +416,7 @@
         <p class="body reveal" style="--d:500ms;font-size:22px">
           Porcelain and graphite carry 95% of the page. A single ochre accent — the colour of desert light at five o'clock — appears only where the eye must travel.
         </p>
-        <p class="body reveal" style="--d:650ms;font-size:18px;color:var(--graphite-500);margin-top:24px;font-style:italic;font-family:'Cormorant Garamond',serif">
+        <p class="body reveal" style="--d:650ms;font-size:18px;color:var(--graphite-500);margin-top:24px;font-style:italic;font-family:'Macan Pan',serif">
           "Restraint is the most expensive thing on the page."
         </p>
       </div>
@@ -529,18 +528,18 @@
       </div>
 
       <div style="display:flex;flex-direction:column;justify-content:center;border-left:1px solid rgba(246,244,239,0.12);padding-left:80px">
-        <div class="eyebrow reveal" style="--d:300ms">Editorial accent</div>
+        <div class="eyebrow reveal" style="--d:300ms">Emphasis</div>
         <div class="reveal" style="--d:450ms;margin-top:24px">
-          <div style="font-family:'Cormorant Garamond';font-size:32px;font-style:italic;letter-spacing:0;color:var(--ochre);margin-bottom:16px">Cormorant Garamond</div>
+          <div style="font-family:'Macan Pan';font-size:14px;font-weight:500;letter-spacing:0.32em;text-transform:uppercase;color:var(--ochre);margin-bottom:16px">Colour, not contrast</div>
         </div>
         <div class="reveal" style="--d:600ms">
-          <div class="display" style="font-family:'Cormorant Garamond';font-weight:300;font-size:180px;line-height:0.9;letter-spacing:-0.02em">Beautifully<br/><em style="font-style:italic;color:var(--ochre)">held.</em></div>
+          <div class="display" style="font-family:'Macan Pan';font-weight:400;font-size:180px;line-height:0.9;letter-spacing:-0.03em">Beautifully<br/><span style="color:var(--ochre);font-weight:500">held.</span></div>
         </div>
         <div class="reveal" style="--d:800ms;margin-top:64px;border-top:1px solid rgba(246,244,239,0.12);padding-top:32px">
           <div style="font-size:14px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(246,244,239,0.55);margin-bottom:24px">Hierarchy in use</div>
           <div style="display:grid;grid-template-columns:120px 1fr;gap:24px;align-items:baseline">
             <div style="font-size:13px;letter-spacing:0.22em;text-transform:uppercase;color:var(--ochre)">Display</div>
-            <div style="font-family:'Cormorant Garamond';font-size:56px;font-weight:300;line-height:1">A digital address worth <em style="color:var(--ochre)">arriving</em> at.</div>
+            <div style="font-family:'Macan Pan';font-size:56px;font-weight:300;line-height:1">A digital address worth <em style="color:var(--ochre)">arriving</em> at.</div>
             <div style="font-size:13px;letter-spacing:0.22em;text-transform:uppercase;color:var(--ochre)">H2</div>
             <div style="font-family:'Macan Pan';font-size:36px;font-weight:500">Currently on the books.</div>
             <div style="font-size:13px;letter-spacing:0.22em;text-transform:uppercase;color:var(--ochre)">Body</div>
@@ -639,10 +638,10 @@
         <div class="tile clip-rise" style="--d:400ms;grid-column:span 3;grid-row:span 2"><img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&h=900&q=80" alt=""/></div>
         <div class="tile clip-rise" style="--d:500ms;grid-column:span 2;grid-row:span 1"><img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&h=600&q=80" alt=""/></div>
         <div class="tile clip-rise" style="--d:600ms;grid-column:span 1;grid-row:span 2;background:var(--graphite-900);display:flex;align-items:center;justify-content:center">
-          <div style="font-family:'Cormorant Garamond';font-style:italic;color:var(--ochre);font-size:96px;line-height:0.9;text-align:center;font-weight:300">Quiet.</div>
+          <div style="font-family:'Macan Pan';font-style:italic;color:var(--ochre);font-size:96px;line-height:0.9;text-align:center;font-weight:300">Quiet.</div>
         </div>
         <div class="tile clip-rise" style="--d:700ms;grid-column:span 2;grid-row:span 1"><img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=900&h=600&q=80" alt=""/></div>
-        <div class="tile clip-rise" style="--d:800ms;grid-column:span 2;grid-row:span 1;background:var(--ochre);display:flex;align-items:flex-end;padding:24px"><div style="font-family:'Cormorant Garamond';color:var(--porcelain);font-size:28px;font-style:italic;line-height:1.1">Marble · brass · linen · porcelain</div></div>
+        <div class="tile clip-rise" style="--d:800ms;grid-column:span 2;grid-row:span 1;background:var(--ochre);display:flex;align-items:flex-end;padding:24px"><div style="font-family:'Macan Pan';color:var(--porcelain);font-size:28px;font-style:italic;line-height:1.1">Marble · brass · linen · porcelain</div></div>
         <div class="tile clip-rise" style="--d:900ms;grid-column:span 2;grid-row:span 1"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&h=600&q=80" alt=""/></div>
         <div class="tile clip-rise" style="--d:1000ms;grid-column:span 2;grid-row:span 1"><img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=900&h=600&q=80" alt=""/></div>
       </div>
@@ -688,7 +687,7 @@
         <!-- Homepage node (centered) -->
         <a class="reveal sitemap-node" href="home.html" target="_blank" style="--d:400ms;width:280px;margin:0 auto;background:var(--ochre);color:var(--porcelain);padding:24px 32px;text-align:center;position:relative;z-index:2;display:block;text-decoration:none">
           <div style="font-size:11px;letter-spacing:0.32em;text-transform:uppercase;opacity:0.8">01 · Root</div>
-          <div style="font-family:'Cormorant Garamond';font-size:36px;font-style:italic;font-weight:300;margin-top:4px;line-height:1">Homepage</div>
+          <div style="font-family:'Macan Pan';font-size:36px;font-style:italic;font-weight:300;margin-top:4px;line-height:1">Homepage</div>
           <div class="sitemap-cta" style="margin-top:8px;font-family:'Macan Pan';font-size:10px;letter-spacing:0.22em;text-transform:uppercase;opacity:0;transition:opacity 200ms">View design →</div>
         </a>
 
@@ -706,14 +705,14 @@
 
         <!-- Detail tier -->
         <div style="display:grid;grid-template-columns:repeat(8, 1fr);gap:16px;margin-top:80px;position:relative;z-index:2">
-          <a class="reveal sitemap-node" href="property.html"             target="_blank" style="--d:1500ms;padding:14px 16px;text-align:center;border:1px dashed rgba(246,244,239,0.18);text-decoration:none;display:block"><div style="font-family:'Cormorant Garamond';font-size:18px;font-style:italic;color:rgba(246,244,239,0.85)">Property detail</div></a>
+          <a class="reveal sitemap-node" href="property.html"             target="_blank" style="--d:1500ms;padding:14px 16px;text-align:center;border:1px dashed rgba(246,244,239,0.18);text-decoration:none;display:block"><div style="font-family:'Macan Pan';font-size:18px;font-style:italic;color:rgba(246,244,239,0.85)">Property detail</div></a>
           <div style="opacity:0.3;text-align:center;font-size:12px;color:rgba(246,244,239,0.4);align-self:center">↓ shared</div>
-          <a class="reveal sitemap-node" href="sell.html#valuation"        target="_blank" style="--d:1540ms;padding:14px 16px;text-align:center;border:1px dashed rgba(246,244,239,0.18);text-decoration:none;display:block"><div style="font-family:'Cormorant Garamond';font-size:18px;font-style:italic;color:rgba(246,244,239,0.85)">Live valuation</div></a>
-          <a class="reveal sitemap-node" href="off-plan.html"              target="_blank" style="--d:1580ms;padding:14px 16px;text-align:center;border:1px dashed rgba(246,244,239,0.18);text-decoration:none;display:block"><div style="font-family:'Cormorant Garamond';font-size:18px;font-style:italic;color:rgba(246,244,239,0.85)">Project detail</div></a>
-          <a class="reveal sitemap-node" href="developers.html#profile"    target="_blank" style="--d:1620ms;padding:14px 16px;text-align:center;border:1px dashed rgba(246,244,239,0.18);text-decoration:none;display:block"><div style="font-family:'Cormorant Garamond';font-size:18px;font-style:italic;color:rgba(246,244,239,0.85)">Profile</div></a>
-          <a class="reveal sitemap-node" href="agents.html"                target="_blank" style="--d:1660ms;padding:14px 16px;text-align:center;border:1px dashed rgba(246,244,239,0.18);text-decoration:none;display:block"><div style="font-family:'Cormorant Garamond';font-size:18px;font-style:italic;color:rgba(246,244,239,0.85)">Broker profile</div></a>
+          <a class="reveal sitemap-node" href="sell.html#valuation"        target="_blank" style="--d:1540ms;padding:14px 16px;text-align:center;border:1px dashed rgba(246,244,239,0.18);text-decoration:none;display:block"><div style="font-family:'Macan Pan';font-size:18px;font-style:italic;color:rgba(246,244,239,0.85)">Live valuation</div></a>
+          <a class="reveal sitemap-node" href="off-plan.html"              target="_blank" style="--d:1580ms;padding:14px 16px;text-align:center;border:1px dashed rgba(246,244,239,0.18);text-decoration:none;display:block"><div style="font-family:'Macan Pan';font-size:18px;font-style:italic;color:rgba(246,244,239,0.85)">Project detail</div></a>
+          <a class="reveal sitemap-node" href="developers.html#profile"    target="_blank" style="--d:1620ms;padding:14px 16px;text-align:center;border:1px dashed rgba(246,244,239,0.18);text-decoration:none;display:block"><div style="font-family:'Macan Pan';font-size:18px;font-style:italic;color:rgba(246,244,239,0.85)">Profile</div></a>
+          <a class="reveal sitemap-node" href="agents.html"                target="_blank" style="--d:1660ms;padding:14px 16px;text-align:center;border:1px dashed rgba(246,244,239,0.18);text-decoration:none;display:block"><div style="font-family:'Macan Pan';font-size:18px;font-style:italic;color:rgba(246,244,239,0.85)">Broker profile</div></a>
           <div style="opacity:0.3"></div>
-          <a class="reveal sitemap-node" href="careers.html#position"      target="_blank" style="--d:1700ms;padding:14px 16px;text-align:center;border:1px dashed rgba(246,244,239,0.18);text-decoration:none;display:block"><div style="font-family:'Cormorant Garamond';font-size:18px;font-style:italic;color:rgba(246,244,239,0.85)">Position detail</div></a>
+          <a class="reveal sitemap-node" href="careers.html#position"      target="_blank" style="--d:1700ms;padding:14px 16px;text-align:center;border:1px dashed rgba(246,244,239,0.18);text-decoration:none;display:block"><div style="font-family:'Macan Pan';font-size:18px;font-style:italic;color:rgba(246,244,239,0.85)">Position detail</div></a>
         </div>
       </div>
     </div>
@@ -847,31 +846,31 @@
           <div style="position:absolute;inset:0;background:linear-gradient(180deg, transparent 40%, rgba(14,12,8,0.85))"></div>
           <div style="position:absolute;inset:0;padding:32px;display:flex;flex-direction:column;justify-content:flex-end">
             <div style="font-size:11px;letter-spacing:0.28em;color:var(--ochre);text-transform:uppercase">Variant A</div>
-            <div style="font-family:'Cormorant Garamond';font-weight:300;font-size:48px;line-height:1;color:var(--porcelain);margin-top:12px">A digital address worth <em style="color:var(--ochre);font-style:italic">arriving</em> at.</div>
+            <div style="font-family:'Macan Pan';font-weight:300;font-size:48px;line-height:1;color:var(--porcelain);margin-top:12px">A digital address worth <em style="color:var(--ochre);font-style:italic">arriving</em> at.</div>
             <div style="margin-top:24px;border-top:1px solid rgba(246,244,239,0.3);padding-top:16px;display:flex;gap:12px">
               <div style="background:var(--porcelain);color:var(--graphite-900);padding:6px 12px;font-size:10px;letter-spacing:0.22em;text-transform:uppercase">Buy</div>
               <div style="border:1px solid rgba(246,244,239,0.4);padding:6px 12px;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--porcelain)">Rent</div>
               <div style="border:1px solid rgba(246,244,239,0.4);padding:6px 12px;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--porcelain)">Off-Plan</div>
             </div>
           </div>
-          <div style="position:absolute;top:20px;right:20px;font-family:'Cormorant Garamond';font-style:italic;color:var(--ochre);font-size:24px">Cinematic</div>
+          <div style="position:absolute;top:20px;right:20px;font-family:'Macan Pan';font-style:italic;color:var(--ochre);font-size:24px">Cinematic</div>
         </div>
         <!-- Variant B · Editorial split -->
         <div class="reveal clip-rise" style="--d:750ms;position:relative;background:var(--porcelain);color:var(--graphite-900);overflow:hidden;display:grid;grid-template-rows:1fr 1fr">
           <div style="padding:32px;display:flex;flex-direction:column;justify-content:center">
             <div style="font-size:11px;letter-spacing:0.28em;color:var(--ochre);text-transform:uppercase">Variant B</div>
-            <div style="font-family:'Cormorant Garamond';font-weight:300;font-size:54px;line-height:0.95;margin-top:16px">Curated, <em style="color:var(--ochre);font-style:italic">privately.</em></div>
+            <div style="font-family:'Macan Pan';font-weight:300;font-size:54px;line-height:0.95;margin-top:16px">Curated, <em style="color:var(--ochre);font-style:italic">privately.</em></div>
             <div style="font-size:14px;color:var(--graphite-500);margin-top:16px;line-height:1.5">A small book of Dubai's most considered addresses. Represented by a senior broker, never a portal.</div>
           </div>
           <div style="background:#a89a85;background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&h=600&q=80');background-size:cover"></div>
-          <div style="position:absolute;top:20px;right:20px;font-family:'Cormorant Garamond';font-style:italic;color:var(--ochre);font-size:24px">Editorial</div>
+          <div style="position:absolute;top:20px;right:20px;font-family:'Macan Pan';font-style:italic;color:var(--ochre);font-size:24px">Editorial</div>
         </div>
         <!-- Variant C · Monogram stack -->
         <div class="reveal clip-rise" style="--d:900ms;position:relative;background:var(--porcelain-100);color:var(--graphite-900);overflow:hidden;padding:32px;display:flex;flex-direction:column;justify-content:space-between">
           <div style="font-size:11px;letter-spacing:0.28em;color:var(--ochre);text-transform:uppercase">Variant C</div>
           <div style="display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center">
             <img src="assets/conceptplus-logo-dark.svg" style="width:160px;height:auto;opacity:0.9"/>
-            <div style="font-family:'Cormorant Garamond';font-weight:300;font-size:48px;line-height:1;letter-spacing:-0.02em">Est. <em style="color:var(--ochre);font-style:italic">2014</em>, Dubai</div>
+            <div style="font-family:'Macan Pan';font-weight:300;font-size:48px;line-height:1;letter-spacing:-0.02em">Est. <em style="color:var(--ochre);font-style:italic">2014</em>, Dubai</div>
             <div style="width:40px;height:1px;background:var(--ochre)"></div>
             <div style="font-size:12px;letter-spacing:0.32em;text-transform:uppercase;color:var(--graphite-500)">Senior brokerage · Freehold only</div>
           </div>
@@ -879,7 +878,7 @@
             <span>1,247 mandates</span>
             <span>42 communities</span>
           </div>
-          <div style="position:absolute;top:20px;right:20px;font-family:'Cormorant Garamond';font-style:italic;color:var(--ochre);font-size:24px">Monogram</div>
+          <div style="position:absolute;top:20px;right:20px;font-family:'Macan Pan';font-style:italic;color:var(--ochre);font-size:24px">Monogram</div>
         </div>
       </div>
     </div>
