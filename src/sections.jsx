@@ -2,12 +2,166 @@
 
 const { useState: useStateS, useEffect: useEffectS, useRef: useRefS, useMemo: useMemoS } = React;
 
-// ─── Hero (4 variants via tweak) ───────────────────────────────────────────
-function Hero({ variant = 'video' }) {
+// ─── Hero (5 variants via tweak) ───────────────────────────────────────────
+function Hero({ variant = 'slider' }) {
   if (variant === 'editorial-split') return <HeroEditorial />;
   if (variant === 'monogram-stack')  return <HeroMonogram />;
   if (variant === 'cinematic')       return <HeroCinematic />;
-  return <HeroVideo />;
+  if (variant === 'video')           return <HeroVideo />;
+  return <HeroSlider />;
+}
+
+// FAM-style featured-property slider — high-res luxury imagery, cross-fade,
+// auto-rotate, dot indicators. Each slide shows a Concept Plus property + CTA.
+function HeroSlider() {
+  // Hand-picked Unsplash images at 2880px / quality 95 — luxury Dubai real estate.
+  // The slide content also gets surfaced as a small property card at the bottom-left.
+  const slides = [
+    {
+      img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2880&q=95',
+      name: 'Frond M, Palm Jumeirah',
+      tagline: 'Signature Villas — beachfront living, redefined.',
+      eyebrow: 'For sale · Villa',
+      price: 'AED 42.5M',
+      cta: 'property.html'
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=2880&q=95',
+      name: 'Burj-view Penthouse, Downtown',
+      tagline: 'The Burj framed in floor-to-ceiling glass.',
+      eyebrow: 'For sale · Penthouse',
+      price: 'AED 18.9M',
+      cta: 'property.html'
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=2880&q=95',
+      name: 'Lakeside Mansion, Emirates Hills',
+      tagline: 'A private estate at Sector E, eight bedrooms.',
+      eyebrow: 'For sale · Mansion',
+      price: 'AED 78M',
+      cta: 'property.html'
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1567496898669-ee935f5f647a?auto=format&fit=crop&w=2880&q=95',
+      name: 'Cassia Residences, MBR City',
+      tagline: 'By Sobha · Handover Q4 2027 · 60/40 payment plan.',
+      eyebrow: 'Off-plan · Launched',
+      price: 'From AED 1.80M',
+      cta: 'off-plan.html'
+    },
+    {
+      img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=2880&q=95',
+      name: 'Sea-line apartment, Bluewaters',
+      tagline: 'Bluewaters Residences — sea-line orientation.',
+      eyebrow: 'For sale · Apartment',
+      price: 'AED 6.85M',
+      cta: 'property.html'
+    },
+  ];
+
+  const [idx, setIdx] = useStateS(0);
+  const [paused, setPaused] = useStateS(false);
+
+  useEffectS(() => {
+    if (paused) return;
+    const t = setInterval(() => setIdx((i) => (i + 1) % slides.length), 5800);
+    return () => clearInterval(t);
+  }, [paused, slides.length]);
+
+  return (
+    <section
+      className="relative min-h-[100vh] w-full overflow-hidden bg-graphite-900"
+      data-screen-label="Hero · Slider"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      {/* Slides — each absolute, cross-fading */}
+      {slides.map((s, i) => (
+        <div key={i} className="absolute inset-0 transition-opacity duration-[1400ms]" style={{ opacity: i === idx ? 1 : 0 }}>
+          <img src={s.img} alt={s.name} className="absolute inset-0 w-full h-full object-cover" loading={i === 0 ? 'eager' : 'lazy'} />
+        </div>
+      ))}
+
+      {/* Bottom 80% gradient — matches the Video variant for consistent legibility */}
+      <div className="absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-black/65 to-transparent pointer-events-none" />
+      {/* Top subtle gradient so the headline reads against bright skies */}
+      <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-black/35 to-transparent pointer-events-none" />
+
+      {/* Content */}
+      <div className="relative h-full min-h-[100vh] flex flex-col">
+        {/* Centered upper text */}
+        <div className="flex-1 flex items-center">
+          <div className="max-w-[1400px] mx-auto px-6 md:px-10 w-full pt-32 pb-6">
+            <div className="reveal">
+              <div className="eyebrow text-ochre mb-6">Est. 2014 · Dubai</div>
+              <h1 className="font-display text-porcelain leading-[0.95] tracking-[-0.01em]" style={{ fontSize: 'clamp(52px, 8.5vw, 132px)', fontWeight: 400 }}>
+                Dubai's<br/><em className="not-italic text-ochre font-display" style={{ fontStyle: 'italic', fontWeight: 300 }}>address book.</em>
+              </h1>
+              <p className="mt-7 max-w-xl text-porcelain/85 text-[17px] leading-relaxed">
+                A senior brokerage for the city's most considered addresses — hand-picked off the public market, walked by the people who'll sell them.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Search bar */}
+        <div className="px-6 md:px-10 pb-7">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="reveal">
+              <SearchBar />
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom: rotating property card + dot indicators */}
+        <div className="pb-12 md:pb-16">
+          <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+            <div className="flex items-end justify-between gap-6 flex-wrap">
+              {/* Rotating property card — bottom-left */}
+              <div className="relative min-h-[110px] min-w-[280px]">
+                {slides.map((s, i) => (
+                  <div key={i}
+                    className="transition-opacity duration-700"
+                    style={{
+                      opacity: i === idx ? 1 : 0,
+                      position: i === idx ? 'relative' : 'absolute',
+                      pointerEvents: i === idx ? 'auto' : 'none',
+                      inset: i === idx ? undefined : 0
+                    }}>
+                    <div className="text-porcelain/70 text-[10px] tracking-[0.28em] uppercase">{s.eyebrow}</div>
+                    <div className="text-porcelain font-display leading-tight mt-2" style={{ fontSize: 'clamp(22px, 2.6vw, 32px)', fontWeight: 400 }}>{s.name}</div>
+                    <div className="text-porcelain/85 text-[14px] mt-1 max-w-md">{s.tagline}</div>
+                    <div className="mt-4 flex items-center gap-5 flex-wrap">
+                      <div>
+                        <div className="text-porcelain/65 text-[10px] tracking-[0.22em] uppercase">{s.eyebrow.startsWith('Off-plan') ? 'Starting from' : 'Asking'}</div>
+                        <div className="text-porcelain font-display num text-[24px] leading-none mt-1">{s.price}</div>
+                      </div>
+                      <a href={s.cta} className="inline-flex items-center gap-3 px-6 py-3 hairline border border-porcelain/40 text-porcelain text-[11px] tracking-[0.22em] uppercase hover:border-ochre hover:bg-ochre hover:text-porcelain transition cursor-pointer">
+                        Discover more <ArrowIcon className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Dot indicators — bottom-right */}
+              <div className="flex items-center gap-3">
+                <span className="text-porcelain/65 text-[11px] num tracking-wider mr-3">{String(idx + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}</span>
+                {slides.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setIdx(i)}
+                    aria-label={`Slide ${i + 1}`}
+                    className={`h-[2px] transition-all cursor-pointer ${i === idx ? 'w-12 bg-ochre' : 'w-6 bg-porcelain/30 hover:bg-porcelain/70'}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function HeroVideo() {

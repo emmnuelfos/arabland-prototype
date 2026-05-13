@@ -3,7 +3,7 @@
 const { useState: useStateA, useEffect: useEffectA, useMemo: useMemoA } = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "hero": "video",
+  "hero": "slider",
   "cardVariant": "fam",
   "displayFont": "Cormorant Garamond",
   "showStripe": true
@@ -123,7 +123,7 @@ function App() {
       <TweaksPanel title="Tweaks">
         <TweakSection title="Homepage hero">
           <TweakRadio label="Hero variant" value={tweaks.hero} onChange={(v) => setTweak('hero', v)}
-            options={[{ value: 'video', label: 'Video' }, { value: 'cinematic', label: 'Cinematic' }, { value: 'editorial-split', label: 'Editorial' }, { value: 'monogram-stack', label: 'Monogram' }]} />
+            options={[{ value: 'slider', label: 'Slider' }, { value: 'video', label: 'Video' }, { value: 'cinematic', label: 'Cinematic' }, { value: 'editorial-split', label: 'Editorial' }, { value: 'monogram-stack', label: 'Monogram' }]} />
         </TweakSection>
         <TweakSection title="Listing card">
           <TweakRadio label="Card style" value={tweaks.cardVariant} onChange={(v) => setTweak('cardVariant', v)}
