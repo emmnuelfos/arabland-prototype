@@ -601,14 +601,17 @@ function StylizedMap({ listings, hoverId, onHover, currency }) {
       markersRef.current.set(l.id, m);
     });
 
-    // Fit all markers in view with padding
-    if (listings.length > 0) {
-      const bounds = L.latLngBounds(listings.map((l) => [l.lat, l.lng]));
-      map.fitBounds(bounds, { padding: [60, 60] });
-    }
+    // Compute bounds once
+    const bounds = listings.length > 0 ? L.latLngBounds(listings.map((l) => [l.lat, l.lng])) : null;
 
-    // Invalidate size after the overlay's open animation finishes, so the map fills the container.
-    setTimeout(() => map.invalidateSize(), 250);
+    // Fit after the overlay's open animation finishes, so the container has its final size.
+    // Re-fit twice — once at 60ms (modal mounted) and once at 320ms (animation fully settled).
+    const refit = () => {
+      map.invalidateSize();
+      if (bounds) map.fitBounds(bounds, { padding: [60, 60], maxZoom: 12, animate: false });
+    };
+    setTimeout(refit, 60);
+    setTimeout(refit, 320);
 
     return () => { map.remove(); mapRef.current = null; markersRef.current.clear(); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
