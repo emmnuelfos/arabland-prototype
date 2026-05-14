@@ -461,15 +461,23 @@ function HeroMonogram() {
   );
 }
 
-// ─── Featured Communities ──────────────────────────────────────────────────
+// ─── Featured Communities (Guides) — FAM-style carousel ─────────────────
 function Communities() {
   const D = window.CONCEPTPLUS_DATA;
   const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const scrollRef = useRefS(null);
+  const scrollByCard = (dir) => scrollRef.current?.scrollBy({ left: dir * 380, behavior: 'smooth' });
   return (
     <Section eyebrow="Guides" title="Area Guides in Dubai" sub="Senior-broker-written guides to every freehold community we represent. Schools, cafés, walks, price trends, who's buying — all the context you need before a viewing.">
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
+      {/* Carousel arrows top-right */}
+      <div className="-mt-2 mb-6 flex items-center gap-3 justify-end">
+        <button onClick={() => scrollByCard(-1)} aria-label="Previous guide" className="w-11 h-11 grid place-items-center hairline border border-stone-200 text-graphite hover:text-ochre hover:border-ochre transition cursor-pointer"><ArrowIcon dir="left" /></button>
+        <button onClick={() => scrollByCard(1)}  aria-label="Next guide"     className="w-11 h-11 grid place-items-center hairline border border-stone-200 text-graphite hover:text-ochre hover:border-ochre transition cursor-pointer"><ArrowIcon /></button>
+      </div>
+      {/* Horizontal snap-scroll rail */}
+      <div ref={scrollRef} className="flex gap-5 md:gap-6 overflow-x-auto no-scrollbar -mx-6 md:-mx-10 px-6 md:px-10 snap-x snap-mandatory">
         {D.communities.map((c, i) => (
-          <a key={c.name} href={`community.html?slug=${slugify(c.name)}`} className="reveal group cursor-pointer" style={{ transitionDelay: `${i * 30}ms` }}>
+          <a key={c.name} href={`community.html?slug=${slugify(c.name)}`} className="reveal group cursor-pointer shrink-0 w-[78vw] sm:w-[44vw] md:w-[32vw] lg:w-[22vw] snap-start" style={{ transitionDelay: `${i * 30}ms` }}>
             <div className="relative aspect-[16/11] overflow-hidden bg-stone-200">
               <img src={c.image} alt={c.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.06]" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-t from-graphite-900/85 via-graphite-900/15 to-transparent" />
@@ -483,6 +491,9 @@ function Communities() {
             </div>
           </a>
         ))}
+      </div>
+      <div className="mt-10 flex justify-center">
+        <a href="buy.html" className="hairline border border-graphite-900 px-7 py-4 text-[11px] tracking-[0.22em] uppercase text-graphite-900 hover:bg-graphite-900 hover:text-porcelain transition cursor-pointer inline-flex items-center gap-3">View all guides <ArrowIcon className="w-3.5 h-3.5" /></a>
       </div>
     </Section>
   );
@@ -553,14 +564,22 @@ function FeaturedListings({ cardVariant, currency, areaUnit, shortlist, compare,
   );
 }
 
-// ─── Off-Plan ─────────────────────────────────────────────────────────────
+// ─── Off-Plan (Latest Launched Projects) — FAM-style carousel ───────────
 function OffPlan({ onOpenPlan }) {
   const D = window.CONCEPTPLUS_DATA;
+  const scrollRef = useRefS(null);
+  const scrollByCard = (dir) => scrollRef.current?.scrollBy({ left: dir * 380, behavior: 'smooth' });
   return (
     <Section eyebrow="Off-plan" title="Latest Launched Projects in Dubai" sub="Pre-launch allocations from Dubai's most active developers — payment plans, handover quarters, and the data to know which towers will hold their value.">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Carousel arrows */}
+      <div className="-mt-2 mb-6 flex items-center gap-3 justify-end">
+        <button onClick={() => scrollByCard(-1)} aria-label="Previous project" className="w-11 h-11 grid place-items-center hairline border border-stone-200 text-graphite hover:text-ochre hover:border-ochre transition cursor-pointer"><ArrowIcon dir="left" /></button>
+        <button onClick={() => scrollByCard(1)}  aria-label="Next project"     className="w-11 h-11 grid place-items-center hairline border border-stone-200 text-graphite hover:text-ochre hover:border-ochre transition cursor-pointer"><ArrowIcon /></button>
+      </div>
+      {/* Horizontal snap-scroll rail */}
+      <div ref={scrollRef} className="flex gap-5 md:gap-6 overflow-x-auto no-scrollbar -mx-6 md:-mx-10 px-6 md:px-10 snap-x snap-mandatory">
         {D.offPlan.map((p, i) => (
-          <article key={p.id} onClick={onOpenPlan} className="reveal group cursor-pointer bg-porcelain-100 hairline border border-stone-200" style={{ transitionDelay: `${i * 60}ms` }}>
+          <article key={p.id} onClick={onOpenPlan} className="reveal group cursor-pointer bg-porcelain-100 hairline border border-stone-200 shrink-0 w-[80vw] sm:w-[46vw] md:w-[34vw] lg:w-[23vw] snap-start" style={{ transitionDelay: `${i * 60}ms` }}>
             <div className="relative aspect-[4/5] overflow-hidden">
               <img src={p.image} alt={p.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.04]" loading="lazy" />
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-graphite-900/10 to-graphite-900/85" />
@@ -586,6 +605,9 @@ function OffPlan({ onOpenPlan }) {
             </div>
           </article>
         ))}
+      </div>
+      <div className="mt-10 flex justify-center">
+        <a href="off-plan.html" className="hairline border border-graphite-900 px-7 py-4 text-[11px] tracking-[0.22em] uppercase text-graphite-900 hover:bg-graphite-900 hover:text-porcelain transition cursor-pointer inline-flex items-center gap-3">View all projects <ArrowIcon className="w-3.5 h-3.5" /></a>
       </div>
     </Section>
   );
@@ -1188,8 +1210,8 @@ function MostTrendingCard({ listing, index, isActive, onOpen }) {
 // section that does both jobs and reads premium, not "trust-badge soup".
 function SocialProof() {
   return (
-    <section className="bg-graphite-900 text-porcelain" data-screen-label="Home · Social Proof">
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16 md:py-20">
+    <section className="bg-graphite-900 text-porcelain relative overflow-hidden" data-screen-label="Home · Social Proof">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16 md:py-20 relative">
         <div className="grid lg:grid-cols-[1.4fr_1fr] gap-12 items-end mb-12">
           <div className="reveal">
             <div className="eyebrow text-ochre mb-4">Social proof</div>
@@ -1201,6 +1223,24 @@ function SocialProof() {
             Twelve years on the floor, a deliberately small team, and one of the highest repeat-client rates in the city.
           </p>
         </div>
+
+        {/* ── Trust & Certification badges ── illustrative ribbons + seals,
+            FAM-style "trusted & certified" stripe. Each badge is hand-built
+            as inline SVG so it reads as a real award, not a placeholder. */}
+        <div className="reveal mb-12">
+          <div className="eyebrow text-ochre mb-8 text-center" style={{ fontSize: 10 }}>Trusted & Certified</div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-6 gap-y-10 items-end">
+            <CertBadge variant="laurel-ribbon"  big="2026"     small="Winner"        label="Arabian Property Awards" />
+            <CertBadge variant="shield-check"   big="DLD"      small="Registered"    label="Dubai Land Department" />
+            <CertBadge variant="shield-tick"    big="RERA"     small="Certified"     label="ORN · 31094" />
+            <CertBadge variant="google-stars"   big="4.9"      small="★ ★ ★ ★ ★"     label="14,000+ Google Reviews" />
+            <CertBadge variant="trophy-50"      big="TOP 50"   small="Brokers Dubai"  label="Bayut Top Producers 2025" />
+            <CertBadge variant="forbes-seal"    big="FEATURED" small="Editor's Pick" label="Forbes Middle East" />
+          </div>
+        </div>
+
+        {/* Hairline rule */}
+        <div className="hairline border-t border-porcelain/15 my-8" />
 
         {/* Stats row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-porcelain/10 hairline border border-porcelain/10">
@@ -1217,55 +1257,103 @@ function SocialProof() {
           ))}
         </div>
 
-        {/* Awards + Reviews row */}
-        <div className="mt-10 grid lg:grid-cols-[1.1fr_1fr_1fr] gap-px bg-porcelain/10 hairline border border-porcelain/10">
-          {/* Arabian Property Awards */}
-          <div className="bg-graphite-900 px-7 py-8 flex items-center gap-6 reveal">
-            <div className="w-14 h-16 grid place-items-center hairline border border-ochre/60 text-ochre">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
-                <path d="M7 4h10v4a5 5 0 0 1-10 0V4z" /><path d="M7 4H4v2a3 3 0 0 0 3 3M17 4h3v2a3 3 0 0 1-3 3" /><path d="M12 13v4M9 21h6" />
-              </svg>
-            </div>
-            <div>
-              <div className="font-display text-porcelain leading-tight" style={{ fontSize: 22, fontWeight: 400 }}>Arabian Property Awards</div>
-              <div className="text-[12px] text-porcelain/65 mt-1.5">Best Brokerage · Luxury · <span className="num">2025–2026</span></div>
-            </div>
-          </div>
-
-          {/* Google Reviews */}
-          <div className="bg-graphite-900 px-7 py-8 flex items-center gap-6 reveal">
-            <div className="w-14 h-14 grid place-items-center rounded-full bg-ochre text-porcelain font-display num" style={{ fontSize: 22, fontWeight: 500 }}>4.9</div>
-            <div>
-              <div className="text-ochre text-[18px] leading-none">★ ★ ★ ★ ★</div>
-              <div className="text-[13px] text-porcelain mt-2 num">14,000+ Google reviews</div>
-              <div className="text-[10px] tracking-[0.22em] uppercase text-porcelain/55 mt-1">Verified by Google</div>
-            </div>
-          </div>
-
-          {/* DLD / RERA */}
-          <div className="bg-graphite-900 px-7 py-8 flex items-center gap-6 reveal">
-            <div className="w-14 h-14 grid place-items-center hairline border border-ochre/60 text-ochre">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
-                <path d="M12 3 4 6v5c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-3z" /><path d="m9 12 2 2 4-4" />
-              </svg>
-            </div>
-            <div>
-              <div className="font-display text-porcelain leading-tight" style={{ fontSize: 18, fontWeight: 400 }}>DLD · RERA registered</div>
-              <div className="text-[12px] text-porcelain/65 mt-1.5">ORN · <span className="num">31094</span></div>
-            </div>
-          </div>
-        </div>
-
         {/* As featured in */}
         <div className="mt-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-[11px] tracking-[0.28em] uppercase text-porcelain/45">
           <span className="text-porcelain/65">As featured in</span>
           <span>Forbes Middle East</span><span className="opacity-30">·</span>
           <span>Arabian Business</span><span className="opacity-30">·</span>
           <span>The National</span><span className="opacity-30">·</span>
-          <span>Architectural Digest</span>
+          <span>Architectural Digest</span><span className="opacity-30">·</span>
+          <span>Wallpaper*</span>
         </div>
       </div>
     </section>
+  );
+}
+
+// CertBadge — illustrated certification badges with laurel wreaths, shields,
+// trophies, and seals. All rendered as inline SVG for crisp rendering at any size.
+function CertBadge({ variant, big, small, label }) {
+  const W = 96, H = 112;
+  const laurel = (side) => (
+    <path d={side === 'L'
+      ? "M 28 30 Q 12 50 22 96 M 28 38 Q 16 42 18 56 M 26 50 Q 14 56 18 70 M 24 64 Q 14 70 20 84"
+      : "M 68 30 Q 84 50 74 96 M 68 38 Q 80 42 78 56 M 70 50 Q 82 56 78 70 M 72 64 Q 82 70 76 84"
+    } stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" fill="none" opacity="0.85" />
+  );
+  return (
+    <div className="flex flex-col items-center text-center group">
+      <div className="relative text-ochre transition-transform duration-500 group-hover:scale-105">
+        <svg viewBox={`0 0 ${W} ${H}`} className="w-20 md:w-24 h-auto" fill="none" stroke="currentColor">
+          {/* Inner circle / shield depending on variant */}
+          {variant === 'laurel-ribbon' && (
+            <>
+              {laurel('L')}{laurel('R')}
+              <circle cx={W/2} cy="50" r="22" stroke="currentColor" strokeWidth="1.2" />
+              <text x={W/2} y="55" textAnchor="middle" fontSize="13" fill="currentColor" fontWeight="500" style={{ fontFamily: 'Macan Pan' }}>{big}</text>
+              {/* Ribbon below circle */}
+              <path d="M 38 76 L 30 100 L 42 92 L 48 100 L 54 92 L 66 100 L 58 76 Z" stroke="currentColor" strokeWidth="1.1" fill="none" />
+            </>
+          )}
+          {variant === 'shield-check' && (
+            <>
+              <path d="M 48 14 L 22 22 L 22 56 Q 22 80 48 96 Q 74 80 74 56 L 74 22 Z" stroke="currentColor" strokeWidth="1.3" fill="none" />
+              <text x={W/2} y="50" textAnchor="middle" fontSize="14" fill="currentColor" fontWeight="500" style={{ fontFamily: 'Macan Pan' }}>{big}</text>
+              <path d="M 38 62 L 46 70 L 60 56" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            </>
+          )}
+          {variant === 'shield-tick' && (
+            <>
+              <path d="M 48 14 L 22 22 L 22 56 Q 22 80 48 96 Q 74 80 74 56 L 74 22 Z" stroke="currentColor" strokeWidth="1.3" fill="none" />
+              <text x={W/2} y="48" textAnchor="middle" fontSize="11" fill="currentColor" fontWeight="500" style={{ fontFamily: 'Macan Pan' }}>{big}</text>
+              <path d="M 30 62 L 66 62" stroke="currentColor" strokeWidth="0.8" />
+              <text x={W/2} y="76" textAnchor="middle" fontSize="7" fill="currentColor" letterSpacing="1.5" style={{ fontFamily: 'Macan Pan' }}>CERTIFIED</text>
+            </>
+          )}
+          {variant === 'google-stars' && (
+            <>
+              {laurel('L')}{laurel('R')}
+              <circle cx={W/2} cy="50" r="22" stroke="currentColor" strokeWidth="1.2" />
+              <text x={W/2} y="54" textAnchor="middle" fontSize="15" fill="currentColor" fontWeight="500" style={{ fontFamily: 'Macan Pan' }}>{big}</text>
+              <text x={W/2} y="98" textAnchor="middle" fontSize="9" fill="currentColor" letterSpacing="1" style={{ fontFamily: 'Macan Pan' }}>★★★★★</text>
+            </>
+          )}
+          {variant === 'trophy-50' && (
+            <>
+              {/* Trophy cup */}
+              <path d="M 34 22 L 62 22 L 60 50 Q 60 60 48 64 Q 36 60 36 50 Z" stroke="currentColor" strokeWidth="1.3" fill="none" />
+              <path d="M 34 28 Q 22 28 22 38 Q 22 46 34 46" stroke="currentColor" strokeWidth="1.2" fill="none" />
+              <path d="M 62 28 Q 74 28 74 38 Q 74 46 62 46" stroke="currentColor" strokeWidth="1.2" fill="none" />
+              <path d="M 48 64 L 48 76 M 38 80 L 58 80 M 42 76 L 54 76" stroke="currentColor" strokeWidth="1.2" />
+              <text x={W/2} y="45" textAnchor="middle" fontSize="13" fill="currentColor" fontWeight="600" style={{ fontFamily: 'Macan Pan' }}>{big}</text>
+              <text x={W/2} y="100" textAnchor="middle" fontSize="7" fill="currentColor" letterSpacing="1" style={{ fontFamily: 'Macan Pan' }}>2025</text>
+            </>
+          )}
+          {variant === 'forbes-seal' && (
+            <>
+              {/* Sunburst seal */}
+              {Array.from({ length: 24 }).map((_, i) => {
+                const a = (i * 15) * Math.PI / 180;
+                const x1 = W/2 + Math.cos(a) * 28;
+                const y1 = 50 + Math.sin(a) * 28;
+                const x2 = W/2 + Math.cos(a) * 34;
+                const y2 = 50 + Math.sin(a) * 34;
+                return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" strokeWidth="0.9" />;
+              })}
+              <circle cx={W/2} cy="50" r="24" stroke="currentColor" strokeWidth="1.3" fill="none" />
+              <text x={W/2} y="46" textAnchor="middle" fontSize="6.5" fill="currentColor" letterSpacing="1.2" style={{ fontFamily: 'Macan Pan' }}>EST. 2014</text>
+              <path d="M 30 52 L 66 52" stroke="currentColor" strokeWidth="0.6" />
+              <text x={W/2} y="62" textAnchor="middle" fontSize="9" fill="currentColor" fontWeight="500" style={{ fontFamily: 'Macan Pan' }}>{small}</text>
+              <text x={W/2} y="106" textAnchor="middle" fontSize="7" fill="currentColor" letterSpacing="1.5" style={{ fontFamily: 'Macan Pan' }}>FORBES</text>
+            </>
+          )}
+        </svg>
+      </div>
+      <div className="text-[11px] tracking-[0.18em] uppercase text-porcelain mt-3 leading-tight">{label}</div>
+      {(variant === 'laurel-ribbon' || variant === 'shield-check' || variant === 'shield-tick' || variant === 'trophy-50') && (
+        <div className="text-[10px] text-porcelain/55 mt-1.5">{small}</div>
+      )}
+    </div>
   );
 }
 
@@ -1310,7 +1398,7 @@ function OurTeams() {
                 </div>
                 <div className="mt-4 grid grid-cols-2 gap-2">
                   <a href="agents.html" className="hairline border border-stone-200 px-3 py-2.5 text-[10px] tracking-[0.18em] uppercase text-graphite hover:text-ochre hover:border-ochre transition cursor-pointer text-center">Profile</a>
-                  <a href={`https://wa.me/971${(a.phone || '').replace(/[^0-9]/g, '').slice(-9)}`} className="bg-[#25D366] text-white px-3 py-2.5 text-[10px] tracking-[0.16em] uppercase hover:opacity-90 transition cursor-pointer flex items-center justify-center gap-2">
+                  <a href={`https://wa.me/971${(a.phone || '').replace(/[^0-9]/g, '').slice(-9)}`} className="bg-ochre text-porcelain px-3 py-2.5 text-[10px] tracking-[0.16em] uppercase hover:opacity-90 transition cursor-pointer flex items-center justify-center gap-2">
                     <WhatsappIcon className="w-3.5 h-3.5" /> Whatsapp
                   </a>
                 </div>

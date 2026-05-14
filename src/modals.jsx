@@ -376,7 +376,7 @@ function PaymentPlanModal({ open, onClose }) {
                       <div className="font-display text-[20px] leading-tight">{a.name}</div>
                       <div className="text-[11px] text-porcelain/85 mt-1">Property Advisor</div>
                     </div>
-                    <button className="absolute bottom-4 right-4 w-10 h-10 grid place-items-center rounded-full bg-[#25D366] text-white cursor-pointer hover:scale-110 transition">
+                    <button className="absolute bottom-4 right-4 w-10 h-10 grid place-items-center rounded-full bg-ochre text-porcelain cursor-pointer hover:scale-110 transition">
                       <WhatsappIcon className="w-4 h-4" />
                     </button>
                   </div>
@@ -479,7 +479,7 @@ function PaymentPlanModal({ open, onClose }) {
               <button className="w-full flex items-center justify-center gap-2 py-3.5 bg-ochre text-porcelain text-[12px] tracking-[0.22em] uppercase hover:bg-ochre-700 cursor-pointer">
                 Discover more <ArrowIcon className="w-3.5 h-3.5" />
               </button>
-              <button className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#25D366] text-white text-[12px] tracking-[0.18em] uppercase hover:opacity-90 cursor-pointer">
+              <button className="w-full flex items-center justify-center gap-2 py-3.5 bg-ochre text-porcelain text-[12px] tracking-[0.18em] uppercase hover:opacity-90 cursor-pointer">
                 <WhatsappIcon className="w-4 h-4" /> WhatsApp
               </button>
               <button className="w-full flex items-center justify-center gap-2 py-3.5 hairline border border-stone-200 text-graphite-900 text-[12px] tracking-[0.18em] uppercase hover:border-ochre hover:text-ochre cursor-pointer">
@@ -795,7 +795,7 @@ function PropertyDetail({ open, onClose, listing, currency, onPhotos, onMortgage
 
             {/* Primary CTAs — WhatsApp + Message (FAM style) */}
             <div className="mt-5 space-y-2.5">
-              <button className="w-full flex items-center justify-center gap-2 py-3.5 bg-[#25D366] text-white text-[12px] tracking-[0.18em] uppercase hover:opacity-90 cursor-pointer">
+              <button className="w-full flex items-center justify-center gap-2 py-3.5 bg-ochre text-porcelain text-[12px] tracking-[0.18em] uppercase hover:opacity-90 cursor-pointer">
                 <WhatsappIcon className="w-4 h-4" /> WhatsApp
               </button>
               <button className="w-full flex items-center justify-center gap-2 py-3.5 bg-graphite-900 text-porcelain text-[12px] tracking-[0.18em] uppercase hover:bg-ochre cursor-pointer">

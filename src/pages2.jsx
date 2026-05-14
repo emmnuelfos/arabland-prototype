@@ -422,7 +422,7 @@ function AgentsPage() {
                     <button onClick={(e) => { e.stopPropagation(); setOpenIdx(all.indexOf(a)); }} className="hairline border border-stone-200 px-3 py-2.5 text-[11px] tracking-[0.18em] uppercase hover:border-ochre hover:text-ochre transition cursor-pointer flex items-center justify-center gap-2">
                       <UserCircleIcon /> View profile
                     </button>
-                    <button onClick={(e) => e.stopPropagation()} className="bg-[#25D366] text-white px-3 py-2.5 text-[11px] tracking-[0.16em] uppercase hover:opacity-90 transition cursor-pointer flex items-center justify-center gap-2">
+                    <button onClick={(e) => e.stopPropagation()} className="bg-ochre text-porcelain px-3 py-2.5 text-[11px] tracking-[0.16em] uppercase hover:opacity-90 transition cursor-pointer flex items-center justify-center gap-2">
                       <WhatsappIcon className="w-3.5 h-3.5" /> Whatsapp
                     </button>
                   </div>
@@ -447,7 +447,7 @@ function AgentsPage() {
                       <div className="text-[11px] tracking-[0.16em] uppercase text-graphite/60 mt-3">RERA #{a.rera} · {a.langs.join(' · ')}</div>
                       <div className="grid grid-cols-2 gap-2 mt-6">
                         <a href={`tel:${a.phone.replace(/\s/g,'')}`} className="hairline border border-stone-200 px-4 py-3 text-[11px] tracking-[0.22em] uppercase hover:border-ochre hover:text-ochre transition cursor-pointer flex items-center justify-center gap-2"><PhoneIcon className="w-4 h-4" /> Call</a>
-                        <button className="bg-[#25D366] text-white px-4 py-3 text-[11px] tracking-[0.22em] uppercase hover:opacity-90 transition cursor-pointer flex items-center justify-center gap-2"><WhatsappIcon /> WhatsApp</button>
+                        <button className="bg-ochre text-porcelain px-4 py-3 text-[11px] tracking-[0.22em] uppercase hover:opacity-90 transition cursor-pointer flex items-center justify-center gap-2"><WhatsappIcon /> WhatsApp</button>
                         <button className="hairline border border-stone-200 px-4 py-3 text-[11px] tracking-[0.22em] uppercase hover:border-ochre hover:text-ochre transition cursor-pointer flex items-center justify-center gap-2"><EmailIcon /> Email</button>
                         <button className="bg-graphite-900 text-porcelain px-4 py-3 text-[11px] tracking-[0.22em] uppercase hover:bg-ochre transition cursor-pointer">Book a meeting</button>
                       </div>
@@ -777,7 +777,7 @@ function CommunityPage() {
                     <div className="font-display text-[18px] leading-tight">{a.name}</div>
                     <div className="text-[11px] text-porcelain/80 mt-1">Property Advisor</div>
                   </div>
-                  <button className="absolute bottom-4 right-4 w-10 h-10 grid place-items-center rounded-full bg-[#25D366] text-white cursor-pointer hover:scale-110 transition">
+                  <button className="absolute bottom-4 right-4 w-10 h-10 grid place-items-center rounded-full bg-ochre text-porcelain cursor-pointer hover:scale-110 transition">
                     <WhatsappIcon className="w-4 h-4" />
                   </button>
                 </div>
