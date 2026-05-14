@@ -463,7 +463,7 @@ function Communities() {
   const D = window.CONCEPTPLUS_DATA;
   const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   return (
-    <Section eyebrow="Communities" title="Where Dubai lives." sub="Eight neighborhoods, each with its own register of value, light and life. Pick the one that suits how you'd like to wake up.">
+    <Section eyebrow="Guides" title="Area Guides in Dubai" sub="Senior-broker-written guides to every freehold community we represent. Schools, cafés, walks, price trends, who's buying — all the context you need before a viewing.">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
         {D.communities.map((c, i) => (
           <a key={c.name} href={`community.html?slug=${slugify(c.name)}`} className="reveal group cursor-pointer" style={{ transitionDelay: `${i * 30}ms` }}>
@@ -495,7 +495,7 @@ function FeaturedListings({ cardVariant, currency, areaUnit, shortlist, compare,
   const featured = isFam ? D.listings.slice(0, 4) : D.listings;
 
   return (
-    <Section eyebrow="Featured listings" title="Currently on the books." sub="A sampling from this season's best — Frond M villas, Burj-view penthouses, Marina addresses you won't find on the public portals.">
+    <Section eyebrow="Trending now" title="Most Trending Projects in Dubai" sub="Properties under active demand from buyers this week — Frond M villas, Burj-view penthouses, Marina addresses, hand-picked by senior brokers.">
       {!isFam && (
         <div className="-mt-2 mb-6 flex items-center gap-3 justify-end">
           <button onClick={() => scrollBy(-1)} className="w-11 h-11 grid place-items-center hairline border border-stone-200 text-graphite hover:text-ochre hover:border-ochre transition cursor-pointer"><ArrowIcon dir="left" /></button>
@@ -554,7 +554,7 @@ function FeaturedListings({ cardVariant, currency, areaUnit, shortlist, compare,
 function OffPlan({ onOpenPlan }) {
   const D = window.CONCEPTPLUS_DATA;
   return (
-    <Section eyebrow="Off-plan" title="Tomorrow's addresses." sub="Pre-launch allocations, payment plans engineered for absentee owners, and the data to know which towers will hold their value.">
+    <Section eyebrow="Off-plan" title="Latest Launched Projects in Dubai" sub="Pre-launch allocations from Dubai's most active developers — payment plans, handover quarters, and the data to know which towers will hold their value.">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {D.offPlan.map((p, i) => (
           <article key={p.id} onClick={onOpenPlan} className="reveal group cursor-pointer bg-porcelain-100 hairline border border-stone-200" style={{ transitionDelay: `${i * 60}ms` }}>
@@ -635,24 +635,39 @@ function WhyConceptPlus() {
   );
 }
 
-// ─── Insights ──────────────────────────────────────────────────────────────
+// ─── Real Estate News ─────────────────────────────────────────────────────
+// FAM-style news cards: image + category tag + date + title + read time.
 function Insights() {
   const D = window.CONCEPTPLUS_DATA;
+  // Augment static data with date + author for the news-card treatment.
+  const months = ['12 May 2026', '06 May 2026', '28 Apr 2026', '19 Apr 2026', '11 Apr 2026', '02 Apr 2026'];
+  const authors = ['Layla Al-Mansouri', 'Omar Khalifa', 'Hana Reyes', 'Yusuf Demir', 'Anya Volkova', 'James Whitfield'];
   return (
-    <Section eyebrow="Latest insights" title="Quietly, in print." sub="Market reports, community guides, and the occasional letter on what's actually changing in Dubai property.">
-      <div className="grid md:grid-cols-3 gap-8">
+    <Section eyebrow="News & guides" title="Real Estate News" sub="Market reports, community guides, and the occasional letter on what's actually changing in Dubai property — written by senior brokers, not journalists.">
+      <div className="grid md:grid-cols-3 gap-7">
         {D.insights.map((a, i) => (
-          <article key={a.title} className="reveal group cursor-pointer" style={{ transitionDelay: `${i * 70}ms` }}>
+          <article key={a.title} className="reveal group cursor-pointer hairline border border-stone-200 bg-porcelain overflow-hidden flex flex-col" style={{ transitionDelay: `${i * 70}ms` }}>
             <div className="relative aspect-[4/3] overflow-hidden bg-stone-200">
-              <img src={a.image} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.04]" loading="lazy" />
+              <img src={a.image} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] group-hover:scale-[1.05]" loading="lazy" />
+              <span className="absolute top-4 left-4 px-3 py-1.5 text-[10px] tracking-[0.22em] uppercase bg-porcelain/95 text-graphite-900 hairline border border-stone-200">{a.kind}</span>
             </div>
-            <div className="pt-5">
-              <div className="eyebrow text-ochre">{a.kind} · {a.read} read</div>
-              <h3 className="font-display text-graphite-900 mt-3 leading-tight" style={{ fontSize: 26, fontWeight: 400 }}>{a.title}</h3>
-              <div className="mt-4 inline-flex items-center gap-2 text-[12px] tracking-[0.18em] uppercase text-graphite gold-underline">Read on <ArrowIcon /></div>
+            <div className="p-6 flex-1 flex flex-col">
+              <div className="text-[11px] tracking-[0.22em] uppercase text-graphite/55 flex items-center gap-3">
+                <span>{months[i] || months[0]}</span>
+                <span className="opacity-30">·</span>
+                <span>{a.read} read</span>
+              </div>
+              <h3 className="font-display text-graphite-900 mt-4 leading-tight" style={{ fontSize: 22, fontWeight: 400, letterSpacing: '-0.015em' }}>{a.title}</h3>
+              <div className="mt-auto pt-6 flex items-center justify-between border-t hairline border-stone-200 mt-6">
+                <div className="text-[12px] text-graphite/70">By <span className="text-graphite-900">{authors[i] || authors[0]}</span></div>
+                <span className="text-[11px] tracking-[0.22em] uppercase text-ochre group-hover:translate-x-1 transition inline-flex items-center gap-2">Read <ArrowIcon className="w-3.5 h-3.5" /></span>
+              </div>
             </div>
           </article>
         ))}
+      </div>
+      <div className="mt-12 flex justify-center">
+        <a href="#" className="hairline border border-graphite-900 px-7 py-4 text-[11px] tracking-[0.22em] uppercase text-graphite-900 hover:bg-graphite-900 hover:text-porcelain transition cursor-pointer inline-flex items-center gap-3">View all news <ArrowIcon className="w-3.5 h-3.5" /></a>
       </div>
     </Section>
   );
@@ -750,10 +765,10 @@ function MortgageSection() {
         <div className="reveal">
           <div className="eyebrow text-ochre mb-5">Mortgage</div>
           <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(36px, 5vw, 64px)', fontWeight: 400, letterSpacing: '-0.025em' }}>
-            What it costs, <span className="text-ochre">monthly.</span>
+            Mortgage Calculator
           </h2>
           <p className="mt-6 text-graphite text-[16px] leading-relaxed max-w-xl">
-            A quick read on a Dubai mortgage. Independent brokerage across UAE and offshore lenders — pre-approval typically inside 72 hours.
+            Calculate your monthly Dubai mortgage payment. Independent brokerage across every UAE and offshore lender — pre-approval typically inside 72 hours.
           </p>
           <div className="mt-10 hairline border-t border-stone-200 pt-8">
             <div className="eyebrow text-graphite mb-3" style={{ fontSize: 10 }}>Indicative monthly payment</div>
@@ -981,4 +996,286 @@ function ReviewsBar() {
   );
 }
 
-Object.assign(window, { Hero, TrustStrip, Communities, FeaturedListings, OffPlan, Stats, WhyConceptPlus, Insights, DeveloperLogos, EditorialStrip, Section, MortgageSection, MortgageSlider, Testimonials, Awards, InstagramStrip, ReviewsBar });
+// ─── Social Proof bar (FAM-style) ─────────────────────────────────────────
+// Dark, single-row strip: HQ stats + Arabian Property Awards + Google Reviews.
+// Replaces the prior split between TrustStrip and ReviewsBar — one tighter
+// section that does both jobs and reads premium, not "trust-badge soup".
+function SocialProof() {
+  return (
+    <section className="bg-graphite-900 text-porcelain" data-screen-label="Home · Social Proof">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-16 md:py-20">
+        <div className="grid lg:grid-cols-[1.4fr_1fr] gap-12 items-end mb-12">
+          <div className="reveal">
+            <div className="eyebrow text-ochre mb-4">Social proof</div>
+            <h2 className="font-display text-porcelain leading-[1.02]" style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+              Trusted by Dubai's most considered owners and buyers.
+            </h2>
+          </div>
+          <p className="reveal text-porcelain/70 text-[15px] leading-relaxed lg:justify-self-end max-w-md">
+            Twelve years on the floor, a deliberately small team, and one of the highest repeat-client rates in the city.
+          </p>
+        </div>
+
+        {/* Stats row */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-porcelain/10 hairline border border-porcelain/10">
+          {[
+            ['80+',      'Senior agents'],
+            ['12',       'Years on the floor'],
+            ['25+',      'Developer partners'],
+            ['AED 2.4B', 'Sold YTD'],
+          ].map(([n, l], i) => (
+            <div key={l} className="bg-graphite-900 px-6 py-8 reveal" style={{ transitionDelay: `${i * 50}ms` }}>
+              <div className="font-display num text-porcelain leading-none" style={{ fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 400, letterSpacing: '-0.02em' }}>{n}</div>
+              <div className="eyebrow text-porcelain/55 mt-3" style={{ fontSize: 10 }}>{l}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Awards + Reviews row */}
+        <div className="mt-10 grid lg:grid-cols-[1.1fr_1fr_1fr] gap-px bg-porcelain/10 hairline border border-porcelain/10">
+          {/* Arabian Property Awards */}
+          <div className="bg-graphite-900 px-7 py-8 flex items-center gap-6 reveal">
+            <div className="w-14 h-16 grid place-items-center hairline border border-ochre/60 text-ochre">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
+                <path d="M7 4h10v4a5 5 0 0 1-10 0V4z" /><path d="M7 4H4v2a3 3 0 0 0 3 3M17 4h3v2a3 3 0 0 1-3 3" /><path d="M12 13v4M9 21h6" />
+              </svg>
+            </div>
+            <div>
+              <div className="font-display text-porcelain leading-tight" style={{ fontSize: 22, fontWeight: 400 }}>Arabian Property Awards</div>
+              <div className="text-[12px] text-porcelain/65 mt-1.5">Best Brokerage · Luxury · <span className="num">2025–2026</span></div>
+            </div>
+          </div>
+
+          {/* Google Reviews */}
+          <div className="bg-graphite-900 px-7 py-8 flex items-center gap-6 reveal">
+            <div className="w-14 h-14 grid place-items-center rounded-full bg-ochre text-porcelain font-display num" style={{ fontSize: 22, fontWeight: 500 }}>4.9</div>
+            <div>
+              <div className="text-ochre text-[18px] leading-none">★ ★ ★ ★ ★</div>
+              <div className="text-[13px] text-porcelain mt-2 num">14,000+ Google reviews</div>
+              <div className="text-[10px] tracking-[0.22em] uppercase text-porcelain/55 mt-1">Verified by Google</div>
+            </div>
+          </div>
+
+          {/* DLD / RERA */}
+          <div className="bg-graphite-900 px-7 py-8 flex items-center gap-6 reveal">
+            <div className="w-14 h-14 grid place-items-center hairline border border-ochre/60 text-ochre">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+                <path d="M12 3 4 6v5c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-3z" /><path d="m9 12 2 2 4-4" />
+              </svg>
+            </div>
+            <div>
+              <div className="font-display text-porcelain leading-tight" style={{ fontSize: 18, fontWeight: 400 }}>DLD · RERA registered</div>
+              <div className="text-[12px] text-porcelain/65 mt-1.5">ORN · <span className="num">31094</span></div>
+            </div>
+          </div>
+        </div>
+
+        {/* As featured in */}
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-[11px] tracking-[0.28em] uppercase text-porcelain/45">
+          <span className="text-porcelain/65">As featured in</span>
+          <span>Forbes Middle East</span><span className="opacity-30">·</span>
+          <span>Arabian Business</span><span className="opacity-30">·</span>
+          <span>The National</span><span className="opacity-30">·</span>
+          <span>Architectural Digest</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Our Teams (FAM-style agent carousel) ─────────────────────────────────
+function OurTeams() {
+  const D = window.CONCEPTPLUS_DATA;
+  const LANG_FULL = { EN: 'English', AR: 'Arabic', FR: 'French', ES: 'Spanish', DE: 'German', RU: 'Russian', TR: 'Turkish', UR: 'Urdu', IT: 'Italian', PT: 'Portuguese', JA: 'Japanese', ZH: 'Mandarin', HI: 'Hindi', FA: 'Farsi' };
+  const scrollRef = useRefS(null);
+  const scrollBy = (dir) => scrollRef.current?.scrollBy({ left: dir * 340, behavior: 'smooth' });
+  return (
+    <Section eyebrow="The team" title="Our teams" sub="Senior brokers, each representing a defined community. RERA-licensed, eight years minimum on the Dubai market — you speak to a director, not a call centre.">
+      <div className="-mt-2 mb-6 flex items-center gap-3 justify-end">
+        <button onClick={() => scrollBy(-1)} className="w-11 h-11 grid place-items-center hairline border border-stone-200 text-graphite hover:text-ochre hover:border-ochre transition cursor-pointer"><ArrowIcon dir="left" /></button>
+        <button onClick={() => scrollBy(1)} className="w-11 h-11 grid place-items-center hairline border border-stone-200 text-graphite hover:text-ochre hover:border-ochre transition cursor-pointer"><ArrowIcon /></button>
+      </div>
+      <div ref={scrollRef} className="flex gap-5 overflow-x-auto no-scrollbar -mx-6 md:-mx-10 px-6 md:px-10 snap-x">
+        {D.agents.map((a, i) => {
+          const years = 8 + (i % 7);
+          const closed = Math.round(years * 1.4 + 12);
+          return (
+            <article key={a.name} className="reveal shrink-0 w-[320px] snap-start hairline border border-stone-200 bg-porcelain group" style={{ transitionDelay: `${i * 60}ms` }}>
+              <div className="relative aspect-[4/5] overflow-hidden bg-stone-200">
+                <img src={a.img} alt={a.name} className="w-full h-full object-cover transition-transform duration-[800ms] group-hover:scale-[1.05]" loading="lazy" />
+                {i % 3 === 0 && (
+                  <span className="absolute top-4 left-4 px-2.5 py-1 text-[9px] tracking-[0.22em] uppercase bg-ochre text-porcelain">Manager</span>
+                )}
+              </div>
+              <div className="p-5">
+                <div className="font-display text-graphite-900 leading-tight" style={{ fontSize: 22, fontWeight: 400 }}>{a.name}</div>
+                <div className="text-[12px] text-graphite mt-1.5">{a.role.split(',')[0]}</div>
+                <div className="mt-4 text-[12px] text-graphite-900">
+                  <span className="text-graphite/70">Speaks: </span>
+                  {(a.langs || []).slice(0, 3).map((l, j) => (
+                    <span key={l}>
+                      <span className="text-ochre">{LANG_FULL[l] || l}</span>{j < Math.min(a.langs.length, 3) - 1 ? ', ' : ''}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-px bg-stone-200 hairline border border-stone-200">
+                  <div className="bg-porcelain px-2.5 py-2"><div className="font-display num text-graphite-900" style={{ fontSize: 16, fontWeight: 500 }}>{closed}</div><div className="text-[9px] tracking-[0.22em] uppercase text-graphite/60 mt-0.5">Closed · 12mo</div></div>
+                  <div className="bg-porcelain px-2.5 py-2"><div className="font-display num text-graphite-900" style={{ fontSize: 16, fontWeight: 500 }}>4.{Math.min(9, 5 + Math.floor(years / 3))}</div><div className="text-[9px] tracking-[0.22em] uppercase text-graphite/60 mt-0.5">★ Rating</div></div>
+                </div>
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                  <a href="agents.html" className="hairline border border-stone-200 px-3 py-2.5 text-[10px] tracking-[0.18em] uppercase text-graphite hover:text-ochre hover:border-ochre transition cursor-pointer text-center">Profile</a>
+                  <a href={`https://wa.me/971${(a.phone || '').replace(/[^0-9]/g, '').slice(-9)}`} className="bg-[#25D366] text-white px-3 py-2.5 text-[10px] tracking-[0.16em] uppercase hover:opacity-90 transition cursor-pointer flex items-center justify-center gap-2">
+                    <WhatsappIcon className="w-3.5 h-3.5" /> Whatsapp
+                  </a>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+      <div className="mt-12 flex justify-center">
+        <a href="agents.html" className="hairline border border-graphite-900 px-7 py-4 text-[11px] tracking-[0.22em] uppercase text-graphite-900 hover:bg-graphite-900 hover:text-porcelain transition cursor-pointer inline-flex items-center gap-3">Meet the full team <ArrowIcon className="w-3.5 h-3.5" /></a>
+      </div>
+    </Section>
+  );
+}
+
+// ─── Big Map View (FAM-style, but cleaner) ────────────────────────────────
+// Full-bleed dark section: large interactive Leaflet map on the right, a
+// scrollable property list on the left, hover-to-highlight pins. Replaces
+// the previous narrow ViewOnMapStrip with a fully interactive section.
+function BigMapView({ onOpenMap }) {
+  const D = window.CONCEPTPLUS_DATA;
+  const mapRef = useRefS(null);
+  const [hoverId, setHoverId] = useStateS(null);
+  const listings = D.listings.slice(0, 6);
+
+  useEffectS(() => {
+    if (!mapRef.current || typeof L === 'undefined') return;
+    const el = mapRef.current;
+    if (el._cpInit) return; // mount once
+    el._cpInit = true;
+
+    const map = L.map(el, { zoomControl: true, scrollWheelZoom: false, attributionControl: true });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+      attribution: '© OpenStreetMap · CartoDB',
+      maxZoom: 19, subdomains: 'abcd',
+    }).addTo(map);
+
+    const markers = listings.map(l => {
+      const icon = L.divIcon({
+        className: '', html: `<div class="cp-pin" data-id="${l.id}"><div class="cp-pin-ring"></div><div class="cp-pin-dot"></div></div>`,
+        iconSize: [36, 36], iconAnchor: [18, 18],
+      });
+      const m = L.marker([l.lat, l.lng], { icon }).addTo(map);
+      m.bindTooltip(`<div class="font-medium">${l.title}</div><div class="opacity-75">AED ${(l.price / 1_000_000).toFixed(2)}M</div>`, { direction: 'top', offset: [0, -6], className: 'cp-tooltip' });
+      m._cpId = l.id;
+      return m;
+    });
+
+    el._cpMarkers = markers;
+    const group = L.featureGroup(markers);
+    setTimeout(() => map.fitBounds(group.getBounds().pad(0.25), { maxZoom: 12 }), 60);
+    setTimeout(() => { map.invalidateSize(); map.fitBounds(group.getBounds().pad(0.25), { maxZoom: 12 }); }, 320);
+    el._cpMap = map;
+  }, []);
+
+  // Highlight active pin on hover
+  useEffectS(() => {
+    const el = mapRef.current;
+    if (!el || !el._cpMarkers) return;
+    el._cpMarkers.forEach(m => {
+      const node = m.getElement()?.querySelector('.cp-pin');
+      if (node) node.classList.toggle('cp-active', m._cpId === hoverId);
+    });
+  }, [hoverId]);
+
+  return (
+    <section className="bg-graphite-900 text-porcelain" data-screen-label="Home · Map view">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 pt-16 md:pt-20 pb-10">
+        <div className="grid lg:grid-cols-[1fr_auto] items-end gap-6">
+          <div className="reveal">
+            <div className="eyebrow text-ochre mb-4">Map view</div>
+            <h2 className="font-display text-porcelain leading-[1.02]" style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+              Map View — Dubai, address by address.
+            </h2>
+            <p className="mt-5 text-porcelain/70 text-[15px] leading-relaxed max-w-2xl">
+              1,247 listings, mapped to the meter. Hover a pin to see what's there. Click into the full map to filter by community, price and bedrooms.
+            </p>
+          </div>
+          <button onClick={onOpenMap} className="reveal hairline border border-porcelain/40 px-6 py-4 text-[11px] tracking-[0.22em] uppercase text-porcelain hover:border-ochre hover:text-ochre transition cursor-pointer inline-flex items-center gap-3 lg:justify-self-end">
+            Open full map <ArrowIcon className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+
+      <div className="grid lg:grid-cols-[420px_1fr]">
+        {/* Sidebar — scrollable listings */}
+        <div className="bg-graphite-800/70 hairline border-t border-porcelain/10 lg:border-r lg:border-t-0 lg:max-h-[640px] overflow-y-auto no-scrollbar">
+          {listings.map((l, i) => (
+            <a key={l.id}
+               href={`property.html?id=${l.id}`}
+               onMouseEnter={() => setHoverId(l.id)}
+               onMouseLeave={() => setHoverId(null)}
+               className={`block px-6 py-5 border-b hairline border-porcelain/10 cursor-pointer transition-colors ${hoverId === l.id ? 'bg-graphite-700/60' : 'hover:bg-graphite-700/40'}`}>
+              <div className="flex items-baseline justify-between gap-3">
+                <div className="font-display text-porcelain leading-tight" style={{ fontSize: 18, fontWeight: 400 }}>{l.title}</div>
+                <div className="font-display num text-ochre shrink-0" style={{ fontSize: 18, fontWeight: 500 }}>AED {(l.price / 1_000_000).toFixed(1)}M</div>
+              </div>
+              <div className="mt-2 text-[12px] text-porcelain/65 flex items-center gap-3">
+                <span>{l.community}</span>
+                <span className="opacity-30">·</span>
+                <span>{l.beds} beds</span>
+                <span className="opacity-30">·</span>
+                <span className="num">{l.sqft.toLocaleString()} sqft</span>
+              </div>
+            </a>
+          ))}
+          <a href="buy.html" className="block px-6 py-5 text-center text-[11px] tracking-[0.22em] uppercase text-ochre hover:text-porcelain cursor-pointer">View all 1,247 listings →</a>
+        </div>
+
+        {/* Map */}
+        <div ref={mapRef} className="h-[480px] lg:h-[640px] bg-porcelain" />
+      </div>
+    </section>
+  );
+}
+
+// ─── Final CTA ────────────────────────────────────────────────────────────
+function FinalCTA({ onSchedule }) {
+  return (
+    <section className="bg-porcelain py-24 md:py-32" data-screen-label="Home · Final CTA">
+      <div className="max-w-[1100px] mx-auto px-6 md:px-10 text-center">
+        <div className="reveal">
+          <div className="eyebrow text-ochre mb-6">Speak to an expert</div>
+          <h2 className="font-display text-graphite-900 leading-[1.02] mx-auto" style={{ fontSize: 'clamp(36px, 6vw, 72px)', fontWeight: 400, letterSpacing: '-0.03em' }}>
+            Ready when you are.
+          </h2>
+          <p className="mt-7 text-graphite text-[17px] leading-relaxed max-w-2xl mx-auto">
+            Tell us what you're looking for — buying, selling, leasing, financing, or simply asking a question about the market. A senior advisor replies inside the working day, confidentially.
+          </p>
+        </div>
+        <div className="reveal mt-10 flex items-center justify-center gap-4 flex-wrap">
+          <button onClick={onSchedule} className="bg-graphite-900 text-porcelain px-8 py-5 text-[11px] tracking-[0.22em] uppercase hover:bg-ochre transition cursor-pointer inline-flex items-center gap-3">Schedule a conversation <ArrowIcon className="w-3.5 h-3.5" /></button>
+          <a href="agents.html" className="hairline border border-graphite-900 px-8 py-5 text-[11px] tracking-[0.22em] uppercase text-graphite-900 hover:bg-graphite-900 hover:text-porcelain transition cursor-pointer inline-flex items-center gap-3">Browse our team</a>
+        </div>
+        <div className="reveal mt-14 grid sm:grid-cols-3 gap-px bg-stone-200 hairline border border-stone-200 max-w-3xl mx-auto">
+          <a href="tel:+97148824400" className="bg-porcelain px-6 py-6 hover:bg-porcelain-100 transition cursor-pointer">
+            <div className="eyebrow text-graphite/60" style={{ fontSize: 10 }}>Call</div>
+            <div className="font-display num text-graphite-900 mt-2" style={{ fontSize: 18, fontWeight: 500 }}>+971 4 882 4400</div>
+          </a>
+          <a href="https://wa.me/971501118820" className="bg-porcelain px-6 py-6 hover:bg-porcelain-100 transition cursor-pointer">
+            <div className="eyebrow text-graphite/60" style={{ fontSize: 10 }}>WhatsApp</div>
+            <div className="font-display num text-graphite-900 mt-2" style={{ fontSize: 18, fontWeight: 500 }}>+971 50 111 8820</div>
+          </a>
+          <a href="mailto:concierge@conceptplus.ae" className="bg-porcelain px-6 py-6 hover:bg-porcelain-100 transition cursor-pointer">
+            <div className="eyebrow text-graphite/60" style={{ fontSize: 10 }}>Email</div>
+            <div className="font-display text-graphite-900 mt-2" style={{ fontSize: 15, fontWeight: 500 }}>concierge@conceptplus.ae</div>
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { Hero, TrustStrip, Communities, FeaturedListings, OffPlan, Stats, WhyConceptPlus, Insights, DeveloperLogos, EditorialStrip, Section, MortgageSection, MortgageSlider, Testimonials, Awards, InstagramStrip, ReviewsBar, SocialProof, OurTeams, BigMapView, FinalCTA });

@@ -60,21 +60,21 @@ function App() {
       />
 
       <main>
-        {/* 1. Hero ─ tabbed search + featured property carousel */}
+        {/* 1 · Hero */}
         <Hero
           variant={tweaks.hero}
           onOpenListing={(l) => setOpenListing(l)}
           onOpenProject={() => setPaymentOpen(true)}
         />
-        {/* 2. Trust strip ─ DLD / RERA / Top 50 / sold YTD + featured-in row */}
-        <TrustStrip />
-        {/* 3. Google reviews bar ─ 4.9 / 14,000+ */}
-        <ReviewsBar />
-        {/* 4. Developer partners */}
-        <DeveloperLogos />
-        {/* 5. Latest launched (off-plan first, matches FAM "Latest Launched Projects") */}
+        {/* 2 · Social Proof (stats + awards + Google reviews + DLD) */}
+        <SocialProof />
+        {/* 3 · Latest Launched Projects in Dubai */}
         <OffPlan onOpenPlan={() => setPaymentOpen(true)} />
-        {/* 6. Featured properties for sale */}
+        {/* 4 · Guides (area guides linking to community pages) */}
+        <Communities />
+        {/* 5 · Our teams (horizontal carousel) */}
+        <OurTeams />
+        {/* 6 · Most Trending Projects in Dubai */}
         <FeaturedListings
           cardVariant={tweaks.cardVariant}
           currency={currency}
@@ -85,26 +85,14 @@ function App() {
           onCompare={onCompareToggle}
           onOpen={(l) => { setOpenListing(l); }}
         />
-        {/* 7. Communities grid */}
-        <Communities />
-        {/* 8. Map strip */}
-        <ViewOnMapStrip onOpenMap={() => setMapOpen(true)} />
-        {/* 9. Mortgage calculator section (new) */}
-        <MortgageSection />
-        {/* 10. Stats ─ AED transacted, repeat clients */}
-        <Stats />
-        {/* 11. Why Concept Plus */}
-        <WhyConceptPlus />
-        {/* 12. Awards & press (new) */}
-        <Awards />
-        {/* 13. Testimonials carousel (new) */}
-        <Testimonials />
-        {/* 14. Insights / Blog */}
+        {/* 7 · Real Estate News */}
         <Insights />
-        {/* 15. Instagram strip (new) */}
-        <InstagramStrip />
-        {/* 16. Sell valuation editorial strip */}
-        {tweaks.showStripe && <EditorialStrip onValuation={() => setScheduleOpen(true)} />}
+        {/* 8 · Mortgage Calculator */}
+        <MortgageSection />
+        {/* 9 · Map View (full interactive section) */}
+        <BigMapView onOpenMap={() => setMapOpen(true)} />
+        {/* 10 · Final CTA — Speak to an expert */}
+        <FinalCTA onSchedule={() => setScheduleOpen(true)} />
       </main>
       <Footer />
 
