@@ -141,6 +141,74 @@ function SellPage() {
               </div>
             </div>
           </section>
+
+          {/* Our recent sales table (FAM parity) */}
+          <section className="bg-porcelain py-20 border-t hairline border-stone-200" data-screen-label="Sell · Recent sales">
+            <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+              <div className="grid lg:grid-cols-[1fr_2fr] gap-12 items-end mb-10">
+                <div className="reveal">
+                  <div className="eyebrow text-ochre mb-5">Recent sales</div>
+                  <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+                    What our owners have sold for, recently.
+                  </h2>
+                </div>
+                <p className="reveal text-graphite text-[15px] leading-relaxed max-w-2xl lg:justify-self-end">
+                  DLD-verified sales handled by Concept Plus brokers in the last twelve months. Asking-to-sold delta is the negotiation gap closed by the senior team.
+                </p>
+              </div>
+              <div className="hairline border border-stone-200 overflow-hidden">
+                <div className="grid grid-cols-[1.5fr_1.3fr_0.9fr_0.9fr_0.9fr_0.7fr] bg-porcelain-100 text-[10px] tracking-[0.22em] uppercase text-graphite/65 px-5 py-3">
+                  <span>Community</span><span>Type</span><span>Asking</span><span>Sold</span><span>Days</span><span>Δ</span>
+                </div>
+                {[
+                  { c: 'Palm Jumeirah',   t: '6-bed villa, Frond M',     a: '44.0M', s: '42.5M', d: 18, dl: '-3%' },
+                  { c: 'Jumeirah Bay',     t: '5-bed villa, Bulgari',     a: '38.0M', s: '35.4M', d: 24, dl: '-7%' },
+                  { c: 'Emirates Hills',   t: 'Mansion, Sector E',         a: '82.0M', s: '78.0M', d: 47, dl: '-5%' },
+                  { c: 'Downtown Dubai',   t: 'Penthouse, Opera',         a: '19.5M', s: '18.9M', d: 22, dl: '-3%' },
+                  { c: 'Dubai Marina',     t: 'Duplex, Cayan',             a:  '9.9M', s:  '9.45M', d: 31, dl: '-5%' },
+                  { c: 'Bluewaters',       t: 'Sea-line apt',              a:  '7.1M', s:  '6.85M', d: 14, dl: '-4%' },
+                  { c: 'MBR City',         t: 'Townhouse, District One',   a:  '4.8M', s:  '4.65M', d: 28, dl: '-3%' },
+                ].map((r, i) => (
+                  <div key={i} className="grid grid-cols-[1.5fr_1.3fr_0.9fr_0.9fr_0.9fr_0.7fr] items-baseline px-5 py-4 border-t hairline border-stone-200 text-[13px]">
+                    <span className="text-graphite-900">{r.c}</span>
+                    <span className="text-graphite">{r.t}</span>
+                    <span className="num text-graphite/70">AED {r.a}</span>
+                    <span className="font-display num text-graphite-900" style={{ fontSize: 16 }}>AED {r.s}</span>
+                    <span className="num text-graphite">{r.d}d</span>
+                    <span className="num text-ochre">{r.dl}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Seller testimonials (FAM parity) */}
+          <section className="bg-graphite-900 text-porcelain py-20 md:py-24" data-screen-label="Sell · Seller voices">
+            <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+              <div className="reveal mb-12 max-w-3xl">
+                <div className="eyebrow text-ochre mb-5">Seller voices</div>
+                <h2 className="font-display text-porcelain leading-[1.02]" style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+                  How owners describe the experience.
+                </h2>
+              </div>
+              <div className="grid md:grid-cols-3 gap-px bg-porcelain/10 hairline border border-porcelain/10">
+                {[
+                  { q: 'We held our Emirates Hills mansion privately for nine months — only Concept Plus had it on their books. They found the right family without it ever touching a portal. Exactly the brief.', a: 'Amira F.',  r: 'Sold · Emirates Hills · AED 78M' },
+                  { q: 'Three offers in a fortnight, all above asking, and a clean conveyance. Discretion mattered more than speed and they understood that from minute one.',                                          a: 'Reem K.',   r: 'Sold · Jumeirah Bay · AED 35.4M' },
+                  { q: 'They priced our Marina duplex perfectly. Director-led negotiation, every offer in writing, full analysis. The 28-day close was the cleanest of the four properties we have transacted.',     a: 'Hassan A.', r: 'Sold · Marina · AED 9.45M' },
+                ].map((q, i) => (
+                  <div key={i} className="bg-graphite-900 p-7 reveal" style={{ transitionDelay: `${i * 80}ms` }}>
+                    <div className="text-ochre text-[22px] leading-none mb-4">★ ★ ★ ★ ★</div>
+                    <p className="text-porcelain font-display text-[17px] leading-[1.6]" style={{ fontWeight: 400, letterSpacing: '-0.01em' }}>"{q.q}"</p>
+                    <div className="mt-6 pt-4 border-t hairline border-porcelain/15">
+                      <div className="text-porcelain text-[13px] font-medium">{q.a}</div>
+                      <div className="eyebrow text-porcelain/55 mt-1" style={{ fontSize: 10 }}>{q.r}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
         </main>
       )}
     </PC>
@@ -339,7 +407,18 @@ function AgentsPage() {
                   <div className="mt-1.5 text-[13px] text-graphite-900">
                     <span className="font-medium num">{years} years</span> <span className="text-graphite">of experience</span>
                   </div>
-                  <div className="mt-6 grid grid-cols-2 gap-2">
+                  {/* Closed-in-12mo + RERA stat strip (FAM parity) */}
+                  <div className="mt-4 grid grid-cols-2 gap-px bg-stone-200 hairline border border-stone-200">
+                    <div className="bg-porcelain px-3 py-2.5">
+                      <div className="font-display num text-graphite-900" style={{ fontSize: 16, fontWeight: 500 }}>{Math.round(years * 1.4 + 12)}</div>
+                      <div className="text-[9px] tracking-[0.22em] uppercase text-graphite/60 mt-0.5">Closed · 12mo</div>
+                    </div>
+                    <div className="bg-porcelain px-3 py-2.5">
+                      <div className="font-display num text-graphite-900" style={{ fontSize: 16, fontWeight: 500 }}>4.{Math.min(9, 5 + Math.floor(years / 3))}</div>
+                      <div className="text-[9px] tracking-[0.22em] uppercase text-graphite/60 mt-0.5">★ Avg rating</div>
+                    </div>
+                  </div>
+                  <div className="mt-4 grid grid-cols-2 gap-2">
                     <button onClick={(e) => { e.stopPropagation(); setOpenIdx(all.indexOf(a)); }} className="hairline border border-stone-200 px-3 py-2.5 text-[11px] tracking-[0.18em] uppercase hover:border-ochre hover:text-ochre transition cursor-pointer flex items-center justify-center gap-2">
                       <UserCircleIcon /> View profile
                     </button>
@@ -710,6 +789,21 @@ function CommunityPage() {
               </a>
             </div>
           </section>
+
+          {/* Lifestyle guide (FAM parity) */}
+          <LifestyleGuide community={community.name} />
+
+          {/* 24-month price trend (FAM parity) */}
+          <PriceTrendChart community={community.name} />
+
+          {/* Talk to a specialist (FAM parity) */}
+          <CommunityContact community={community.name} agent={specialists[0]} />
+
+          {/* Adjacent communities */}
+          <RelatedCommunities exclude={community.name} />
+
+          {/* SEO sub-footer (FAM parity) */}
+          <SEOSubFooter community={community.name} />
         </main>
       )}
     </PC>

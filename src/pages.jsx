@@ -125,6 +125,9 @@ function BuyPage() {
             </div>
           </section>
 
+          {/* Popular searches chip row (FAM parity) */}
+          <PopularSearches />
+
           {/* Sticky filter bar */}
           <section className="sticky top-[76px] lg:top-[108px] z-30 bg-porcelain border-b hairline border-stone-200 py-4">
             <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex items-center gap-2 flex-wrap">
@@ -239,6 +242,12 @@ function BuyPage() {
               </div>
             </div>
           </section>
+
+          {/* Trending communities (FAM parity) */}
+          <TrendingCommunities />
+
+          {/* SEO sub-footer (FAM parity) */}
+          <SEOSubFooter kind={tab === 'Rent' ? 'rent' : 'buy'} />
         </main>
       )}
     </PageChrome>
@@ -473,6 +482,15 @@ function PropertyPage() {
             </aside>
           </section>
 
+          {/* Building amenities (FAM parity) */}
+          <BuildingAmenities listing={listing} />
+
+          {/* What's nearby (FAM parity) */}
+          <WhatsNearby listing={listing} />
+
+          {/* Recent transactions in this building (FAM parity) */}
+          <RecentTransactions listing={listing} />
+
           {/* Similar listings */}
           <section className="bg-porcelain-100 py-20 border-t hairline border-stone-200">
             <div className="max-w-[1400px] mx-auto px-6 md:px-10">
@@ -494,6 +512,9 @@ function PropertyPage() {
               </div>
             </div>
           </section>
+
+          {/* SEO sub-footer (FAM parity) */}
+          <SEOSubFooter kind="buy" community={listing.community} />
         </main>
       )}
     </PageChrome>
@@ -755,9 +776,561 @@ function OffPlanPage() {
               </div>
             </div>
           </section>
+
+          {/* Handover timeline (FAM parity) */}
+          <HandoverTimeline />
+
+          {/* Payment plan comparator (FAM parity) */}
+          <PaymentPlanComparator />
+
+          {/* Developer matrix (FAM parity) */}
+          <DeveloperMatrix />
+
+          {/* SEO sub-footer (FAM parity) */}
+          <SEOSubFooter kind="offplan" />
         </main>
       )}
     </PageChrome>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+//   FAM-PARITY SHARED COMPONENTS  (reused across Buy / Property / Off-plan /
+//   Community / Sell / Agents pages)
+// ═══════════════════════════════════════════════════════════════════════════
+
+// Popular searches chips — appears above the filter bar on listings pages.
+function PopularSearches({ tone = 'light' }) {
+  const chips = [
+    'Villas in Palm Jumeirah', '1-bed in Marina', 'Penthouses Downtown',
+    'Townhouses MBR City', '4-bed Emirates Hills', 'Bulgari Jumeirah Bay',
+    'Off-plan handover 2026', 'Sea-view apartments',
+  ];
+  const dark = tone === 'dark';
+  return (
+    <section className={`${dark ? 'bg-graphite-900 text-porcelain' : 'bg-porcelain border-b hairline border-stone-200'} py-7`}>
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex flex-wrap items-center gap-x-3 gap-y-3">
+        <div className={`eyebrow ${dark ? 'text-ochre' : 'text-graphite/55'} mr-3`} style={{ fontSize: 10 }}>Popular searches</div>
+        {chips.map((c) => (
+          <a key={c} href="buy.html" className={`text-[12px] tracking-wide px-4 py-2 hairline ${dark ? 'border-porcelain/25 text-porcelain/85 hover:border-ochre hover:text-ochre' : 'border-stone-200 text-graphite hover:border-ochre hover:text-ochre'} transition cursor-pointer`}>{c}</a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// Trending Communities — 4-up grid below listings.
+function TrendingCommunities() {
+  const D = window.CONCEPTPLUS_DATA;
+  const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const list = D.communities.slice(0, 4);
+  return (
+    <section className="bg-porcelain py-20 border-t hairline border-stone-200">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="flex items-end justify-between gap-6 mb-10 flex-wrap">
+          <div className="reveal max-w-2xl">
+            <div className="eyebrow text-ochre mb-4">Trending now</div>
+            <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+              Communities buyers are walking, this quarter.
+            </h2>
+          </div>
+          <a href="buy.html" className="reveal eyebrow text-graphite-900 gold-underline cursor-pointer">View all communities →</a>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
+          {list.map((c, i) => (
+            <a key={c.name} href={`community.html?slug=${slug(c.name)}`} className="reveal group cursor-pointer" style={{ transitionDelay: `${i * 60}ms` }}>
+              <div className="relative aspect-[4/5] overflow-hidden bg-stone-200">
+                <img src={c.image} alt={c.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-[800ms] group-hover:scale-[1.05]" loading="lazy" />
+                <div className="absolute inset-0 bg-gradient-to-t from-graphite-900/85 via-graphite-900/15 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-5 text-porcelain">
+                  <div className="font-display text-[22px] leading-tight">{c.name}</div>
+                  <div className="mt-1 eyebrow text-porcelain/80" style={{ fontSize: 10 }}>{c.count} listings</div>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Page-specific SEO sub-footer — sits ABOVE the global mega-footer.
+function SEOSubFooter({ kind = 'buy', community }) {
+  const D = window.CONCEPTPLUS_DATA;
+  const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const types = ['Villa', 'Apartment', 'Penthouse', 'Townhouse', 'Duplex'];
+  const beds = ['Studio', '1 bedroom', '2 bedrooms', '3 bedrooms', '4 bedrooms', '5 bedrooms', '6 bedrooms', '7+ bedrooms'];
+  const offplan = ['Launched', 'Under construction', 'Handover 2026', 'Handover 2027', 'Handover 2028'];
+
+  const blocks = community
+    ? [
+        { h: `${community} — properties by type`,    items: types.map(t => [`${t}s in ${community}`, `buy.html?community=${slug(community)}&type=${slug(t)}`]) },
+        { h: `${community} — properties by beds`,    items: beds.map(b => [`${b} in ${community}`, `buy.html?community=${slug(community)}&beds=${slug(b)}`]) },
+        { h: `Off-plan in ${community}`,              items: offplan.map(o => [`${o} · ${community}`, `off-plan.html?community=${slug(community)}&status=${slug(o)}`]) },
+        { h: `Adjacent communities`,                  items: D.communities.filter(c => c.name !== community).slice(0, 8).map(c => [c.name, `community.html?slug=${slug(c.name)}`]) },
+      ]
+    : kind === 'rent'
+      ? [
+          { h: 'Rent by community',  items: D.communities.map(c => [c.name, `buy.html#rent?community=${slug(c.name)}`]) },
+          { h: 'Rent by type',       items: types.map(t => [`${t}s for rent`, `buy.html#rent?type=${slug(t)}`]) },
+          { h: 'Rent by beds',       items: beds.map(b => [b, `buy.html#rent?beds=${slug(b)}`]) },
+        ]
+      : kind === 'offplan'
+        ? [
+            { h: 'Off-plan by community', items: D.communities.map(c => [c.name, `off-plan.html?community=${slug(c.name)}`]) },
+            { h: 'Off-plan by status',     items: offplan.map(o => [o, `off-plan.html?status=${slug(o)}`]) },
+            { h: 'By developer',           items: ['Emaar', 'Sobha Realty', 'DAMAC', 'Aldar', 'Meraas', 'Nakheel', 'Omniyat', 'Select Group'].map(d => [d, `developers.html?slug=${slug(d)}`]) },
+          ]
+        : [
+            { h: 'Properties for sale by community', items: D.communities.map(c => [c.name, `buy.html?community=${slug(c.name)}`]) },
+            { h: 'Properties for sale by type',      items: types.map(t => [`${t}s for sale`, `buy.html?type=${slug(t)}`]) },
+            { h: 'Properties for sale by beds',      items: beds.map(b => [b, `buy.html?beds=${slug(b)}`]) },
+          ];
+
+  return (
+    <section className="bg-porcelain-100 py-16 border-t hairline border-stone-200">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="eyebrow text-ochre mb-8">{community ? `${community} · directory` : 'Browse the directory'}</div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-8">
+          {blocks.map((blk) => (
+            <div key={blk.h}>
+              <div className="text-[12px] tracking-[0.22em] uppercase text-graphite-900 pb-3 border-b hairline border-stone-200">{blk.h}</div>
+              <ul className="mt-4 space-y-2">
+                {blk.items.map(([label, href]) => (
+                  <li key={label}><a href={href} className="text-[13px] text-graphite hover:text-ochre transition leading-snug cursor-pointer">{label}</a></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Handover timeline — Q1 2026 → Q4 2028 horizontal strip for the Off-Plan page.
+function HandoverTimeline() {
+  const quarters = [
+    { q: 'Q1 2026', count: 4,  status: 'Handing over' },
+    { q: 'Q2 2026', count: 7,  status: 'Handing over' },
+    { q: 'Q3 2026', count: 9,  status: 'Construction' },
+    { q: 'Q4 2026', count: 12, status: 'Construction' },
+    { q: 'Q1 2027', count: 14, status: 'Construction' },
+    { q: 'Q2 2027', count: 11, status: 'Construction' },
+    { q: 'Q3 2027', count: 8,  status: 'Launched' },
+    { q: 'Q4 2027', count: 6,  status: 'Launched' },
+    { q: 'Q1 2028', count: 4,  status: 'Launched' },
+    { q: 'Q2 2028', count: 3,  status: 'Pre-launch' },
+    { q: 'Q3 2028', count: 2,  status: 'Pre-launch' },
+    { q: 'Q4 2028', count: 1,  status: 'Pre-launch' },
+  ];
+  const max = Math.max(...quarters.map(q => q.count));
+  return (
+    <section className="bg-porcelain py-20 md:py-24 border-t hairline border-stone-200" data-screen-label="Off-plan · Timeline">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="grid lg:grid-cols-[1fr_2fr] gap-12 items-end mb-12">
+          <div className="reveal">
+            <div className="eyebrow text-ochre mb-5">Handover calendar</div>
+            <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+              Three years of launches, mapped.
+            </h2>
+          </div>
+          <p className="reveal text-graphite text-[15px] leading-relaxed max-w-2xl lg:justify-self-end">
+            Concept Plus tracks every active off-plan tower in Dubai. Here is the city's handover pipeline through 2028 — and the number of units we currently hold allocations against in each quarter.
+          </p>
+        </div>
+        <div className="overflow-x-auto no-scrollbar">
+          <div className="grid grid-cols-12 gap-2 min-w-[900px]">
+            {quarters.map((q, i) => (
+              <div key={q.q} className="reveal flex flex-col items-stretch" style={{ transitionDelay: `${i * 30}ms` }}>
+                <div className="relative h-[180px] bg-stone-200/40 hairline border border-stone-200 flex items-end">
+                  <div className="w-full bg-ochre transition-all" style={{ height: `${(q.count / max) * 100}%` }} title={`${q.count} units · ${q.status}`} />
+                </div>
+                <div className="mt-3 text-center">
+                  <div className="font-display num text-graphite-900" style={{ fontSize: 16, fontWeight: 500 }}>{q.count}</div>
+                  <div className="text-[10px] tracking-[0.18em] uppercase text-graphite/60 mt-1">{q.q}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mt-8 flex items-center gap-6 flex-wrap text-[11px] tracking-[0.18em] uppercase text-graphite/65">
+          <span className="flex items-center gap-2"><span className="w-3 h-3 bg-ochre" /> Units allocated by Concept Plus</span>
+          <span>·</span>
+          <span>{quarters.reduce((s, q) => s + q.count, 0)} total units · 12 quarters</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Payment plan comparator — 3 plans side by side.
+function PaymentPlanComparator() {
+  const plans = [
+    { eb: '60 / 40', name: 'Traditional handover plan', dur: 'Over construction + on handover', cards: [['60%', 'During construction'], ['40%', 'On handover'], ['0%', 'Post-handover']], notes: 'Standard for Emaar, Aldar and most blue-chip Dubai developers.' },
+    { eb: '80 / 20', name: 'Construction-heavy plan',   dur: 'Lower deposit, faster build cycle', cards: [['80%', 'During construction'], ['20%', 'On handover'], ['0%', 'Post-handover']], notes: 'Better cash discipline; common for Sobha and Omniyat launches.' },
+    { eb: '40 / 60', name: 'Post-handover plan',         dur: 'Up to 3 years after handover', cards: [['40%', 'During construction'], ['20%', 'On handover'], ['40%', 'Post-handover (3yr)']], notes: 'Investor-friendly. Common with DAMAC, Binghatti, Azizi.' },
+  ];
+  return (
+    <section className="bg-porcelain-100 py-20 md:py-24" data-screen-label="Off-plan · Payment plans">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="reveal mb-12 max-w-3xl">
+          <div className="eyebrow text-ochre mb-5">Payment plans</div>
+          <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+            Three structures, three risk shapes.
+          </h2>
+          <p className="mt-5 text-graphite text-[15px] leading-relaxed">A side-by-side read on how Dubai developers structure off-plan payments. The shape of the plan matters more than the headline price.</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-px bg-stone-200 hairline border border-stone-200">
+          {plans.map((p, i) => (
+            <div key={p.eb} className="bg-porcelain p-8 md:p-10 flex flex-col reveal" style={{ transitionDelay: `${i * 80}ms` }}>
+              <div className="eyebrow text-ochre" style={{ fontSize: 10 }}>{p.eb}</div>
+              <div className="font-display text-graphite-900 mt-3 leading-tight" style={{ fontSize: 24, fontWeight: 400 }}>{p.name}</div>
+              <div className="text-[11px] tracking-[0.18em] uppercase text-graphite/55 mt-3">{p.dur}</div>
+              <div className="mt-7 space-y-4">
+                {p.cards.map(([pct, label]) => (
+                  <div key={label} className="flex items-baseline gap-4">
+                    <div className="font-display num text-graphite-900 w-16" style={{ fontSize: 26, fontWeight: 400, letterSpacing: '-0.02em' }}>{pct}</div>
+                    <div className="flex-1 text-[12px] tracking-[0.16em] uppercase text-graphite/75 leading-tight">{label}</div>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-7 text-[13px] text-graphite leading-relaxed flex-1">{p.notes}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Developer matrix — launches by developer × handover quarter.
+function DeveloperMatrix() {
+  const cells = [
+    { dev: 'Emaar',    launches: 14, q: 'Multiple', signature: 'Burj Khalifa · Downtown · Dubai Hills' },
+    { dev: 'Sobha',    launches: 9,  q: 'Q3 2026 → Q4 2028', signature: 'Sobha Hartland · Cassia' },
+    { dev: 'DAMAC',    launches: 12, q: 'Multiple', signature: 'AYKON City · DAMAC Hills · Akoya' },
+    { dev: 'Aldar',    launches: 7,  q: 'Q2 2027 → Q1 2029', signature: 'Saadiyat · Yas · Al Reem' },
+    { dev: 'Meraas',   launches: 6,  q: 'Q1 2026 → Q4 2027', signature: 'Bluewaters · City Walk · La Mer' },
+    { dev: 'Nakheel',  launches: 8,  q: 'Q3 2026 → Q2 2028', signature: 'Palm · The World · Deira' },
+    { dev: 'Omniyat',  launches: 5,  q: 'Q4 2026 → Q1 2028', signature: 'One at Palm · The Opus' },
+    { dev: 'Select',   launches: 4,  q: 'Q2 2026 → Q3 2027', signature: 'Marina Gate · Six Senses' },
+  ];
+  return (
+    <section className="bg-graphite-900 text-porcelain py-20 md:py-24" data-screen-label="Off-plan · Developer matrix">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="grid lg:grid-cols-[1fr_2fr] gap-12 items-end mb-12">
+          <div className="reveal">
+            <div className="eyebrow text-ochre mb-5">Developer pipeline</div>
+            <h2 className="font-display text-porcelain leading-[1.02]" style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+              Who is launching what.
+            </h2>
+          </div>
+          <p className="reveal text-porcelain/75 text-[15px] leading-relaxed lg:justify-self-end max-w-2xl">
+            Active off-plan pipelines by developer, updated monthly. Concept Plus carries direct-from-developer allocations for every name on this list.
+          </p>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-px bg-porcelain/10 hairline border border-porcelain/10">
+          {cells.map((c, i) => (
+            <a key={c.dev} href={`developers.html?slug=${c.dev.toLowerCase()}`} className="bg-graphite-900 p-6 reveal hover:bg-graphite-800 transition cursor-pointer" style={{ transitionDelay: `${i * 40}ms` }}>
+              <div className="font-display text-porcelain leading-tight" style={{ fontSize: 24, fontWeight: 400 }}>{c.dev}</div>
+              <div className="mt-4 font-display num text-ochre" style={{ fontSize: 28, fontWeight: 400 }}>{c.launches}</div>
+              <div className="text-[10px] tracking-[0.22em] uppercase text-porcelain/55 mt-1">Active launches</div>
+              <div className="mt-4 text-[11px] tracking-[0.18em] uppercase text-porcelain/45">{c.q}</div>
+              <div className="mt-4 text-[12px] text-porcelain/75 leading-snug border-t hairline border-porcelain/12 pt-4">{c.signature}</div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// What's nearby — schools / cafes / walks / fitness around the property.
+function WhatsNearby({ listing }) {
+  const nearby = [
+    { eb: 'Schools',    items: [['Dubai College',          '4.2 km'], ['Repton Dubai',           '5.1 km'], ['American School',        '6.4 km']] },
+    { eb: 'Cafes',       items: [['Tom & Serg',             '350 m'],   ['One Life Kitchen',       '480 m'], ['Common Grounds',         '720 m']] },
+    { eb: 'Walks',       items: [['The Pointe boardwalk',   '600 m'],   ['Frond M beach',          '120 m'], ['Atlantis aquarium walk', '1.4 km']] },
+    { eb: 'Fitness',     items: [['Reform Athletica',       '900 m'],   ['Crank cycling',          '1.1 km'], ['Warehouse Gym',          '1.6 km']] },
+  ];
+  return (
+    <section className="bg-porcelain-100 py-20 border-t hairline border-stone-200" data-screen-label="Property · Nearby">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="reveal mb-10 max-w-3xl">
+          <div className="eyebrow text-ochre mb-5">What's nearby</div>
+          <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(24px, 3.4vw, 36px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+            The neighbourhood, ten minutes out.
+          </h2>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-stone-200 hairline border border-stone-200">
+          {nearby.map((col, i) => (
+            <div key={col.eb} className="bg-porcelain p-6 reveal" style={{ transitionDelay: `${i * 60}ms` }}>
+              <div className="eyebrow text-ochre" style={{ fontSize: 10 }}>{col.eb}</div>
+              <ul className="mt-4 space-y-3">
+                {col.items.map(([name, dist]) => (
+                  <li key={name} className="flex items-baseline justify-between gap-3 border-b hairline border-stone-200 pb-2 last:border-b-0">
+                    <span className="text-[13px] text-graphite-900 leading-snug">{name}</span>
+                    <span className="text-[11px] num text-graphite/55 whitespace-nowrap">{dist}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Recent transactions in this building / community.
+function RecentTransactions({ listing }) {
+  const txns = [
+    { unit: 'Frond M / Villa 23', beds: 6,  sqft: 8200, sold: '42.0M', days: 18, m: 'Apr 2026' },
+    { unit: 'Frond M / Villa 19', beds: 7,  sqft: 9100, sold: '48.5M', days: 24, m: 'Feb 2026' },
+    { unit: 'Frond N / Villa 31', beds: 6,  sqft: 8400, sold: '41.2M', days: 31, m: 'Jan 2026' },
+    { unit: 'Frond M / Villa 27', beds: 6,  sqft: 8200, sold: '39.8M', days: 47, m: 'Nov 2025' },
+    { unit: 'Frond L / Villa 12', beds: 7,  sqft: 9600, sold: '52.0M', days: 22, m: 'Oct 2025' },
+  ];
+  return (
+    <section className="bg-porcelain py-20 border-t hairline border-stone-200" data-screen-label="Property · Recent transactions">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="grid lg:grid-cols-[1fr_2fr] gap-12 items-end mb-10">
+          <div className="reveal">
+            <div className="eyebrow text-ochre mb-5">Recent transactions</div>
+            <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(24px, 3.4vw, 36px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+              What's traded in this building, twelve months.
+            </h2>
+          </div>
+          <p className="reveal text-graphite text-[15px] leading-relaxed max-w-2xl lg:justify-self-end">
+            DLD-verified transactions on comparable units. Numbers shown in AED; sold-in days measured from list to legal completion.
+          </p>
+        </div>
+        <div className="hairline border border-stone-200 overflow-hidden">
+          <div className="grid grid-cols-[2fr_0.7fr_0.9fr_1fr_0.9fr_0.9fr] bg-porcelain-100 text-[10px] tracking-[0.22em] uppercase text-graphite/65 px-5 py-3">
+            <span>Unit</span><span>Beds</span><span>Sqft</span><span>Sold</span><span>Days</span><span>Closed</span>
+          </div>
+          {txns.map((t, i) => (
+            <div key={i} className="grid grid-cols-[2fr_0.7fr_0.9fr_1fr_0.9fr_0.9fr] items-baseline px-5 py-4 border-t hairline border-stone-200 text-[13px]">
+              <span className="text-graphite-900">{t.unit}</span>
+              <span className="num text-graphite">{t.beds}</span>
+              <span className="num text-graphite">{t.sqft.toLocaleString()}</span>
+              <span className="font-display num text-graphite-900" style={{ fontSize: 16 }}>AED {t.sold}</span>
+              <span className="num text-graphite">{t.days}d</span>
+              <span className="text-graphite/65">{t.m}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Building amenities — deep amenities list section for property detail.
+function BuildingAmenities({ listing }) {
+  const amenities = [
+    { eb: 'Resident services',    items: ['24/7 concierge', 'Valet', 'Private security', 'Mail & parcel hold', 'Housekeeping (on request)'] },
+    { eb: 'Wellness',              items: ['Infinity pool', '25m lap pool', 'Steam, sauna & ice room', 'Boutique gym', 'Pilates studio'] },
+    { eb: 'Family',                items: ['Children\'s pool', 'Indoor playroom', 'Library', 'Cinema room', 'Private dining'] },
+    { eb: 'Building',              items: ['Backup power', 'Emergency water reserve', 'Smart home wiring', 'Electric-vehicle charging', 'Pet-friendly'] },
+  ];
+  return (
+    <section className="bg-porcelain py-20 border-t hairline border-stone-200" data-screen-label="Property · Amenities">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="reveal mb-10 max-w-3xl">
+          <div className="eyebrow text-ochre mb-5">Building amenities</div>
+          <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(24px, 3.4vw, 36px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+            What lives behind the front door.
+          </h2>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-10">
+          {amenities.map((col, i) => (
+            <div key={col.eb} className="reveal" style={{ transitionDelay: `${i * 60}ms` }}>
+              <div className="eyebrow text-ochre pb-3 border-b hairline border-stone-200" style={{ fontSize: 10 }}>{col.eb}</div>
+              <ul className="mt-4 space-y-2.5">
+                {col.items.map((a) => (
+                  <li key={a} className="text-[13px] text-graphite-900 flex items-start gap-3">
+                    <span className="w-3 h-px bg-ochre mt-2 shrink-0" />{a}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Lifestyle Guide — 4-card grid (Schools / Cafes / Walks / Fitness) for community page.
+function LifestyleGuide({ community }) {
+  const cards = [
+    { eb: 'Education',   t: 'Schools within 15 minutes', items: ['Dubai College — IB · 4.2 km', 'Repton Dubai — BSO · 5.1 km', 'American School — WASC · 6.4 km'], img: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=900&q=80' },
+    { eb: 'Coffee',       t: 'Cafes the neighbourhood actually uses', items: ['Tom & Serg — all-day · 350 m', 'One Life Kitchen — breakfast · 480 m', 'Common Grounds — flat whites · 720 m'], img: 'https://images.unsplash.com/photo-1453614512568-c4024d13c247?auto=format&fit=crop&w=900&q=80' },
+    { eb: 'Outdoors',    t: 'Walks, beaches and waterfronts',       items: ['The Pointe boardwalk · 600 m', 'Frond M private beach · 120 m', 'Atlantis aquarium walk · 1.4 km'], img: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=900&q=80' },
+    { eb: 'Movement',     t: 'Studios, gyms, training',              items: ['Reform Athletica — pilates · 900 m', 'Crank cycling — class · 1.1 km', 'Warehouse Gym — heavy · 1.6 km'], img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80' },
+  ];
+  return (
+    <section className="bg-porcelain-100 py-20 md:py-24 border-t hairline border-stone-200" data-screen-label="Community · Lifestyle">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="reveal mb-12 max-w-3xl">
+          <div className="eyebrow text-ochre mb-5">Lifestyle</div>
+          <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+            How life actually runs in {community || 'Palm Jumeirah'}.
+          </h2>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {cards.map((c, i) => (
+            <div key={c.eb} className="reveal hairline border border-stone-200 bg-porcelain overflow-hidden flex flex-col" style={{ transitionDelay: `${i * 60}ms` }}>
+              <div className="relative aspect-[5/4] overflow-hidden bg-stone-200">
+                <img src={c.img} alt={c.eb} className="w-full h-full object-cover" loading="lazy" />
+              </div>
+              <div className="p-5 flex-1 flex flex-col">
+                <div className="eyebrow text-ochre" style={{ fontSize: 10 }}>{c.eb}</div>
+                <div className="font-display text-graphite-900 mt-2 leading-tight" style={{ fontSize: 19, fontWeight: 400 }}>{c.t}</div>
+                <ul className="mt-4 space-y-2 text-[13px] text-graphite flex-1">
+                  {c.items.map((it) => <li key={it} className="flex items-start gap-3"><span className="w-3 h-px bg-ochre mt-2 shrink-0" />{it}</li>)}
+                </ul>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// 24-month price trend chart for a community.
+function PriceTrendChart({ community }) {
+  // Generated indicative trend — 24 monthly data points.
+  const data = [2280, 2310, 2330, 2360, 2400, 2440, 2470, 2510, 2560, 2590, 2630, 2680, 2720, 2780, 2840, 2890, 2920, 2980, 3040, 3110, 3170, 3220, 3260, 3310];
+  const max = Math.max(...data), min = Math.min(...data);
+  const range = max - min;
+  const months = ['M1', '', '', 'M4', '', '', 'M7', '', '', 'M10', '', '', 'M13', '', '', 'M16', '', '', 'M19', '', '', 'M22', '', 'Now'];
+  return (
+    <section className="bg-graphite-900 text-porcelain py-20 md:py-24" data-screen-label="Community · Price trend">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="grid lg:grid-cols-[1fr_2fr] gap-12 items-end mb-12">
+          <div className="reveal">
+            <div className="eyebrow text-ochre mb-5">Market trend</div>
+            <h2 className="font-display text-porcelain leading-[1.02]" style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+              {community || 'Palm Jumeirah'} · AED per sqft, 24 months.
+            </h2>
+          </div>
+          <div className="reveal grid grid-cols-3 gap-6 lg:justify-self-end max-w-2xl">
+            <div><div className="font-display num text-porcelain" style={{ fontSize: 28, fontWeight: 400 }}>{data[data.length-1].toLocaleString()}</div><div className="text-[10px] tracking-[0.22em] uppercase text-porcelain/55 mt-1">AED / sqft · today</div></div>
+            <div><div className="font-display num text-ochre" style={{ fontSize: 28, fontWeight: 400 }}>+{Math.round(((data[data.length-1]-data[0])/data[0])*100)}%</div><div className="text-[10px] tracking-[0.22em] uppercase text-porcelain/55 mt-1">24 months</div></div>
+            <div><div className="font-display num text-porcelain" style={{ fontSize: 28, fontWeight: 400 }}>+{Math.round(((data[data.length-1]-data[data.length-13])/data[data.length-13])*100)}%</div><div className="text-[10px] tracking-[0.22em] uppercase text-porcelain/55 mt-1">12 months</div></div>
+          </div>
+        </div>
+        <div className="hairline border border-porcelain/15 p-6 md:p-8 bg-graphite-800/40">
+          <svg viewBox="0 0 480 160" preserveAspectRatio="none" className="w-full h-[200px]">
+            <defs>
+              <linearGradient id="trend-fill" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%"  stopColor="#AC7B43" stopOpacity="0.6" />
+                <stop offset="100%" stopColor="#AC7B43" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <polygon
+              points={data.map((v, i) => `${(i / (data.length - 1)) * 480},${160 - ((v - min) / range) * 140}`).join(' ') + ` 480,160 0,160`}
+              fill="url(#trend-fill)"
+            />
+            <polyline
+              points={data.map((v, i) => `${(i / (data.length - 1)) * 480},${160 - ((v - min) / range) * 140}`).join(' ')}
+              fill="none" stroke="#AC7B43" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
+            />
+          </svg>
+          <div className="mt-3 grid grid-cols-12 gap-2 text-[10px] tracking-[0.18em] uppercase text-porcelain/45">
+            {[0, 3, 6, 9, 12, 15, 18, 21, 23].map((i) => (
+              <div key={i} className="text-center" style={{ gridColumn: `span ${i === 23 ? 1 : 3 / 2}`, gridColumnStart: Math.floor(i / 2) + 1 }}>{months[i]}</div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Community contact — "talk to a community specialist" form.
+function CommunityContact({ community, agent }) {
+  return (
+    <section className="bg-porcelain py-20 md:py-24 border-t hairline border-stone-200" data-screen-label="Community · Contact">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 grid lg:grid-cols-[1fr_1.1fr] gap-12 items-start">
+        <div className="reveal">
+          <div className="eyebrow text-ochre mb-5">Talk to a specialist</div>
+          <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+            A {community || 'Palm Jumeirah'} broker, the same working day.
+          </h2>
+          <p className="mt-6 text-graphite text-[15px] leading-relaxed max-w-md">Send a quick brief — bedrooms, budget, frond, sea-line, or beach-line. A senior specialist replies inside the working day with three matched addresses and a walking schedule.</p>
+          {agent && (
+            <div className="mt-8 flex items-center gap-4 hairline border border-stone-200 p-4 bg-porcelain-100">
+              <img src={agent.img} alt={agent.name} className="w-14 h-14 rounded-full object-cover" />
+              <div>
+                <div className="text-graphite-900 font-medium text-[15px]">{agent.name}</div>
+                <div className="eyebrow text-graphite/65 mt-1" style={{ fontSize: 10 }}>{agent.role}</div>
+              </div>
+            </div>
+          )}
+        </div>
+        <form className="reveal hairline border border-stone-200 bg-porcelain-100 p-8 grid gap-5">
+          <div className="grid md:grid-cols-2 gap-5">
+            <CField label="Full name"     placeholder="Your name" />
+            <CField label="Phone"         placeholder="+971 ..." />
+          </div>
+          <div className="grid md:grid-cols-2 gap-5">
+            <CField label="Email"         placeholder="email@address.com" />
+            <CField label="Bedrooms"      placeholder="e.g. 4" />
+          </div>
+          <CField label="Budget (AED)"  placeholder="e.g. 18M – 25M" />
+          <CField label="What you're after" placeholder="Frond, sea-line, beach-line, off-market, etc." textarea />
+          <button type="button" className="bg-graphite-900 text-porcelain px-7 py-4 text-[11px] tracking-[0.22em] uppercase hover:bg-ochre transition cursor-pointer mt-2 inline-flex items-center justify-center gap-3">Send the brief <ArrowIcon className="w-3.5 h-3.5" /></button>
+        </form>
+      </div>
+    </section>
+  );
+}
+function CField({ label, placeholder, textarea }) {
+  const Tag = textarea ? 'textarea' : 'input';
+  return (
+    <label className="block">
+      <div className="eyebrow text-graphite/65 mb-2" style={{ fontSize: 10 }}>{label}</div>
+      <Tag rows={textarea ? 3 : undefined} placeholder={placeholder}
+        className="w-full bg-transparent border-b hairline border-stone-200 py-3 text-[14px] text-graphite-900 placeholder:text-graphite/45 focus:outline-none focus:border-ochre transition" />
+    </label>
+  );
+}
+
+// Related communities — 3-up strip.
+function RelatedCommunities({ exclude }) {
+  const D = window.CONCEPTPLUS_DATA;
+  const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const list = D.communities.filter(c => c.name !== exclude).slice(0, 3);
+  return (
+    <section className="bg-porcelain-100 py-20 border-t hairline border-stone-200">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+        <div className="reveal mb-10 max-w-3xl">
+          <div className="eyebrow text-ochre mb-5">Adjacent communities</div>
+          <h2 className="font-display text-graphite-900 leading-[1.02]" style={{ fontSize: 'clamp(24px, 3.4vw, 36px)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+            Other addresses worth a walk.
+          </h2>
+        </div>
+        <div className="grid md:grid-cols-3 gap-5">
+          {list.map((c, i) => (
+            <a key={c.name} href={`community.html?slug=${slug(c.name)}`} className="reveal group cursor-pointer" style={{ transitionDelay: `${i * 60}ms` }}>
+              <div className="relative aspect-[5/4] overflow-hidden bg-stone-200">
+                <img src={c.image} alt={c.name} className="w-full h-full object-cover transition-transform duration-[800ms] group-hover:scale-[1.05]" loading="lazy" />
+                <div className="absolute inset-0 bg-gradient-to-t from-graphite-900/80 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-5 text-porcelain">
+                  <div className="font-display text-[22px] leading-tight">{c.name}</div>
+                  <div className="mt-1 eyebrow text-porcelain/80" style={{ fontSize: 10 }}>{c.count} listings · view directory →</div>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
