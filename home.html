@@ -127,6 +127,36 @@ tailwind.config = {
 <script src="src/data.js"></script>
 </head>
 <body>
+  <!-- Adnika-Motion-style SVG displacement filters — feeds the hero + Most Trending
+       hover effect. Scale is animated to 0 by default; JS pushes it up on cursor
+       movement, falls back to 0 when scrolling or on mouse-leave. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="cp-distort-hero" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.012 0.016" numOctaves="2" seed="3" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" id="cp-disp-hero" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+      <filter id="cp-distort-card" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02 0.024" numOctaves="2" seed="7" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" id="cp-disp-card" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+  <!-- Global scroll flag — components read window.__cpScrolling to bail out of
+       their parallax handlers during page scroll, so wheel events never fight
+       with image-distortion transforms. -->
+  <script>
+    (function () {
+      window.__cpScrolling = false;
+      var t;
+      window.addEventListener('scroll', function () {
+        window.__cpScrolling = true;
+        clearTimeout(t);
+        t = setTimeout(function () { window.__cpScrolling = false; }, 180);
+      }, { passive: true });
+    })();
+  </script>
+
   <div id="root"></div>
 
   <script type="text/babel" src="tweaks-panel.jsx"></script>

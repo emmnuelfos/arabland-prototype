@@ -81,26 +81,51 @@ function HeroSlider({ onOpenListing, onOpenProject }) {
   const [paused, setPaused] = useStateS(false);
   const drag = useRefS({ startX: null, startY: null, moved: false });
   const imgWrapRef = useRefS(null);
+  const rafRef = useRefS(0);
+  const lastMoveRef = useRefS({ x: 0, y: 0, t: 0 });
+  const distortRef = useRefS(0);
 
-  // WebGL-feel mouse parallax — translates + tilts the active slide image based
-  // on cursor position. Approximates the Adnika Motion plugin displacement
-  // without needing three.js; reads cinematic at full screen.
+  // Adnika-style wobble — combines translate + 3D tilt + skew + a real SVG
+  // feDisplacementMap displacement that scales with cursor velocity, so the
+  // image distorts (not just translates) as the cursor moves across it. The
+  // distortion FALLS BACK to 0 when scrolling so the parallax never fights
+  // the user's wheel — fixes the scroll-blocked-on-hover issue.
   const onHeroMouseMove = (e) => {
+    if (window.__cpScrolling) return; // bail during page scroll
     const wrap = imgWrapRef.current;
     if (!wrap) return;
-    const rect = wrap.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;   // -0.5..0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    const active = wrap.querySelector('.cp-hero-img-active');
-    if (active) {
-      active.style.transform = `scale(1.06) translate3d(${x * -28}px, ${y * -28}px, 0) rotateX(${y * 1.2}deg) rotateY(${x * -1.2}deg)`;
-    }
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const rect = wrap.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const now = performance.now();
+      const dt = Math.max(now - lastMoveRef.current.t, 1);
+      const vx = (e.clientX - lastMoveRef.current.x) / dt;
+      const vy = (e.clientY - lastMoveRef.current.y) / dt;
+      const v = Math.min(Math.sqrt(vx * vx + vy * vy) * 320, 1); // 0..1
+      distortRef.current = Math.min(distortRef.current * 0.6 + v * 60, 80);
+      lastMoveRef.current = { x: e.clientX, y: e.clientY, t: now };
+
+      const active = wrap.querySelector('.cp-hero-img-active');
+      if (active) {
+        active.style.transform = `scale(${1.06 + v * 0.04}) translate3d(${x * -30}px, ${y * -30}px, 0) rotateX(${y * 2}deg) rotateY(${x * -2}deg) skew(${x * y * 6 * v}deg, ${y * x * 6 * v}deg)`;
+        active.style.filter = `brightness(${1.05 + v * 0.08}) saturate(${1.12 + v * 0.08}) contrast(1.04) url(#cp-distort-hero)`;
+      }
+      // Drive the SVG displacement scale
+      const disp = document.getElementById('cp-disp-hero');
+      if (disp) disp.setAttribute('scale', String(distortRef.current));
+    });
   };
   const onHeroMouseLeave = () => {
+    cancelAnimationFrame(rafRef.current);
     const wrap = imgWrapRef.current;
     if (!wrap) return;
     const active = wrap.querySelector('.cp-hero-img-active');
-    if (active) active.style.transform = '';
+    if (active) { active.style.transform = ''; active.style.filter = ''; }
+    distortRef.current = 0;
+    const disp = document.getElementById('cp-disp-hero');
+    if (disp) disp.setAttribute('scale', '0');
     setPaused(false);
   };
 
@@ -185,7 +210,7 @@ function HeroSlider({ onOpenListing, onOpenProject }) {
       </button>
 
       {/* Content — search bar centered vertically + horizontally, property card pinned to the bottom */}
-      <div className="relative h-full min-h-[100vh] flex flex-col">
+      <div className="relative h-full min-h-[90vh] flex flex-col">
         {/* Top spacer */}
         <div className="flex-1" />
 
@@ -1164,23 +1189,43 @@ function MostTrendingProjects({ onOpen }) {
 function MostTrendingCard({ listing, index, isActive, onOpen }) {
   const cardRef = useRefS(null);
   const imgRef = useRefS(null);
+  const rafRef = useRefS(0);
+  const lastMoveRef = useRefS({ x: 0, y: 0, t: 0 });
+  const distortRef = useRefS(0);
   const fmtPriceShort = (n) => 'AED ' + (n / 1_000_000).toFixed(n >= 10_000_000 ? 1 : 2).replace(/\.0+$/, '') + 'M';
 
-  // WebGL-feel parallax — mouse position drives image translate, 3D tilt, and
-  // a brightness/saturation pulse. Approximates the Adnika Motion plugin
-  // displacement effect without three.js. Card itself gets a subtle counter-tilt.
+  // Adnika-style wobble — translate + 3D tilt + skew + velocity-driven SVG
+  // displacement. Bails during page scroll so the wheel can pass through.
   const onMove = (e) => {
+    if (window.__cpScrolling) return;
     const card = cardRef.current;
     const img = imgRef.current;
     if (!card || !img) return;
-    const rect = card.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    img.style.transform = `scale(1.08) translate3d(${x * -28}px, ${y * -28}px, 0) rotateX(${y * 2}deg) rotateY(${x * -2}deg)`;
-    img.style.filter = `brightness(${1.04 + Math.abs(x) * 0.08}) saturate(${1.12 + Math.abs(y) * 0.08}) contrast(1.04)`;
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const now = performance.now();
+      const dt = Math.max(now - lastMoveRef.current.t, 1);
+      const vx = (e.clientX - lastMoveRef.current.x) / dt;
+      const vy = (e.clientY - lastMoveRef.current.y) / dt;
+      const v = Math.min(Math.sqrt(vx * vx + vy * vy) * 320, 1);
+      distortRef.current = Math.min(distortRef.current * 0.55 + v * 45, 60);
+      lastMoveRef.current = { x: e.clientX, y: e.clientY, t: now };
+
+      img.style.transform = `scale(${1.06 + v * 0.05}) translate3d(${x * -28}px, ${y * -28}px, 0) rotateX(${y * 3}deg) rotateY(${x * -3}deg) skew(${x * y * 8 * v}deg, ${y * x * 8 * v}deg)`;
+      img.style.filter = `brightness(${1.04 + v * 0.1}) saturate(${1.12 + v * 0.1}) contrast(1.04) url(#cp-distort-card)`;
+      const disp = document.getElementById('cp-disp-card');
+      if (disp) disp.setAttribute('scale', String(distortRef.current));
+    });
   };
   const onLeave = () => {
+    cancelAnimationFrame(rafRef.current);
     if (imgRef.current) { imgRef.current.style.transform = ''; imgRef.current.style.filter = ''; }
+    distortRef.current = 0;
+    const disp = document.getElementById('cp-disp-card');
+    if (disp) disp.setAttribute('scale', '0');
   };
 
   return (
