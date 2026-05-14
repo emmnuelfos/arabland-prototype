@@ -996,6 +996,189 @@ function ReviewsBar() {
   );
 }
 
+// ─── Most Trending Projects — cinematic full-screen dark spotlight ───────
+// Replaces the old FeaturedListings on the homepage. Full-bleed graphite-900,
+// ambient ochre glow, horizontal snap-scroll of large 16:10 cards with image
+// parallax on hover, ochre index numbers, active-card focus + counter.
+function MostTrendingProjects({ onOpen }) {
+  const D = window.CONCEPTPLUS_DATA;
+  const featured = D.listings.slice(0, 4);
+  const scrollRef = useRefS(null);
+  const [activeIdx, setActiveIdx] = useStateS(0);
+
+  const scrollByOne = (dir) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cards = Array.from(el.children);
+    const target = Math.min(Math.max(activeIdx + dir, 0), cards.length - 1);
+    const node = cards[target];
+    if (node) el.scrollTo({ left: node.offsetLeft - (el.clientWidth - node.offsetWidth) / 2, behavior: 'smooth' });
+  };
+
+  // Sync active card with horizontal scroll position
+  useEffectS(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const cards = Array.from(el.children);
+      const center = el.scrollLeft + el.clientWidth / 2;
+      let nearest = 0, minDist = Infinity;
+      cards.forEach((c, i) => {
+        const cCenter = c.offsetLeft + c.offsetWidth / 2;
+        const d = Math.abs(cCenter - center);
+        if (d < minDist) { minDist = d; nearest = i; }
+      });
+      setActiveIdx(nearest);
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, []);
+
+  return (
+    <section className="bg-graphite-900 text-porcelain relative overflow-hidden min-h-[100vh] flex flex-col" data-screen-label="Home · Most Trending">
+      {/* Ambient lighting — two soft blurred ochre/porcelain blobs */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[8%] left-[20%] w-[55vw] h-[55vh] rounded-full" style={{ background: 'radial-gradient(circle at center, rgba(172,123,67,0.18), transparent 65%)', filter: 'blur(60px)' }} />
+        <div className="absolute bottom-[10%] right-[15%] w-[45vw] h-[45vh] rounded-full" style={{ background: 'radial-gradient(circle at center, rgba(234,232,227,0.06), transparent 65%)', filter: 'blur(70px)' }} />
+      </div>
+
+      <div className="relative flex-1 flex flex-col py-16 md:py-20">
+        {/* Header */}
+        <div className="max-w-[1500px] mx-auto px-6 md:px-10 w-full">
+          <div className="grid lg:grid-cols-[1fr_auto] gap-10 items-end">
+            <div className="reveal">
+              <div className="eyebrow text-ochre mb-5">Trending now</div>
+              <h2 className="font-display text-porcelain leading-[0.98]" style={{ fontSize: 'clamp(40px, 6vw, 84px)', fontWeight: 400, letterSpacing: '-0.03em' }}>
+                Most Trending Projects in Dubai
+              </h2>
+              <p className="mt-7 text-porcelain/70 text-[16px] leading-relaxed max-w-2xl">
+                Properties under active demand from buyers this week — Frond M villas, Burj-view penthouses, Marina addresses, hand-picked by senior brokers.
+              </p>
+            </div>
+            <div className="reveal flex items-center gap-3 lg:justify-self-end">
+              <button onClick={() => scrollByOne(-1)} aria-label="Previous trending" className="w-14 h-14 grid place-items-center hairline border border-porcelain/25 text-porcelain hover:border-ochre hover:bg-ochre/10 transition cursor-pointer"><ArrowIcon dir="left" /></button>
+              <button onClick={() => scrollByOne(1)}  aria-label="Next trending"     className="w-14 h-14 grid place-items-center hairline border border-porcelain/25 text-porcelain hover:border-ochre hover:bg-ochre/10 transition cursor-pointer"><ArrowIcon /></button>
+            </div>
+          </div>
+        </div>
+
+        {/* Cards rail */}
+        <div className="flex-1 mt-14 md:mt-16 flex items-center min-h-[520px]">
+          <div ref={scrollRef} className="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory w-full px-6 md:px-10 lg:px-[8vw]">
+            {featured.map((l, i) => (
+              <MostTrendingCard
+                key={l.id}
+                listing={l}
+                index={i}
+                isActive={i === activeIdx}
+                onOpen={() => onOpen(l)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Footer — counter + view all */}
+        <div className="max-w-[1500px] mx-auto px-6 md:px-10 w-full mt-12 flex items-center justify-between gap-6 flex-wrap">
+          <div className="flex items-baseline gap-3">
+            <span className="font-display num text-ochre leading-none" style={{ fontSize: 'clamp(28px, 3.4vw, 44px)', fontWeight: 400, letterSpacing: '-0.025em' }}>{String(activeIdx + 1).padStart(2, '0')}</span>
+            <span className="text-porcelain/35 text-[14px] num">/</span>
+            <span className="text-porcelain/55 num" style={{ fontSize: 22, fontWeight: 400 }}>{String(featured.length).padStart(2, '0')}</span>
+          </div>
+          {/* Dot indicators */}
+          <div className="flex items-center gap-3">
+            {featured.map((_, i) => (
+              <button key={i} onClick={() => {
+                const el = scrollRef.current;
+                if (!el) return;
+                const node = el.children[i];
+                if (node) el.scrollTo({ left: node.offsetLeft - (el.clientWidth - node.offsetWidth) / 2, behavior: 'smooth' });
+              }} aria-label={`Trending ${i + 1}`}
+                 className={`h-[2px] transition-all cursor-pointer ${i === activeIdx ? 'w-12 bg-ochre' : 'w-6 bg-porcelain/25 hover:bg-porcelain/55'}`} />
+            ))}
+          </div>
+          <a href="buy.html" className="eyebrow text-porcelain hover:text-ochre cursor-pointer flex items-center gap-3">View all 1,247 listings <ArrowIcon className="w-3.5 h-3.5" /></a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function MostTrendingCard({ listing, index, isActive, onOpen }) {
+  const cardRef = useRefS(null);
+  const imgRef = useRefS(null);
+  const fmtPriceShort = (n) => 'AED ' + (n / 1_000_000).toFixed(n >= 10_000_000 ? 1 : 2).replace(/\.0+$/, '') + 'M';
+
+  // Parallax on hover — mouse position translates the image inside the frame.
+  const onMove = (e) => {
+    const card = cardRef.current;
+    const img = imgRef.current;
+    if (!card || !img) return;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    img.style.transform = `scale(1.06) translate3d(${x * -22}px, ${y * -22}px, 0)`;
+  };
+  const onLeave = () => { if (imgRef.current) imgRef.current.style.transform = ''; };
+
+  return (
+    <article
+      ref={cardRef}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      onClick={onOpen}
+      className={`relative shrink-0 w-[88vw] md:w-[68vw] lg:w-[58vw] snap-center cursor-pointer group transition-all duration-700`}
+      style={{
+        opacity: isActive ? 1 : 0.5,
+        transform: isActive ? 'scale(1)' : 'scale(0.96)',
+      }}
+    >
+      {/* Outer ochre glow for active card */}
+      <div className={`absolute -inset-px transition-opacity duration-700 pointer-events-none ${isActive ? 'opacity-100' : 'opacity-0'}`}
+           style={{ background: 'linear-gradient(135deg, rgba(172,123,67,0.45), rgba(172,123,67,0) 60%)', filter: 'blur(28px)' }} />
+
+      <div className="relative aspect-[16/10] overflow-hidden bg-graphite-800 hairline border border-porcelain/10">
+        <img ref={imgRef} src={listing.images?.[0] || ''} alt={listing.title}
+             className="absolute inset-0 w-full h-full object-cover transition-transform duration-[700ms] ease-out will-change-transform"
+             loading="lazy" />
+
+        {/* Vignette */}
+        <div className="absolute inset-0 bg-gradient-to-t from-graphite-900/90 via-graphite-900/10 to-graphite-900/45 pointer-events-none" />
+
+        {/* Index number — large, top-right */}
+        <div className="absolute top-7 right-8 font-display num text-porcelain/85 leading-none" style={{ fontSize: 'clamp(40px, 4.5vw, 72px)', fontWeight: 400, letterSpacing: '-0.04em' }}>
+          {String(index + 1).padStart(2, '0')}
+        </div>
+
+        {/* Eyebrow tag — top-left */}
+        <div className="absolute top-8 left-8 px-3 py-1.5 text-[10px] tracking-[0.22em] uppercase bg-porcelain/95 text-graphite-900 backdrop-blur-sm">
+          For Sale · {listing.type}
+        </div>
+
+        {/* Bottom content */}
+        <div className="absolute inset-x-0 bottom-0 p-7 md:p-10 lg:p-12">
+          <div className="text-[11px] tracking-[0.22em] uppercase text-ochre mb-3">{listing.community} · {listing.subCommunity}</div>
+          <h3 className="font-display text-porcelain leading-tight" style={{ fontSize: 'clamp(26px, 3.2vw, 42px)', fontWeight: 400, letterSpacing: '-0.025em' }}>
+            {listing.title}
+          </h3>
+          <div className="mt-7 flex items-end justify-between gap-6 flex-wrap">
+            <div className="flex items-baseline gap-5 text-[13px] text-porcelain/75">
+              <span><span className="text-porcelain num font-medium">{listing.beds}</span> beds</span>
+              <span className="opacity-30">·</span>
+              <span><span className="text-porcelain num font-medium">{listing.baths}</span> baths</span>
+              <span className="opacity-30">·</span>
+              <span><span className="text-porcelain num font-medium">{listing.sqft.toLocaleString()}</span> sqft</span>
+            </div>
+            <div className="font-display num text-ochre leading-none" style={{ fontSize: 'clamp(30px, 3.8vw, 48px)', fontWeight: 400, letterSpacing: '-0.025em' }}>{fmtPriceShort(listing.price)}</div>
+          </div>
+          <div className="mt-7 inline-flex items-center gap-3 text-[11px] tracking-[0.22em] uppercase text-porcelain border-b border-ochre pb-1.5 cursor-pointer transition-transform duration-300 group-hover:translate-x-2">
+            Discover more <ArrowIcon className="w-3.5 h-3.5" />
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 // ─── Social Proof bar (FAM-style) ─────────────────────────────────────────
 // Dark, single-row strip: HQ stats + Arabian Property Awards + Google Reviews.
 // Replaces the prior split between TrustStrip and ReviewsBar — one tighter
@@ -1278,4 +1461,4 @@ function FinalCTA({ onSchedule }) {
   );
 }
 
-Object.assign(window, { Hero, TrustStrip, Communities, FeaturedListings, OffPlan, Stats, WhyConceptPlus, Insights, DeveloperLogos, EditorialStrip, Section, MortgageSection, MortgageSlider, Testimonials, Awards, InstagramStrip, ReviewsBar, SocialProof, OurTeams, BigMapView, FinalCTA });
+Object.assign(window, { Hero, TrustStrip, Communities, FeaturedListings, OffPlan, Stats, WhyConceptPlus, Insights, DeveloperLogos, EditorialStrip, Section, MortgageSection, MortgageSlider, Testimonials, Awards, InstagramStrip, ReviewsBar, SocialProof, OurTeams, BigMapView, FinalCTA, MostTrendingProjects, MostTrendingCard });

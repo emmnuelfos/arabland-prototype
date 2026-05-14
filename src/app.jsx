@@ -74,17 +74,8 @@ function App() {
         <Communities />
         {/* 5 · Our teams (horizontal carousel) */}
         <OurTeams />
-        {/* 6 · Most Trending Projects in Dubai */}
-        <FeaturedListings
-          cardVariant={tweaks.cardVariant}
-          currency={currency}
-          areaUnit={areaUnit}
-          shortlist={shortlist}
-          compare={compare}
-          onShortlist={onShortlistToggle}
-          onCompare={onCompareToggle}
-          onOpen={(l) => { setOpenListing(l); }}
-        />
+        {/* 6 · Most Trending Projects in Dubai — cinematic full-screen spotlight */}
+        <MostTrendingProjects onOpen={(l) => setOpenListing(l)} />
         {/* 7 · Real Estate News */}
         <Insights />
         {/* 8 · Mortgage Calculator */}
