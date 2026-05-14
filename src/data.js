@@ -6,7 +6,9 @@
 window.CONCEPTPLUS_DATA = (function () {
   // Local asset helpers — every image lives under /assets/.
   const P = (name) => `assets/properties/${name}.webp`;
-  const A = (name) => `assets/agents/${name}.webp`;
+  // Agent portraits — dark cinematic backdrop, Rembrandt-lit, same poses as the
+  // original light set. Light set still exists at assets/agents/ if ever needed.
+  const A = (name) => `assets/agents-dark/${name}.webp`;
 
   // 10 property sets — each set is one property with 4 shots that gallery together.
   const SET = {
@@ -59,12 +61,14 @@ window.CONCEPTPLUS_DATA = (function () {
     { id: 'L-2408', title: 'Garden townhouse',               community: 'Jumeirah Village', subCommunity: 'District 12',        price: 1980000,  type: 'Townhouse', furnishing: 'Unfurnished',     beds: 3, baths: 4,  sqft: 2240, photoCount: 14, dld: true,  images: SET['jvc-townhouse'].map(P),    agent: 1, sale: true, lat: 25.0577, lng: 55.2135 },
   ];
 
-  // Off-plan projects — all share the offplan-tower set with rotating shot per project.
+  // Off-plan projects — each project gets a dedicated full-building hero shot
+  // (3:4 vertical, dramatic full-tower-from-base-to-crown) so the card on the
+  // homepage reads as a proper architectural luxury showcase.
   const offPlan = [
-    { id: 'P-9001', name: 'Cassia Residences', developer: 'Sobha Realty',     from: 1800000, completion: 'Q4 2027', status: 'Launched',          image: P('09-offplan-tower-exterior'),         units: 320 },
-    { id: 'P-9002', name: 'Mirador Tower',     developer: 'Emaar Properties', from: 2950000, completion: 'Q2 2026', status: 'Under Construction',image: P('09-offplan-tower-show-apartment'),   units: 480 },
-    { id: 'P-9003', name: 'Atelier Bay',       developer: 'DAMAC',            from: 4100000, completion: 'Q1 2025', status: 'Handover Soon',     image: P('09-offplan-tower-skybridge'),        units: 144 },
-    { id: 'P-9004', name: 'Saadiyat Pavilion', developer: 'Aldar',            from: 6400000, completion: 'Q3 2028', status: 'Launched',          image: P('09-offplan-tower-lobby'),            units:  96 },
+    { id: 'P-9001', name: 'Cassia Residences', developer: 'Sobha Realty',     from: 1800000, completion: 'Q4 2027', status: 'Launched',          image: P('11-cassia-residences-full'),  units: 320 },
+    { id: 'P-9002', name: 'Mirador Tower',     developer: 'Emaar Properties', from: 2950000, completion: 'Q2 2026', status: 'Under Construction',image: P('12-mirador-tower-full'),       units: 480 },
+    { id: 'P-9003', name: 'Atelier Bay',       developer: 'DAMAC',            from: 4100000, completion: 'Q1 2025', status: 'Handover Soon',     image: P('13-atelier-bay-full'),         units: 144 },
+    { id: 'P-9004', name: 'Saadiyat Pavilion', developer: 'Aldar',            from: 6400000, completion: 'Q3 2028', status: 'Launched',          image: P('14-saadiyat-pavilion-full'),   units:  96 },
   ];
 
   // Insights map to property shots that loosely match topic.

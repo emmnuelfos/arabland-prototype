@@ -130,6 +130,9 @@ function HeroSlider({ onOpenListing, onOpenProject }) {
           on every slide, including bright sunset frames (slide 2). */}
       <div className="absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-black/65 to-transparent pointer-events-none" />
       <div className="absolute inset-x-0 top-0 h-[40%] bg-gradient-to-b from-black/55 via-black/15 to-transparent pointer-events-none" />
+      {/* Seamless transition into the dark Social Proof section below — bottom 14%
+          fades to solid graphite-900 (#1A1A1A) so the hero "melts into" the next section. */}
+      <div className="absolute inset-x-0 bottom-0 h-[18%] pointer-events-none" style={{ background: 'linear-gradient(to bottom, rgba(26,26,26,0) 0%, rgba(26,26,26,0.55) 55%, rgba(26,26,26,1) 100%)' }} />
 
       {/* Left arrow */}
       <button

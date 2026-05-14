@@ -301,59 +301,112 @@ function PropertyPage() {
     <PageChrome screenLabel="Property Detail">
       {(ctx) => (
         <main>
-          {/* Breadcrumb */}
-          <div className="max-w-[1400px] mx-auto px-6 md:px-10 pt-8 pb-4 text-[11px] tracking-[0.22em] uppercase text-graphite/60 flex items-center gap-3">
-            <a href="home.html" className="gold-underline">Home</a><span>/</span>
-            <a href="buy.html" className="gold-underline">Buy</a><span>/</span>
-            <a href="buy.html" className="gold-underline">{listing.community}</a><span>/</span>
-            <span className="text-graphite-900">{listing.id}</span>
-          </div>
+          {/* ─── Cinematic Hero Gallery ─────────────────────────────────────
+              Full-bleed hero image (no map). FAM-style layout — large image
+              with overlay info + thumbnail strip below. */}
+          <section className="relative bg-graphite-900 text-porcelain" data-screen-label="Property · Hero">
+            {/* Hero image */}
+            <div className="relative w-full h-[78vh] min-h-[560px] overflow-hidden">
+              <img src={listing.images[0]} alt={listing.title} className="absolute inset-0 w-full h-full object-cover" loading="eager" />
+              {/* Dark gradients for legibility */}
+              <div className="absolute inset-x-0 top-0 h-[30%] bg-gradient-to-b from-graphite-900/65 to-transparent pointer-events-none" />
+              <div className="absolute inset-x-0 bottom-0 h-[60%] bg-gradient-to-t from-graphite-900/90 via-graphite-900/30 to-transparent pointer-events-none" />
 
-          {/* Photo grid header */}
-          <section className="max-w-[1400px] mx-auto px-6 md:px-10">
-            <div className="grid grid-cols-4 grid-rows-2 gap-2 h-[68vh] min-h-[480px]">
-              <button onClick={ctx.openPhotos} className="col-span-2 row-span-2 overflow-hidden bg-stone-200 cursor-pointer relative group">
-                <img src={listing.images[0]} alt="" className="w-full h-full object-cover transition group-hover:scale-[1.02]" />
+              {/* Top-left: breadcrumbs */}
+              <div className="absolute top-6 md:top-10 left-0 right-0">
+                <div className="max-w-[1400px] mx-auto px-6 md:px-10 text-[11px] tracking-[0.22em] uppercase text-porcelain/85 flex items-center gap-3">
+                  <a href="home.html" className="hover:text-ochre transition">Home</a><span className="opacity-50">›</span>
+                  <a href="buy.html" className="hover:text-ochre transition">Buy</a><span className="opacity-50">›</span>
+                  <a href={`buy.html?community=${encodeURIComponent(listing.community)}`} className="hover:text-ochre transition">{listing.community}</a><span className="opacity-50">›</span>
+                  <span className="text-porcelain">{listing.id}</span>
+                </div>
+              </div>
+
+              {/* Top-right: View all photos button */}
+              <button onClick={ctx.openPhotos} className="absolute top-6 md:top-10 right-6 md:right-10 px-5 py-3 hairline border border-porcelain/40 bg-graphite-900/30 backdrop-blur text-porcelain text-[11px] tracking-[0.22em] uppercase hover:border-ochre hover:bg-ochre/15 transition cursor-pointer inline-flex items-center gap-3">
+                <CameraIcon className="w-4 h-4" /> View all {listing.photoCount}
               </button>
-              {[1, 2, 3, 4].map(i => (
-                <button key={i} onClick={ctx.openPhotos} className="overflow-hidden bg-stone-200 cursor-pointer relative group">
-                  <img src={listing.images[i % listing.images.length]} alt="" className="w-full h-full object-cover transition group-hover:scale-[1.02]" />
-                  {i === 4 && (
-                    <div className="absolute inset-0 bg-graphite-900/55 grid place-items-center text-porcelain">
-                      <div className="text-center"><CameraIcon className="w-6 h-6 mx-auto mb-2" /><div className="eyebrow">View all {listing.photoCount}</div></div>
+
+              {/* Bottom-left: title + asking price */}
+              <div className="absolute inset-x-0 bottom-0">
+                <div className="max-w-[1400px] mx-auto px-6 md:px-10 pb-10 md:pb-14">
+                  <div className="grid md:grid-cols-[1fr_auto] gap-8 items-end">
+                    <div>
+                      <div className="eyebrow text-ochre mb-3">{listing.community} · {listing.subCommunity}</div>
+                      <h1 className="font-display text-porcelain leading-[0.98]" style={{ fontSize: 'clamp(40px, 6vw, 84px)', fontWeight: 400, letterSpacing: '-0.025em' }}>
+                        {listing.title}
+                      </h1>
+                      <div className="mt-6 flex items-center gap-5 flex-wrap text-[13px] text-porcelain/80">
+                        <span className="flex items-center gap-2"><BedIcon /> <span className="num text-porcelain font-medium">{listing.beds}</span> beds</span>
+                        <span className="opacity-30">·</span>
+                        <span className="flex items-center gap-2"><BathIcon /> <span className="num text-porcelain font-medium">{listing.baths}</span> baths</span>
+                        <span className="opacity-30">·</span>
+                        <span className="flex items-center gap-2"><AreaIcon /> <span className="num text-porcelain font-medium">{listing.sqft.toLocaleString()}</span> {ctx.areaUnit}</span>
+                        <span className="opacity-30">·</span>
+                        <span>{listing.type}</span>
+                        <span className="opacity-30">·</span>
+                        <span>{listing.furnishing}</span>
+                        {listing.dld && <span className="ml-2 px-3 py-1 text-[10px] tracking-[0.22em] uppercase text-ochre hairline border border-ochre/50 flex items-center gap-2"><CheckIcon className="w-3 h-3" /> DLD verified</span>}
+                      </div>
                     </div>
-                  )}
-                </button>
-              ))}
+                    <div className="md:text-right">
+                      <div className="eyebrow text-porcelain/60" style={{ fontSize: 10 }}>Asking price</div>
+                      <div className="font-display num text-ochre mt-2 leading-none" style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 400, letterSpacing: '-0.025em' }}>
+                        {fmtPrice(listing.price, ctx.currency)}
+                      </div>
+                      <div className="text-[12px] text-porcelain/65 num mt-2">
+                        {fmtPrice(Math.round(listing.price / listing.sqft), ctx.currency)} / {ctx.areaUnit}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Thumbnail strip — 4 cards below hero */}
+            <div className="bg-graphite-900 pb-8 md:pb-12">
+              <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 -mt-6 md:-mt-12 relative z-10">
+                  {[1, 2, 3, 4].map(i => {
+                    const idx = i % listing.images.length;
+                    return (
+                      <button key={i} onClick={ctx.openPhotos} className="relative aspect-[4/3] overflow-hidden bg-graphite-800 cursor-pointer group hairline border border-porcelain/15">
+                        <img src={listing.images[idx]} alt="" className="absolute inset-0 w-full h-full object-cover transition-transform duration-[700ms] group-hover:scale-[1.08]" loading="lazy" />
+                        <div className="absolute inset-0 bg-graphite-900/0 group-hover:bg-graphite-900/25 transition" />
+                        {i === 4 && (
+                          <div className="absolute inset-0 bg-graphite-900/60 grid place-items-center text-porcelain">
+                            <div className="text-center"><CameraIcon className="w-5 h-5 mx-auto mb-2" /><div className="text-[10px] tracking-[0.22em] uppercase">+{listing.photoCount - 4} more</div></div>
+                          </div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </section>
 
-          {/* Title row */}
-          <section className="max-w-[1400px] mx-auto px-6 md:px-10 pt-10 pb-8 grid md:grid-cols-[1fr_auto] gap-8 items-end">
-            <div>
-              <div className="eyebrow text-ochre">{listing.community} · {listing.subCommunity}</div>
-              <h1 className="font-display mt-3 text-graphite-900" style={{ fontSize: 'clamp(36px, 5vw, 60px)', fontWeight: 400, letterSpacing: '-0.01em', lineHeight: 1.05 }}>
-                {listing.title}
-              </h1>
-              <div className="flex items-center gap-6 mt-5 text-[14px] text-graphite-800">
-                <span className="flex items-center gap-2"><BedIcon /> {listing.beds} beds</span>
-                <span className="flex items-center gap-2"><BathIcon /> {listing.baths} baths</span>
-                <span className="flex items-center gap-2"><AreaIcon /> {listing.sqft.toLocaleString()} {ctx.areaUnit}</span>
-                <span className="text-graphite/60">·</span>
-                <span>{listing.type}</span>
-                <span>·</span>
-                <span>{listing.furnishing}</span>
-                {listing.dld && <span className="ml-2 text-[11px] tracking-[0.22em] uppercase text-ochre flex items-center gap-2"><CheckIcon className="w-3 h-3" /> DLD verified</span>}
-              </div>
-            </div>
-            <div className="md:text-right">
-              <div className="eyebrow text-graphite/60">Asking price</div>
-              <div className="font-display text-graphite-900 mt-2" style={{ fontSize: 'clamp(40px, 4.5vw, 56px)', fontWeight: 400 }}>
-                {fmtPrice(listing.price, ctx.currency)}
-              </div>
-              <div className="text-[12px] text-graphite/70 num mt-1">
-                {fmtPrice(Math.round(listing.price / listing.sqft), ctx.currency)} / {ctx.areaUnit}
-              </div>
+          {/* ─── Quick facts strip (FAM-parity, icon-driven) ─── */}
+          <section className="bg-porcelain border-b hairline border-stone-200 py-10">
+            <div className="max-w-[1400px] mx-auto px-6 md:px-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+              {[
+                { l: 'Type',       v: listing.type,                                                       icon: <PinIcon /> },
+                { l: 'Bedrooms',   v: listing.beds,                                                       icon: <BedIcon /> },
+                { l: 'Bathrooms',  v: listing.baths,                                                      icon: <BathIcon /> },
+                { l: 'Area',       v: `${listing.sqft.toLocaleString()} ${ctx.areaUnit}`,                 icon: <AreaIcon /> },
+                { l: 'Furnishing', v: listing.furnishing,                                                 icon: <CheckIcon /> },
+                { l: 'Reference',  v: listing.id,                                                         icon: <ShareIcon /> },
+              ].map((f, i) => (
+                <div key={i} className="flex items-center gap-4">
+                  <div className="w-11 h-11 grid place-items-center hairline border border-stone-200 text-ochre shrink-0">
+                    {f.icon}
+                  </div>
+                  <div>
+                    <div className="eyebrow text-graphite/60" style={{ fontSize: 10 }}>{f.l}</div>
+                    <div className="text-graphite-900 text-[14px] font-medium num mt-1">{f.v}</div>
+                  </div>
+                </div>
+              ))}
             </div>
           </section>
 
